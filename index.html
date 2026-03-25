@@ -1166,7 +1166,7 @@
   /* ── SCENARIO PICKER ── */
   .picker-heading { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
   .picker-sub { font-size: 14px; color: var(--text2); margin-bottom: 24px; line-height: 1.6; }
-  .scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+  .scenario-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; align-items: stretch; }
   .scenario-option {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -1178,6 +1178,9 @@
     font-family: inherit;
     color: var(--text);
     width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
   .scenario-option:hover { border-color: rgba(232,98,42,0.4); background: var(--surface2); transform: translateY(-2px); }
   .scenario-option.selected { border-color: var(--cyan); background: var(--cyan-glow); }
@@ -1229,7 +1232,7 @@
   }
 
   @media (max-width: 600px) {
-    .scenario-grid { grid-template-columns: 1fr; }
+    .scenario-grid { grid-template-columns: 1fr 1fr; }
     .container { padding: 0 16px; }
     nav { padding: 14px 0; }
     .nav-links a:not(.nav-cta) { display: none; }
@@ -2640,6 +2643,543 @@ const SCENARIOS = [
       }
     ]
   }
+  ,
+  // ── Scenario 7: Supply Chain ──
+  {
+    department: 'Supply Chain / Materials',
+    name: 'The Shortage Cascade',
+    nameHtml: 'The <em>Shortage</em> Cascade',
+    blurb: "2:30pm. Central supply is out of IV start kits. Three floors are waiting. The vendor delivery failed.",
+    difficulty: 'Easy', decisions: 4,
+    tagline: "It's 2:30pm on a Tuesday. Central supply has run out of IV start kits — the vendor skipped your delivery. Three nursing units are requesting them now. The OR has 4 cases tomorrow morning.",
+    briefingTitle: 'A critical supply just ran out. The vendor is unreachable.',
+    briefingBody: "You're the supply chain manager for a 280-bed community hospital. The morning delivery from your primary vendor included everything except IV start kits — and you're now down to 6 units in reserve against a demand of roughly 40 per shift. Three charge nurses have already called. The OR coordinator wants to know if tomorrow's cases are covered.",
+    stats: [
+      { label: 'Supply on Hand', value: '6 units', cls: '' },
+      { label: 'Daily Demand', value: '~40 units', cls: 'red' },
+      { label: 'Vendor ETA', value: 'Unknown', cls: 'amber' }
+    ],
+    steps: [
+      {
+        label: "Decision 01 — Immediate response",
+        title: "Six IV start kits left. Three units are waiting. What do you do first?",
+        desc: "This isn't a 'monitor and see' situation. You need to act now — but the right first move determines everything that follows.",
+        choices: [
+          {
+            letter: "A",
+            text: "Conduct an immediate floor sweep — find hidden stock across all units and procedure carts before escalating",
+            sub: "You probably have more than you think. Find it before you call anyone.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "You find 28 units distributed across three units and a procedure cart.",
+              text: "A rapid floor sweep finds 28 additional kits — including 12 in a procedure cart that hadn't been updated in the system. You now have enough to cover the next 18 hours while you source a replacement shipment. The call to clinical leadership is much calmer.",
+              insight: "Shortage responses that start with inventory sweeps consistently find 20–40% more stock than the system shows. Before escalating externally, check your own house. Hidden stock is common — especially in high-volume departments that store supplies outside official par locations."
+            }
+          },
+          {
+            letter: "B",
+            text: "Call your secondary vendor immediately to arrange emergency delivery",
+            sub: "Get supply moving now. You can sort out inventory after.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Emergency delivery arrives in 4 hours. You rationed well enough to bridge.",
+              text: "Your secondary vendor has stock and can deliver in 4 hours. You implement a rationing protocol — each unit gets 2 kits for immediate use, and non-urgent starts are deferred. No patient care gaps occur. The delivery fills the gap.",
+              insight: "Activating secondary vendors quickly is good practice — but skipping an inventory sweep means you may be paying emergency pricing for stock you already have. Always check your own inventory first, then escalate to external sourcing in parallel."
+            }
+          },
+          {
+            letter: "C",
+            text: "Implement strict rationing and wait for the primary vendor to call back",
+            sub: "Don't overreact. Wait until you have more information.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Two units run out before the vendor returns your call.",
+              text: "Rationing slows consumption, but the vendor doesn't call back for 3 hours. By then, two units are completely out and nursing is escalating to the CNO. The shortage becomes an incident report rather than a managed response.",
+              insight: "Rationing is a bridge, not a strategy. Waiting on your primary vendor without activating alternatives is passive management during an active supply crisis. Shortage response requires simultaneous actions — not sequential ones."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 02 — Clinical escalation",
+        title: "4 West needs a kit right now for a new admission with a blown IV. What do you tell her?",
+        desc: "A specific patient need just made this real. Your allocation decision affects this patient directly.",
+        choices: [
+          {
+            letter: "A",
+            text: "Allocate from reserve immediately and accelerate the sourcing timeline in parallel",
+            sub: "Patient need is the priority. Fill it now.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Patient care is never interrupted.",
+              text: "You pull from reserve for the immediate patient need and simultaneously call your secondary vendor to expedite. The charge nurse has what she needs within 10 minutes. The patient is started without delay.",
+              insight: "In supply shortages, patient-specific needs always override general allocation rules. The job of allocation protocol is to keep you from hitting zero — not to delay care for a patient in front of you."
+            }
+          },
+          {
+            letter: "B",
+            text: "Suggest a substitute peripheral catheter from another kit type as a workaround",
+            sub: "Clinical improvisation. It works.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "The nurse adapts. But now every unit is requesting the same substitute.",
+              text: "4 West improvises successfully. But the workaround spreads informally floor to floor — nurses start requesting substitute components without clinical approval. By end of shift, four different improvised IV start processes are running across five units.",
+              insight: "Clinical workarounds are legitimate in a true shortage — but they need to be formalized and approved, not improvised unit by unit. An informal substitute that spreads without oversight creates inconsistency and safety risk."
+            }
+          },
+          {
+            letter: "C",
+            text: "Ask nursing leadership to defer the IV start until stock arrives",
+            sub: "Not enough supply to cover everyone. Set expectations.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "The admission deteriorates. This becomes a patient safety event.",
+              text: "Nursing leadership escalates immediately. The patient's condition worsens while waiting for supply. The attending is furious. What was a supply management problem becomes a patient safety event and an incident report tied to your name.",
+              insight: "Supply shortages cannot delay time-sensitive patient care. No matter how constrained your supply, the answer to 'a patient needs this now' is never 'wait.' Find stock from somewhere — this required parallel action, not deferral."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 03 — Vendor negotiation",
+        title: "Your primary vendor finally calls back. They can deliver tomorrow morning. What do you negotiate?",
+        desc: "You have leverage here. A service failure occurred. Use it.",
+        choices: [
+          {
+            letter: "A",
+            text: "Request same-day delivery, waived fees, and a future safety stock buffer commitment — in writing",
+            sub: "You're a customer who just had a service failure. Negotiate accordingly.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Same-day delivery, waived fees, and a 30-day safety stock agreement.",
+              text: "The vendor agrees to same-day delivery at no additional cost, waives the delivery fee, and commits to maintaining a 2-week safety stock buffer at their facility for your account. You document the agreement in writing.",
+              insight: "Vendor delivery failures are leverage events. Organizations that negotiate from a position of documented impact consistently obtain better terms than those who accept the new timeline. Always ask. Document in writing."
+            }
+          },
+          {
+            letter: "B",
+            text: "Accept tomorrow's delivery and ask for a discount on the next invoice",
+            sub: "Get something back for the disruption.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "10% discount on next invoice. No structural change.",
+              text: "The vendor offers 10% off your next order. You accept. Tomorrow's delivery arrives as committed. No systemic protection against recurrence is established.",
+              insight: "A discount is a transactional response to a structural failure. It feels good — but it doesn't protect you from the same shortage happening again. Root cause and future protection should be part of every vendor failure negotiation."
+            }
+          },
+          {
+            letter: "C",
+            text: "Accept tomorrow's delivery without pushing back",
+            sub: "You need the supply. Don't risk the relationship.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Supply restored. Opportunity missed.",
+              text: "Delivery arrives as promised. No additional terms negotiated. The vendor files the event as a standard delay. Next quarter, a similar shortage occurs with the same vendor.",
+              insight: "Service failures that aren't addressed through your vendor contract become recurring events. Supply chain operators who build correction into every failure create more reliable systems. Those who absorb failures quietly get the same failures again."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 04 — Post-event action",
+        title: "Supply is restored. It's the following morning. What do you do now?",
+        desc: "The crisis is over. But nothing has changed yet.",
+        choices: [
+          {
+            letter: "A",
+            text: "Conduct a formal shortage debrief, identify root cause, and update your contingency supply protocol",
+            sub: "A shortage that isn't analyzed becomes a shortage that repeats.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Root cause found: par levels were set in 2019 and never updated.",
+              text: "The debrief reveals par levels for IV start kits haven't been reviewed since 2019 — well below current patient volume. You update par levels across 12 supply categories, establish a secondary vendor activation protocol, and set a quarterly review calendar. The next disruption is managed, not a crisis.",
+              insight: "Most supply shortage root causes are operational, not vendor failures. Par levels drift, secondary vendor relationships atrophy, and safety stock protocols get skipped in cost-cutting cycles. Post-event analysis is the only way to build a supply chain that self-corrects."
+            }
+          },
+          {
+            letter: "B",
+            text: "Update your secondary vendor contact list and move on",
+            sub: "Lesson learned. Know your backup sources.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Better backup contacts. Same underlying vulnerability.",
+              text: "Your vendor contact list is current and tested. But par levels, safety stock protocols, and demand tracking haven't changed. Same shortage, different supply, same root cause.",
+              insight: "Knowing your secondary vendors is necessary but not sufficient. A strong supply chain requires par level accuracy, demand tracking, and proactive safety stock — not just the ability to make a fast call when something runs out."
+            }
+          },
+          {
+            letter: "C",
+            text: "Document the incident and file it for the quarterly operations report",
+            sub: "Document it for future reference.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Documented. Unchanged.",
+              text: "The incident report lives in a folder. No process changes are made. The same conditions — outdated par levels, single vendor dependency — remain intact. Six months later, a gauze shortage plays out the same way.",
+              insight: "Documentation without action is administrative theater. Every incident report not connected to a process change is just a record of a problem that will recur. The test of a good post-event review isn't what you wrote — it's what changed."
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  // ── Scenario 8: Environmental Services ──
+  {
+    department: 'Environmental Services',
+    name: 'The Turnover Crunch',
+    nameHtml: 'The <em>Turnover</em> Crunch',
+    blurb: "11am. 14 ED patients waiting on beds. EVS called out 2 staff. 11 dirty rooms in queue.",
+    difficulty: 'Easy', decisions: 4,
+    tagline: "It's 11am on a Wednesday. Census just hit 94%. The ED has 14 patients waiting on inpatient beds. EVS had two call-outs, and 11 dirty rooms are in the queue. Your housekeeping supervisor has been turning rooms herself for 40 minutes.",
+    briefingTitle: 'Patient flow is stalled. The bottleneck is room turnover.',
+    briefingBody: "You're the operations manager for a 310-bed community hospital. Bed management is showing 14 ED holds and 6 PACU holds. Eleven rooms are flagged dirty and queued. EVS has two call-outs and is two techs short of normal coverage. Nursing is calling every 15 minutes asking when beds will be available.",
+    stats: [
+      { label: 'Dirty Rooms', value: '11', cls: '' },
+      { label: 'ED Holds', value: '14 patients', cls: 'red' },
+      { label: 'EVS Deficit', value: '2 staff', cls: 'amber' }
+    ],
+    steps: [
+      {
+        label: "Decision 01 — Triage the queue",
+        title: "Eleven dirty rooms queued. Your team can't do all of them at once. How do you prioritize?",
+        desc: "Not all empty rooms are equal. Wrong prioritization means the right patients wait longer.",
+        choices: [
+          {
+            letter: "A",
+            text: "Triage by patient acuity — prioritize rooms for tele and ICU step-down patients waiting in the ED first",
+            sub: "The patient waiting on that bed determines the room's priority.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "The three highest-acuity patients land in beds within 90 minutes.",
+              text: "Triage-based prioritization means your techs work the highest-impact rooms first. Three ED tele patients and one ICU step-down transfer are placed within 90 minutes. ED holding time for high-acuity patients drops significantly.",
+              insight: "Room turnover triage should follow patient acuity, not room location or who called last. Acuity-based sequencing connects EVS workflow directly to patient outcomes — not just throughput metrics. This is standard in high-performing bed management programs."
+            }
+          },
+          {
+            letter: "B",
+            text: "Turn rooms in order of notification — first requested, first cleaned",
+            sub: "Fair and simple. No one gets jumped in line.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Three low-acuity rooms turn before a critical tele patient lands.",
+              text: "First-in-first-out sequence means a single-bed medical patient's room turns first. A telemetry patient and a step-down transfer wait an additional 2 hours. Nursing escalates. The CNO asks why high-acuity holds aren't clearing.",
+              insight: "FIFO is the right model for supply chains, not patient placement. FIFO room turnover optimizes EVS workflow but not patient outcomes. In high-census situations, EVS sequencing must be driven by clinical prioritization."
+            }
+          },
+          {
+            letter: "C",
+            text: "Split the team across all 11 rooms simultaneously to get everything started",
+            sub: "Get everything moving at once. Keep all rooms progressing.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "All 11 rooms start — but four take twice as long with half the coverage.",
+              text: "Splitting the team gets every room started, but under-resourced rooms take significantly longer. Four rooms that need two techs are cleaned by one, extending turnover time by 45 minutes. The fastest rooms are done — but the ED boarding clock keeps running.",
+              insight: "Distributing staff across too many rooms creates the illusion of progress without generating throughput. For room turnovers, completion matters more than starts. One completed room is one available bed. Twelve rooms at 50% completion is zero beds."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 02 — Resource gap",
+        title: "You're 2 EVS staff short with no call-in coverage available. Who do you call?",
+        desc: "You've exhausted your immediate options. You need creative sourcing.",
+        choices: [
+          {
+            letter: "A",
+            text: "Activate the float pool — request any staff with EVS cross-training for a 4-hour assist",
+            sub: "Float pool cross-training exists for exactly this situation.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Two float staff arrive. Turnover time drops by 35%.",
+              text: "Two float staff members with EVS cross-training arrive within 30 minutes. Your supervisor redirects to quality-checking and coordination. Turnover rate increases 35% for the rest of the shift. Fourteen ED holds clear by 3pm.",
+              insight: "Cross-trained float pool deployment is the highest-leverage short-term EVS surge response. Organizations that invest in EVS cross-training consistently outperform those relying on agency or overtime alone. The key is making the call early — before the backlog becomes irreversible."
+            }
+          },
+          {
+            letter: "B",
+            text: "Request the supervisor call all off-duty EVS staff for emergency overtime",
+            sub: "Pay for coverage. Get bodies in the building.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "One off-duty tech comes in. Two decline.",
+              text: "One off-duty tech agrees to come in for overtime. They arrive 90 minutes into the crisis — helpful, but late. The gap narrows but doesn't close. Overtime cost is significant. Patient throughput improves in the afternoon but the morning bottleneck cost 3 hours.",
+              insight: "Emergency overtime is a legitimate tool — but it's slow, expensive, and unpredictable. Float pool cross-training is a faster, more reliable surge mechanism than same-day overtime calls to off-duty staff."
+            }
+          },
+          {
+            letter: "C",
+            text: "Direct available nursing staff to help turn rooms to close the gap",
+            sub: "Nurses are near the rooms. They can help.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Three nurses help. Their patients wait longer.",
+              text: "Three nurses step in to assist with room turns. Turnover picks up slightly. But assigned patients experience delayed assessments and slower response times. One medication pass is late. A nursing supervisor files a complaint about clinical staff diversion.",
+              insight: "Using clinical staff for EVS work is a resource decision with patient safety consequences. Nursing diversions during high census are high-risk. This is a true last resort — not a first-line surge response."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 03 — Communication overhead",
+        title: "Nursing is calling every 15 minutes for bed updates. Your supervisor can't leave her phone. What do you change?",
+        desc: "Communication overhead is pulling your supervisor off the floor. Something needs to change.",
+        choices: [
+          {
+            letter: "A",
+            text: "Establish a 30-minute bed board call with bed management — one structured update replaces all informal calls",
+            sub: "Push information proactively so people stop pulling it from you.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Informal calls stop. Everyone has the same information.",
+              text: "You establish 30-minute bed board updates with bed management and charge nurses. Each call covers: rooms in progress, estimated completion, ETA on next 3 beds. Informal calls drop to near zero. Your supervisor is back on the floor. Decision-making improves.",
+              insight: "During census peaks, information anxiety drives behavior. When people don't know what's happening, they call. When they have a structured update schedule, they wait. A broadcast communication rhythm is the most effective call-deflection tool you have."
+            }
+          },
+          {
+            letter: "B",
+            text: "Give the supervisor a call script to handle queries faster without stopping work",
+            sub: "Make the calls shorter. Reduce the disruption.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Calls are shorter. She's still fielding them.",
+              text: "The script speeds up individual calls. But volume doesn't change. Your supervisor handles calls faster — but is still interrupted every few minutes. Her room inspection quality drops. A room is cleared before a mandatory terminal clean is completed.",
+              insight: "Call deflection scripts reduce friction per call but don't reduce volume. Proactive structured updates are a better solution than faster reactive ones — the goal is to eliminate the information need driving the calls."
+            }
+          },
+          {
+            letter: "C",
+            text: "Ask nursing leadership to stop calling EVS directly and route all questions through you",
+            sub: "Centralize the communication. Reduce the interruptions.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "EVS gets calls from you instead of nursing. Same volume, different sender.",
+              text: "Nursing stops calling EVS. They call you. You call EVS. The disruption shifts channels but doesn't reduce. By early afternoon, you're a communications bottleneck on top of your operational role.",
+              insight: "Routing communication through a single point creates bottlenecks, not efficiency. The goal isn't to route calls through you — it's to eliminate the information gap that drives the calls. Structured updates push information proactively and break the loop entirely."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 04 — End of shift",
+        title: "The afternoon shift is coming on and census is stabilizing. What do you do before you leave?",
+        desc: "The crisis is over. What comes next determines whether it becomes recurring.",
+        choices: [
+          {
+            letter: "A",
+            text: "Review EVS call-out patterns by day, document root cause, and propose a flex staffing model for high-census days",
+            sub: "Fix the system, not just the shift.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Call-out data reveals a consistent Wednesday peak. A flex model is proposed.",
+              text: "Data review shows Wednesdays are consistently high-census with above-average EVS call-outs. You propose a flex staffing model — one cross-trained float on standby for Wednesday–Friday. The ops director approves it. The next high-census Wednesday is a managed situation, not a crisis.",
+              insight: "One-time operational fixes that don't change underlying conditions are just recovery. Pattern analysis — call-outs by day, census peaks, turnover time trends — is what converts crisis response into proactive staffing. The operators who build flex models stop fighting the same fires."
+            }
+          },
+          {
+            letter: "B",
+            text: "Brief the incoming shift supervisor on the day and hand off the remaining open rooms",
+            sub: "Good handoff. Pass the baton cleanly.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Incoming shift briefed well. Nothing else changes.",
+              text: "The incoming supervisor picks up cleanly. The transition is smooth. No process changes are made. Next Wednesday, the same call-out pattern produces the same crisis.",
+              insight: "A clean handoff is necessary — but it's not a post-event response. Transitioning the problem without root cause analysis means the same thing happens again to someone else. Every EVS surge event should generate a data review."
+            }
+          },
+          {
+            letter: "C",
+            text: "File an incident report and submit it to nursing leadership",
+            sub: "Document the event formally for the record.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Documented. No action expected.",
+              text: "The report is filed. Nursing leadership acknowledges it. No operational review is requested. It becomes a line in a quarterly summary that no one acts on.",
+              insight: "Incident reports are accountability records, not improvement mechanisms. Filing one and moving on is the floor — not the ceiling. Connect every report to a proposed action or it's just paper."
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  // ── Scenario 9: Patient Access ──
+  {
+    department: 'Patient Access / Admissions',
+    name: 'The Front Door Jam',
+    nameHtml: 'The <em>Front Door</em> Jam',
+    blurb: "Monday 9am. Registration backed up 45 min. 18 ED boarders. Elective admissions arriving.",
+    difficulty: 'Medium', decisions: 4,
+    tagline: "It's Monday morning. Registration has a 45-minute wait. Eighteen ED patients are boarding. Elective surgical admissions are starting to arrive at the front desk. Your front door is jammed.",
+    briefingTitle: 'Your hospital\'s front door is completely backed up.',
+    briefingBody: "You're the patient access manager at a 320-bed community hospital. Two registration staff called in sick. Bed management is showing 18 ED boarding patients. Elective surgical admissions are starting to show up at the front desk. Patient experience scores are being tracked this quarter. The CMO just sent you a text.",
+    stats: [
+      { label: 'Registration Wait', value: '45 min', cls: 'red' },
+      { label: 'ED Boarding', value: '18 patients', cls: '' },
+      { label: 'Staff Deficit', value: '2 staff', cls: 'amber' }
+    ],
+    steps: [
+      {
+        label: "Decision 01 — Registration triage",
+        title: "45-minute wait at registration. Two staff down. What's your first call?",
+        desc: "Every patient who walks in sees the wait. The problem is visible and growing.",
+        choices: [
+          {
+            letter: "A",
+            text: "Move one registration staff to the ED for bedside admission registration — clear front desk by shifting where registration happens",
+            sub: "Meet the patient where they are. Take registration to the bedside.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Front desk wait drops to 12 minutes in 90 minutes.",
+              text: "One registration staff member moves to the ED to complete admissions at bedside. Front desk volume drops immediately. Walk-in patients and scheduled admissions now have near-normal wait times. ED boarding documentation accelerates. One reallocation fixes two workflows.",
+              insight: "Bedside registration during ED boarding is one of the highest-leverage patient access moves available. It reduces front desk congestion, improves walk-in patient experience, and accelerates the documentation that nurses need to accept floor transfers. One move solves two problems."
+            }
+          },
+          {
+            letter: "B",
+            text: "Have the supervisor cover a registration station while two staff work through the backlog",
+            sub: "Put experienced hands on the desk. Work through the queue together.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Queue clears in 3 hours. ED boarding wait unchanged.",
+              text: "The supervisor takes a station. The queue slowly clears over 3 hours. But the underlying flow problem — ED admissions competing with front desk volume — is unchanged. By noon the backlog has returned.",
+              insight: "Adding supervisor capacity to a backlogged desk works if the root cause is throughput. When the root cause is volume split across two competing workflows, adding hands to one queue doesn't fix the system."
+            }
+          },
+          {
+            letter: "C",
+            text: "Call off-duty registration staff for emergency coverage",
+            sub: "Get more people in the building.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "One person comes in 2 hours later. Queue is worse by then.",
+              text: "One off-duty staff member agrees to come in. They arrive 2 hours into the event. The queue has grown to 65 minutes. Patient experience scores for the morning will be poor. The additional staff helps the afternoon — not the morning.",
+              insight: "Emergency call-ins are too slow for an immediate access bottleneck. Two-hour response times work for staffing gaps that develop over a full shift — not for real-time patient flow problems that require immediate reallocation."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 02 — Boarding escalation",
+        title: "Bed management reports 18 ED boarders with no beds expected for 90 minutes. Who do you escalate to?",
+        desc: "This isn't a patient access problem in isolation. It requires a system-level response.",
+        choices: [
+          {
+            letter: "A",
+            text: "Trigger a hospital-level bed huddle with CNO, bed management, surgical services, and case management — push for a coordinated 2-hour discharge push",
+            sub: "The only way through a boarding crisis is a system response.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "11 discharges completed in 2 hours. 8 ED boarders placed.",
+              text: "The bed huddle produces a discharge list across med-surg and tele. Case management is mobilized. Surgical services delays two elective admissions. Eleven discharges complete in 2 hours. Eight ED boarders move to floors. The front door starts to clear.",
+              insight: "ED boarding crises are system problems — they can only be resolved by system responses. No single department can discharge its way out of a boarding crisis alone. The bed huddle is the activation mechanism that gets all levers moving simultaneously."
+            }
+          },
+          {
+            letter: "B",
+            text: "Contact the house supervisor and ask her to identify and expedite the next 5 discharges",
+            sub: "Get targeted movement on the floor.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "4 discharges in 3 hours. Boarding improves but doesn't clear.",
+              text: "The house supervisor works her list and finds four near-ready discharges. All four complete within 3 hours. Eight boarding patients remain. The front door partially clears. The afternoon is manageable — but the morning was not recovered.",
+              insight: "Targeted discharge work is effective and often the right early move — but it scales to 4–5 discharges. For 18 boarders, you need a system response. The house supervisor effort and the bed huddle aren't mutually exclusive — you should be doing both."
+            }
+          },
+          {
+            letter: "C",
+            text: "Notify the CMO and wait for direction before activating a response",
+            sub: "This is a C-suite situation. Escalate and wait.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "CMO responds in 45 minutes. The queue is worse by then.",
+              text: "The CMO responds 45 minutes later with direction to 'work the discharge list.' By then, boarding has grown to 22. Your window for a proactive system response has closed. You're managing a worse crisis with the same tools.",
+              insight: "Executive escalation is sometimes appropriate — but it should run parallel to action, not instead of it. Waiting for C-suite direction before moving on a boarding crisis compounds the situation. Notify up and activate your response simultaneously."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 03 — Elective admissions",
+        title: "Three scheduled surgical admissions arrive while ED boarding is at full crisis. Do you hold them or admit them?",
+        desc: "Elective patients who arrived on time. Surgeon is waiting. OR is prepped. But beds are tight.",
+        choices: [
+          {
+            letter: "A",
+            text: "Admit to pre-op holding and coordinate with surgical services on a real-time bed plan — don't turn away on-time patients",
+            sub: "Keeping surgical cases moving is as important as clearing the ED.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "All three cases proceed. OR schedule stays intact.",
+              text: "Pre-op holding absorbs the three patients while surgical beds are confirmed. The OR schedule runs on time. No case delays. Elective admissions are processed efficiently. No revenue impact. Surgical patient experience is preserved.",
+              insight: "Shutting down elective admissions during a boarding crisis trades one throughput problem for another. Pre-op holding exists precisely to buffer surgical patients from bed availability variability. Using it correctly keeps the OR moving — which is both a patient care and revenue priority."
+            }
+          },
+          {
+            letter: "B",
+            text: "Delay elective admissions by 2 hours and focus all bed management capacity on ED clearance",
+            sub: "Clear the emergency backlog first. Elective patients can wait.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Two cases delayed. One surgeon escalates to the CMO.",
+              text: "Two cases are delayed 2 hours. Surgical teams are frustrated. One surgeon calls the CMO directly. Both cases proceed without clinical impact — but patient experience and surgeon relations are affected.",
+              insight: "Delaying elective admissions is a legitimate choice — but it requires proactive surgeon communication and CMO awareness before the surgeon finds out from their patient. Unilateral delays without stakeholder engagement become escalations."
+            }
+          },
+          {
+            letter: "C",
+            text: "Cancel the elective admissions and reschedule for a later date",
+            sub: "No beds available. Reschedule.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "Three OR cases cancelled. Revenue loss is significant.",
+              text: "Three cases are cancelled. Revenue impact is estimated at $45,000. All three surgeons escalate. Patient experience scores drop. The CMO calls you directly.",
+              insight: "Cancelling scheduled elective admissions is a last resort reserved for declared capacity emergencies — not Monday boarding surges. Pre-op holding, surgical step-down, and admitted-not-yet-placed protocols exist to prevent this. Cancelling without exhausting these options is an operational failure."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 04 — Patient complaints",
+        title: "It's 1pm. Crisis is stabilizing. Three patients filed complaints with patient experience. What do you do?",
+        desc: "The clinical crisis is over. The patient experience damage is still live.",
+        choices: [
+          {
+            letter: "A",
+            text: "Contact all three patients personally today — acknowledge the experience gap and follow up in writing with patient experience leadership",
+            sub: "Own it directly. Don't let it become a formal grievance.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Two of three patients withdraw their complaints after direct outreach.",
+              text: "Same-day personal outreach converts two of three complaints into resolved acknowledgements. The third becomes a formal grievance — but your proactive documentation shows good-faith response. Patient experience leadership notes the response as a model for future events.",
+              insight: "Same-day personal outreach on access complaints converts them to resolved cases at a far higher rate than delayed or written-only responses. Three phone calls costs almost nothing compared to a formal grievance process, a Press Ganey complaint, or an administrative review."
+            }
+          },
+          {
+            letter: "B",
+            text: "Route the complaints to the patient experience team for standard follow-up",
+            sub: "That's their job. Route it correctly.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Patient experience contacts all three. Two complaints proceed formally.",
+              text: "Patient experience follows up within 24 hours. Two patients are satisfied with the response. One files a formal grievance. The process is handled appropriately — but no direct connection to the patient access team is established.",
+              insight: "Patient experience teams are the right owners of formal grievance management — but warm handoffs with direct context from the operations team produce better outcomes than cold referrals. When a complaint is tied to an operational decision you made, your direct involvement matters."
+            }
+          },
+          {
+            letter: "C",
+            text: "Document the complaints and include them in the weekly operations report",
+            sub: "Track it. Report it. Move on.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "All three file formal complaints. No one reached out.",
+              text: "All three complaints escalate to formal grievances. The report documents them. No outreach occurs. The formal process takes 30 days and generates an administrative burden far larger than the original event required.",
+              insight: "Documentation without response is the minimum floor — not a resolution strategy. The longer the gap between the complaint and the outreach, the more likely the patient escalates formally. Same-day acknowledgement is always the right play."
+            }
+          }
+        ]
+      }
+    ]
+  }
 ];
 
 let simState = 'picker';
@@ -2728,7 +3268,7 @@ function renderScenarioPicker() {
     simAppBar('3AM SHIFT SIMULATOR', 0, -1, 0, 0) +
     `<div class="sim-picker-body sim-screen">
       <div class="picker-heading">Choose your scenario.</div>
-      <p class="picker-sub">Six departments. Real decisions. Each scenario is built from actual hospital operations situations.</p>
+      <p class="picker-sub">Nine departments. Real decisions. Each scenario is built from actual hospital operations situations.</p>
       <div class="scenario-grid">${cards}</div>
       <button class="btn btn-primary" onclick="startSim()">Begin Simulation →</button>
     </div>`;
