@@ -1455,15 +1455,15 @@
   <div class="container">
     <div class="stats-row">
       <div class="stat-item reveal">
-        <div class="stat-num" data-count="9">0</div>
+        <div class="stat-num" data-count="10">0</div>
         <div class="stat-lbl">Scenarios</div>
       </div>
       <div class="stat-item reveal reveal-d1">
-        <div class="stat-num" data-count="36">0</div>
+        <div class="stat-num" data-count="40">0</div>
         <div class="stat-lbl">Decisions</div>
       </div>
       <div class="stat-item reveal reveal-d2">
-        <div class="stat-num" data-count="9">0</div>
+        <div class="stat-num" data-count="10">0</div>
         <div class="stat-lbl">Departments</div>
       </div>
       <div class="stat-item reveal reveal-d3">
@@ -3300,6 +3300,185 @@ const SCENARIOS = [
         ]
       }
     ]
+  },
+
+  // ── Scenario 10: Revenue Cycle / Finance ──
+  {
+    department: 'Revenue Cycle / Finance',
+    name: 'The Metric That Lied',
+    nameHtml: 'The Metric That <em>Lied</em>',
+    blurb: "94.2% clean claim rate. CFO wants a plan by Friday. Three people blame three different things.",
+    difficulty: 'Medium', decisions: 4,
+    tagline: "Your clean claim rate sits at 94.2% — just under the 95% target. The CFO wants a plan by Friday. Your billing team, your informatics lead, and your charge capture coordinator each have a different theory. It's Wednesday.",
+    briefingTitle: 'The number is wrong. Or rather — the framing is.',
+    briefingBody: "You're the operations manager over revenue cycle at a 320-bed hospital. A 94.2% clean claim rate means roughly $340K in annual rework at your volume. The CFO's Friday ops review isn't a crisis meeting — but you need something real to say. The problem is, three people on your team are pointing in three different directions, and you haven't looked at the data yourself yet.",
+    stats: [
+      { label: 'Clean Claim Rate', value: '94.2%', cls: 'red' },
+      { label: 'Target', value: '95.0%', cls: 'amber' },
+      { label: 'Annual Rework', value: '~$340K', cls: '' }
+    ],
+    steps: [
+      {
+        label: "Decision 01 — First move",
+        title: "Three people, three theories. It's Wednesday morning. What do you do first?",
+        desc: "Billing says documentation. Informatics says coder training. Charge capture says it's one physician. You have 48 hours before the CFO review.",
+        choices: [
+          {
+            letter: "A",
+            text: "Pull the denial breakdown yourself — reason codes, denial rates by provider, top denial categories — before talking to anyone",
+            sub: "Get the data before you get the opinions.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Three hours of analysis changes the entire conversation.",
+              text: "The denial data tells a clear story: 41% missing signatures, 33% incomplete HPI, 26% late charge capture. One attending accounts for 38% of the missing signature denials. None of your three team members had the full picture — they each saw their slice of it. You now have a diagnosis instead of a debate.",
+              insight: "Aggregate metrics hide their own root causes. A 94.2% clean claim rate looks like a training problem from the outside. It was a one-physician workflow problem with three contributing factors. You can't fix what you haven't disaggregated."
+            }
+          },
+          {
+            letter: "B",
+            text: "Schedule a Thursday meeting with all three — billing, informatics, and charge capture — to align before Friday",
+            sub: "Get everyone in the room. Build consensus.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Thursday meeting surfaces the conflict but not the answer.",
+              text: "The meeting surfaces the disagreement but doesn't resolve it. Each team member defends their theory. Without denial data to anchor the conversation, you spend 90 minutes discussing possibilities. You leave with three action items and no clear owner. Friday's report will be thin.",
+              insight: "Stakeholder alignment without data produces consensus on the wrong thing. When your team disagrees about root cause, the answer is in the denial codes — not in a meeting. Data first, alignment second."
+            }
+          },
+          {
+            letter: "C",
+            text: "Draft a broad staff training plan to present Friday — you need something concrete to show",
+            sub: "The CFO wants a plan. Give her one.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Plan accepted. Problem unchanged.",
+              text: "The CFO accepts the training plan. It's scheduled for six weeks out. The one physician generating 38% of the defect never enters the picture. Clean claim rate: 94.1% next month. You answered the question asked — you didn't solve the problem.",
+              insight: "A plan that doesn't address the root cause is a delay mechanism, not a fix. Training 100 people because one person has a workflow problem is the most expensive way to get no result."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 02 — The outlier",
+        title: "The data shows one attending drives 38% of your missing signature denials. What do you do with that?",
+        desc: "This is the most actionable finding in your analysis. It's also the most politically sensitive.",
+        choices: [
+          {
+            letter: "A",
+            text: "Bring the physician-specific data to the CMO before Friday — frame it as a workflow issue, not a performance issue",
+            sub: "The CMO needs to know before the CFO does.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "CMO engaged. Physician conversation scoped correctly.",
+              text: "The CMO reviews the data and agrees this is a documentation workflow gap, not a conduct issue. A peer conversation is scheduled for the following week. The CMO appreciates the early loop-in — it avoids a situation where the CFO surfaces the finding first. The physician relations path is now controlled.",
+              insight: "Physician-specific performance data requires the right messenger and the right frame. Going directly to the physician without CMO awareness creates defensiveness. Going to the CFO first creates politics. The CMO is the right first call — and framing it as a workflow fix, not a blame assignment, keeps the conversation productive."
+            }
+          },
+          {
+            letter: "B",
+            text: "Include it in the Friday report as part of the system-level analysis — don't name the physician, show the pattern",
+            sub: "Let the data speak. Keep it aggregate.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Report lands well. Physician issue surfaces anyway.",
+              text: "The CFO sees the pattern and asks which provider. You share it in the room. The CMO, who wasn't prepared for this, is caught off guard. A physician conversation still happens — but it starts reactively instead of proactively. The outcome is the same, but the relationship capital cost is higher.",
+              insight: "Aggregate framing protects no one when the data is specific enough that the question 'which provider?' is inevitable. If the finding is actionable, loop in the right people before the meeting — not during it."
+            }
+          },
+          {
+            letter: "C",
+            text: "Leave the physician finding out of the Friday report entirely — focus on process improvements",
+            sub: "Physician relations is above your pay grade. Stick to operations.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "Clean claim rate improves 0.4% in 45 days. The other 1.4% doesn't move.",
+              text: "Process improvements address the documentation workflow for everyone except the one physician generating the bulk of the problem. The CFO notices the improvement is marginal. She asks for a deeper look. The physician finding surfaces in that review — now three months after you first saw it.",
+              insight: "Omitting a known root cause from a root cause analysis isn't neutrality — it's delay. The physician finding was operational, not personal. The longer it goes unaddressed, the more it looks like you knew and chose not to act."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 03 — Friday report",
+        title: "You're in the CFO meeting. She asks: 'What's the plan?' What do you present?",
+        desc: "You've done the analysis. Now it has to land.",
+        choices: [
+          {
+            letter: "A",
+            text: "Root cause breakdown — specific denial codes, one-physician concentration, EHR documentation workflow gap — with targeted fixes and a 45-day remeasure",
+            sub: "Bring the diagnosis, not just the plan.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "CFO redirects the entire conversation. Three actions scoped in 20 minutes.",
+              text: "The specificity changes the room. CFO initiates a physician relations conversation. IT scopes an EHR workflow fix for the HPI documentation gap. Billing gets a targeted query response protocol instead of a broad training mandate. Clean claim rate reaches 96.1% in 45 days.",
+              insight: "Executives make better decisions when they have a diagnosis, not just a metric. You didn't present a plan — you presented a map. The plan wrote itself once the root causes were visible."
+            }
+          },
+          {
+            letter: "B",
+            text: "Present the root cause data but frame recommendations as requiring more time to validate",
+            sub: "Share the findings but hedge on the fixes.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "CFO appreciates the data but pushes for commitment.",
+              text: "The CFO accepts the analysis but asks for a follow-up in two weeks with specific action owners. You leave the meeting with more homework than you came in with. The physician conversation is delayed pending 'validation.' The timeline extends by three weeks.",
+              insight: "Data without a recommendation creates a second meeting. If you've done the root cause work, own the call. Hedging reads as uncertainty even when the data is clear."
+            }
+          },
+          {
+            letter: "C",
+            text: "Present a broad training plan — the data wasn't conclusive enough to go specific",
+            sub: "Better to be conservative than wrong.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Plan accepted. Physician issue unaddressed. Rate unchanged in 30 days.",
+              text: "Training plan approved. Six weeks out. The one-physician finding sits in your notes. Clean claim rate: 94.3% next month — essentially flat. The CFO schedules a follow-up review.",
+              insight: "Conservative recommendations feel safe but have a cost. In revenue cycle, every week at 94.2% is roughly $6,500 in rework. 'Waiting to be sure' has a dollar figure."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 04 — Follow-through",
+        title: "The CFO meeting went well. The physician conversation is scheduled. What do you do in the next 30 days?",
+        desc: "The diagnosis is done. The real work starts now.",
+        choices: [
+          {
+            letter: "A",
+            text: "Set a 30-day remeasure on the specific denial codes, document ownership of each fix, and build a weekly clean claim rate report for leadership",
+            sub: "Measurement closes the loop.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "96.1% clean claim rate at 45 days. CFO uses your report as a model for other cycle reviews.",
+              text: "The targeted remeasure catches the improvement early. Physician query response rate improves within two weeks of the conversation. The EHR fix eliminates 80% of the HPI documentation gap. Weekly reporting keeps the metric visible and the team accountable. The CFO references your approach in the next quarterly ops review.",
+              insight: "Root cause analysis without measurement is a one-time event. Measurement without ownership is a report that gets ignored. When you connect the diagnosis to a named owner and a dated remeasure, improvement becomes predictable — not lucky."
+            }
+          },
+          {
+            letter: "B",
+            text: "Check in with the physician relations team and billing in two weeks to see how things are going",
+            sub: "Give it time. Don't micromanage.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Partial improvement at 45 days. EHR fix still unscoped.",
+              text: "Physician conversation happens. Query response rate improves somewhat. But the EHR documentation gap was never formally scoped with IT — it's still on someone's backlog. Clean claim rate at 45 days: 95.3%. Improvement, but not the full gain available.",
+              insight: "Checking in is not the same as closing the loop. 'How are things going' leaves the definition of success to someone else. A dated remeasure with a specific metric tells the team what 'done' looks like."
+            }
+          },
+          {
+            letter: "C",
+            text: "Hand off to the billing director and refocus on other priorities — the CFO meeting is done",
+            sub: "You escalated it. Let the owners run it.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Clean claim rate: 94.6% at 60 days. CFO asks for an update you don't have.",
+              text: "The billing director manages what she can see. Without a shared remeasure framework, the physician and IT threads go quiet. The CFO asks for a 60-day update. You're working from secondhand information. The improvement is marginal and unexplained.",
+              insight: "Handing off execution is appropriate. Handing off accountability isn't. The person who did the root cause analysis is the right person to own the remeasure — even if they don't own the day-to-day execution."
+            }
+          }
+        ]
+      }
+    ]
   }
 ];
 
@@ -3398,7 +3577,7 @@ function renderScenarioPicker() {
     simAppBar('3AM SHIFT SIMULATOR', 0, -1, 0, 0) +
     `<div class="sim-picker-body sim-screen">
       <div class="picker-heading">Choose your scenario.</div>
-      <p class="picker-sub">Nine departments. Real decisions. Each scenario is built from actual hospital operations situations.</p>
+      <p class="picker-sub">Ten departments. Real decisions. Each scenario is built from actual hospital operations situations.</p>
       <div class="scenario-grid">${cards}</div>
       <button class="btn btn-primary" onclick="startSim()">Begin Simulation →</button>
     </div>`;
