@@ -1455,15 +1455,15 @@
   <div class="container">
     <div class="stats-row">
       <div class="stat-item reveal">
-        <div class="stat-num" data-count="10">0</div>
+        <div class="stat-num" data-count="13">0</div>
         <div class="stat-lbl">Scenarios</div>
       </div>
       <div class="stat-item reveal reveal-d1">
-        <div class="stat-num" data-count="40">0</div>
+        <div class="stat-num" data-count="52">0</div>
         <div class="stat-lbl">Decisions</div>
       </div>
       <div class="stat-item reveal reveal-d2">
-        <div class="stat-num" data-count="10">0</div>
+        <div class="stat-num" data-count="12">0</div>
         <div class="stat-lbl">Departments</div>
       </div>
       <div class="stat-item reveal reveal-d3">
@@ -3479,6 +3479,543 @@ const SCENARIOS = [
         ]
       }
     ]
+  },
+
+  // ── Scenario 11: Family Medicine ──
+  {
+    department: 'Family Medicine',
+    name: 'The Burnout Threshold',
+    nameHtml: 'The <em>Burnout</em> Threshold',
+    blurb: "Your highest-rated PCP just hit 1,900 patients. Third Next Available is 45 days. She hasn't said burnout yet — but the numbers have.",
+    difficulty: 'Medium', decisions: 4,
+    tagline: "Your highest-rated primary care physician just hit 1,900 patients on her panel. Third Next Available is 45 days and climbing. She hasn't said the word burnout yet — but the numbers already have.",
+    briefingTitle: 'The panel is full. The physician is not.',
+    briefingBody: "You're the operations director for a multi-site primary care practice. Your top-rated PCP has the highest patient satisfaction scores in the group and a panel that just crossed 1,900. Burnout risk spikes past 1,800. Her Third Next Available appointment is now 45 days out — more than twice the benchmark. Two patient satisfaction complaints this month specifically mention access. She hasn't asked for help yet.",
+    stats: [
+      { label: 'Panel Size', value: '1,900 pts', cls: 'red' },
+      { label: '3rd Next Available', value: '45 days', cls: 'red' },
+      { label: 'Burnout Threshold', value: '1,800 pts', cls: 'amber' }
+    ],
+    steps: [
+      {
+        label: "Decision 01 — First move",
+        title: "Panel at 1,900. Third Next Available at 45 days. She hasn't asked for help. What do you do first?",
+        desc: "High performers rarely self-report burnout early. The data is telling you what she won't.",
+        choices: [
+          {
+            letter: "A",
+            text: "Conduct a panel composition analysis — break down visit types, chronic care load, and what percentage requires MD-level attention",
+            sub: "Understand what's in the panel before you redesign it.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "40% of her visits could be safely handled by an MA or NP.",
+              text: "The analysis shows the panel isn't just large — it's poorly distributed. Routine HbA1c checks, medication refills, and BP monitoring are consuming nearly half her schedule. She's functioning at well below her training level for 40% of her day. The problem isn't the number of patients — it's the mix.",
+              insight: "Panel size is a lagging indicator. Panel complexity — the mix of visit types and acuity — is the real driver of workload. You can't fix a panel problem without first understanding what's inside it."
+            }
+          },
+          {
+            letter: "B",
+            text: "Close her panel immediately — no new patients until you figure it out",
+            sub: "Stop the bleeding. Fix capacity before adding more demand.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Growth stops. 1,900 existing patients are still overwhelming her.",
+              text: "The panel freeze stabilizes the size but doesn't touch the workload. Wait times hold at 45 days. She's still managing 1,900 patients — now without new ones being added. The relief is theoretical. The daily burden is unchanged.",
+              insight: "Closing a panel stops growth but doesn't address the workload already inside it. A panel freeze is a pause button — not a panel management strategy."
+            }
+          },
+          {
+            letter: "C",
+            text: "Offer a 10% productivity bonus to acknowledge the extra workload",
+            sub: "Reward the output. Recognize the burden.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "She accepts. She resigns four months later.",
+              text: "The bonus is appreciated. But a physician who is emotionally exhausted doesn't need more compensation for more work — she needs less work. The bonus kept her in place for one quarter. The resignation letter costs $82,000 in recruitment, onboarding, and productivity loss.",
+              insight: "Compensating burnout financially treats the symptom. Bonuses without workload relief are a countdown clock — they extend the runway without changing the destination."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 02 — Workload redesign",
+        title: "40% of her visits are routine chronic care that don't require her. What do you do with that finding?",
+        desc: "This is the rebalancing opportunity. How you act on it determines whether the fix holds.",
+        choices: [
+          {
+            letter: "A",
+            text: "Implement standing orders for MAs on routine chronic care — HbA1c checks, medication refills, BP monitoring — without pulling her in",
+            sub: "Move work to the top of license. Free her for what only she can do.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Third Next Available drops from 45 to 22 days in 60 days.",
+              text: "MA-driven standing orders absorb 35% of her routine task load. Her schedule opens. She starts taking lunch again. The visits she does take are higher acuity, higher satisfaction — the medicine she trained for. Burnout scores improve measurably within the quarter.",
+              insight: "'Top of license' isn't just a staffing efficiency concept — it's a burnout prevention strategy. When a physician spends 40% of her day on tasks an MA can safely handle, that's not a workload problem. It's a delegation design problem."
+            }
+          },
+          {
+            letter: "B",
+            text: "Hire a part-time NP to co-manage her chronic care patients",
+            sub: "Bring in more capacity. Share the panel load.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Wait times improve — but not for 8 weeks.",
+              text: "The NP hire is the right long-term move but a slow short-term one. Onboarding takes 8 weeks. During that window her panel grows by another 60 patients. The fix works — it just works after the problem compounds. Standing order protocols for existing staff would have bridged the gap.",
+              insight: "NP hiring and task delegation aren't mutually exclusive — the best panel management strategies do both in parallel. Hire for the long term, delegate for the now."
+            }
+          },
+          {
+            letter: "C",
+            text: "Transfer 400 patients to other providers — right-size the panel to a sustainable number",
+            sub: "Match capacity to load. Give her room to breathe.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "She's relieved. Two other providers are now trending toward burnout.",
+              text: "Four hundred patients are distributed across the practice. Her burden lightens. But the providers absorbing those patients weren't expecting the volume. Two show early warning signs within 90 days. The problem redistributed rather than resolved.",
+              insight: "Panel transfers solve one provider's burnout by seeding another's. Without fixing the underlying workflow — what's in the panel and who handles it — you're moving the problem, not solving it."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 03 — Patient experience",
+        title: "HCAHPS access scores are dropping. Two complaints this month cite wait times over 20 days. What do you fix first?",
+        desc: "The patient data is a symptom. The question is whether you treat the symptom or the cause.",
+        choices: [
+          {
+            letter: "A",
+            text: "Protect same-day acute visit slots — reserve 20% of daily schedule for urgent needs, shielded from chronic care booking",
+            sub: "Fix access at the point of patient need.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "HCAHPS access scores improve within 30 days.",
+              text: "Same-day slot protection reduces the number of patients going to urgent care for issues that should have been handled in-office. Her schedule feels controlled even with a full panel. Patients who need her today can reach her today — without displacing chronic care appointments.",
+              insight: "Third Next Available measures chronic care scheduling lag. Same-day slot protection addresses acute access for established patients. Both matter and they require different scheduling solutions."
+            }
+          },
+          {
+            letter: "B",
+            text: "Add automated patient messaging explaining wait times and offering telehealth alternatives",
+            sub: "Set expectations. Offer options.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Complaints about communication drop. Wait times don't.",
+              text: "Patients appreciate knowing what to expect. Satisfaction with communication improves. But the 45-day wait is still 45 days. HCAHPS scores stabilize but don't improve. You managed the perception without changing the access.",
+              insight: "Communication protocols reduce friction around a problem without solving it. Patients who wait 45 days aren't satisfied by a better message. They're satisfied by a shorter wait."
+            }
+          },
+          {
+            letter: "C",
+            text: "Hire a patient experience coordinator to personally call patients with long waits",
+            sub: "Personal touch. Show the practice cares.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Appreciated. Ineffective at scale.",
+              text: "Patients value the call. Some switch to telehealth. But the coordinator spends most of her time managing frustration that a shorter wait would have prevented. The access problem is unchanged — you've added a cost layer to compensate for a workflow gap.",
+              insight: "Service recovery is not a substitute for service delivery. Invest in fixing access before investing in apologizing for it."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 04 — Long-term structure",
+        title: "She's stabilized. But her panel will hit 2,000 in six months if nothing changes structurally. What do you build now?",
+        desc: "The short-term fix worked. What prevents this from happening again?",
+        choices: [
+          {
+            letter: "A",
+            text: "Set a hard panel cap of 1,800 for all PCPs with a formal quarterly panel composition review",
+            sub: "Make the guardrail structural. Don't rely on physicians to flag their own burnout.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Two other providers are caught trending toward threshold before crisis.",
+              text: "Quarterly reviews catch two providers at 1,720 and 1,740 — early enough to rebalance before anyone threatens to quit. The cap becomes part of onboarding for new hires. The practice stops managing burnout reactively and starts managing it predictively.",
+              insight: "Burnout in primary care is predictable. The data tells you a provider is approaching the threshold weeks before they feel it. A panel cap with a quarterly review is a systemic prevention protocol — not a constraint on growth."
+            }
+          },
+          {
+            letter: "B",
+            text: "Monitor her panel size monthly and intervene again if it spikes",
+            sub: "Stay close to the data. Act when you see warning signs.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Reactive monitoring catches the next spike — barely.",
+              text: "Monthly monitoring flags the panel at 1,870 — six months later. Intervention is faster the second time. But the system still depends on someone reviewing the report at the right moment. One missed month and you're back in crisis.",
+              insight: "Reactive monitoring works until it doesn't. A 45-day wait time and a near-resignation happened because no system flagged the panel at 1,700 — before the crisis. Monthly review is better than nothing but still relies on human attention at the right time."
+            }
+          },
+          {
+            letter: "C",
+            text: "Trust her to flag it herself if it becomes a problem again",
+            sub: "She knows her limits. She'll speak up.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "She doesn't flag it. Panel hits 2,050 in seven months.",
+              text: "High-performing providers rarely self-report burnout early — they push through. She manages the discomfort for six months before it surfaces again. You're back to the same conversation with a larger panel and less goodwill.",
+              insight: "Self-reporting burnout is one of the least reliable detection mechanisms available. High performers are the last to say they're overwhelmed — until they quit. Structural guardrails exist because individual disclosure is not a system."
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  // ── Scenario 12: Workforce & Retention ──
+  {
+    department: 'Workforce & Retention',
+    name: 'The Loyalty Pay Gap',
+    nameHtml: 'The <em>Loyalty</em> Pay Gap',
+    blurb: "A 15-year ICU nurse discovers a new hire makes $12/hr more for the same role. Three others are already updating their resumes.",
+    difficulty: 'Hard', decisions: 4,
+    tagline: "A senior ICU nurse with 15 years of tenure just discovered that a former travel nurse hired last month earns $12 more per hour for the same role. She's threatening to resign today. Three of her colleagues are already updating their resumes.",
+    briefingTitle: 'One conversation. A systemic failure behind it.',
+    briefingBody: "You're the operations manager over the ICU. RN median compensation has grown 64.5% over the last decade, inflating new-hire market rates while internal pay bands stayed static. The result: tenure compression — your most experienced staff earning less than people they're training. Losing a senior ICU nurse costs roughly $82,000 in recruitment, onboarding, and productivity loss. You have one conversation in the next 30 minutes to determine whether this becomes a resignation or a retention.",
+    stats: [
+      { label: 'Pay Gap', value: '$12/hr', cls: 'red' },
+      { label: 'Tenure at Risk', value: '15 yrs', cls: '' },
+      { label: 'Replacement Cost', value: '~$82K', cls: 'amber' }
+    ],
+    steps: [
+      {
+        label: "Decision 01 — The conversation",
+        title: "Your senior ICU nurse is in your office. She found out the new hire makes $12 more per hour. She's threatening to resign today. What's your first response?",
+        desc: "This is both a relationship moment and a system failure moment. How you handle it sets the tone for everything that follows.",
+        choices: [
+          {
+            letter: "A",
+            text: "Acknowledge the gap directly, commit to a pay equity review within 30 days, and ask her to give you that time",
+            sub: "Don't minimize it. Don't overpromise. Buy time with honesty.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "She stays. Not because it's fixed — because you told the truth about it.",
+              text: "The 30-day window gives you time to assess the full scope across the team before making financial commitments. She respects the candor. The other three nurses who were updating resumes hear through the unit that something is actually being done — and they wait.",
+              insight: "The instinct is to fix the individual problem immediately. The better move is to acknowledge the systemic problem honestly and commit to addressing it correctly. A nurse who trusts you will wait 30 days. A nurse who doesn't trust you won't stay regardless of what you offer."
+            }
+          },
+          {
+            letter: "B",
+            text: "Offer a one-time retention bonus equivalent to the pay difference for one year",
+            sub: "Acknowledge the gap. Compensate her for it now.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "She stays temporarily. Three others learn the lesson: threaten to quit to get paid fairly.",
+              text: "The bonus works on her. It signals to the rest of the unit that threatening resignation is how pay equity gets fixed at this organization. Two more nurses have similar conversations over the next six weeks. You're managing individual negotiations instead of fixing the structure.",
+              insight: "Retention bonuses fix individual moments, not systemic gaps. Every person who watches it happen learns: quit threats work. That is not the system you want to build."
+            }
+          },
+          {
+            letter: "C",
+            text: "Explain that pay decisions are above your authority and connect her with HR",
+            sub: "Follow the chain. This is an HR matter.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "She resigns the same afternoon. Two others follow by end of week.",
+              text: "Deflecting to HR signals that you don't have authority or won't use it. Either reading is damaging. You've now lost three experienced ICU nurses and HR is managing exit interviews instead of pay equity reviews.",
+              insight: "Your job in that moment isn't to solve the pay problem on the spot — it's to own the conversation and commit to a path forward. Deflection in a retention crisis is resignation by proxy."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 02 — Scope the problem",
+        title: "You pull the pay data. 11 of your 18 ICU nurses have been outpaced by new hire rates in the last 3 years. What do you do with this?",
+        desc: "The individual complaint just became a systemic issue. Scale changes the response.",
+        choices: [
+          {
+            letter: "A",
+            text: "Quantify the full cost of inaction — replacement costs, temp staffing, mortality risk — before presenting to leadership",
+            sub: "Build the financial case before you make the ask.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Replacing four nurses costs more than fixing all eleven.",
+              text: "The analysis shows the pay equity adjustment for 11 nurses costs $340,000 annually. Replacing four of them costs $328,000 in hard costs alone — before accounting for the LOS impact and mortality risk associated with temporary staffing. You walk into the CFO meeting with a financial argument, not an HR argument.",
+              insight: "Pay equity conversations that stay in the 'fairness' frame lose to budget pressure. Conversations that reframe the cost of inaction — turnover, temporary staffing, patient outcomes — win. Build the financial case before you enter the room."
+            }
+          },
+          {
+            letter: "B",
+            text: "Share the full data with all affected nurses proactively — they'll find out anyway",
+            sub: "Transparency builds trust. Get ahead of it.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Three nurses who weren't actively job-searching now are.",
+              text: "Affected nurses appreciate the honesty. But sharing the data before you have a fix creates anxiety you can't immediately resolve. 'Here's the problem' without 'here's what we're doing' doesn't build trust — it builds alarm. You've accelerated urgency without a solution to attach to it.",
+              insight: "Transparency is right — but timing matters. Share the data when you have a plan attached to it. 'Here's the problem and here's what we're doing about it' lands differently than 'here's the problem.'"
+            }
+          },
+          {
+            letter: "C",
+            text: "Address only the original nurse's gap and monitor the rest",
+            sub: "Solve the immediate problem. Avoid opening the floodgates.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "A second nurse discovers her gap two months later through a break room conversation.",
+              text: "The selective fix signals that you knew about the broader gap and chose not to address it. The second conversation starts from a worse position — she's been underpaid longer, and now she knows it was a deliberate choice. You're back in the same meeting with less goodwill.",
+              insight: "If the system generated the gap for one nurse, it generated it for others. Fixing individuals without fixing the band structure guarantees you'll repeat this conversation."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 03 — The CFO conversation",
+        title: "You present the pay equity case to the CFO. She says the budget is frozen. How do you respond?",
+        desc: "You have the data. She has the veto. This is a negotiation.",
+        choices: [
+          {
+            letter: "A",
+            text: "Show that the equity adjustment costs less than losing four nurses — reframe it as a cheaper alternative to a worse outcome",
+            sub: "This isn't a cost. It's a cheaper alternative to a worse cost.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "CFO approves a phased adjustment — $170K this year, $170K next.",
+              text: "Not everything you asked for, but enough to stabilize the team. The financial framing created room that a fairness argument wouldn't have. The CFO's 'frozen budget' was a negotiating position — the cost comparison gave her a path to yes.",
+              insight: "CFOs don't approve budget exceptions for fairness. They approve them for math. When the equity adjustment costs less than the turnover it prevents, you've converted a values argument into a financial decision."
+            }
+          },
+          {
+            letter: "B",
+            text: "Propose a retention bonus bridge while you wait for the next budget cycle",
+            sub: "Get something approved now. Buy time for the real fix.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Bonuses approved. One nurse resigns anyway.",
+              text: "Two nurses stabilize with bonuses. One resigns — the bonus didn't address what she actually needed, which was to not feel structurally undervalued. Six months later you revisit the full adjustment with a stronger case, but from a smaller team.",
+              insight: "Bridge strategies work when the underlying problem can wait. Pay equity gaps that are visible and discussed among staff cannot. A bonus with a defined conversion date to a permanent adjustment is more effective than a bonus with a vague promise."
+            }
+          },
+          {
+            letter: "C",
+            text: "Accept the freeze and document the risk formally for the record",
+            sub: "You made the case. The decision is above you now.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Two nurses resign. Emergency staffing budget approved — costs 40% more than the adjustment would have.",
+              text: "The risk documentation is filed. Two senior nurses leave over the next quarter. The CFO approves an emergency traveler budget to backfill — which costs significantly more than the original equity adjustment. She doesn't connect the dots immediately.",
+              insight: "The CFO's 'no' was a negotiating position, not a final answer. Walking away from the first rejection without a counter leaves money on the table and nurses out the door."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 04 — Build the prevention system",
+        title: "The equity adjustment is approved. 11 nurses re-benchmarked. The team stabilizes. What do you build to prevent this from recurring?",
+        desc: "The fix is done. The system that created the gap is still intact.",
+        choices: [
+          {
+            letter: "A",
+            text: "Implement an annual pay band review against market data — automatically flag any tenure-to-market gap exceeding 8%",
+            sub: "Make the gap visible before it becomes a resignation letter.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "A developing gap in the step-down unit is caught 14 months later — before anyone threatens to quit.",
+              text: "The annual review flags four step-down nurses at a 9% gap. The adjustment is smaller, cheaper, and requires no CFO escalation. The system self-corrected. The conversation that would have happened in 18 months happened in a spreadsheet instead.",
+              insight: "Tenure compression is predictable. Market rates update continuously; internal bands don't. An annual market comparison with an automatic flag threshold converts a reactive crisis into a routine budget line."
+            }
+          },
+          {
+            letter: "B",
+            text: "Create a pay equity policy and share it with all staff to make the commitment visible",
+            sub: "Transparency builds long-term trust.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Policy acknowledged. Gap regenerates 18 months later.",
+              text: "Staff appreciate the policy. It describes values — it doesn't trigger action. When the next new-hire cohort arrives with higher market rates, there's no mechanism to catch the widening gap. The policy exists. The review process doesn't.",
+              insight: "Policies describe intent. Processes produce outcomes. A pay equity policy without a review mechanism is a document that gets filed."
+            }
+          },
+          {
+            letter: "C",
+            text: "Raise starting pay for all new hires to match senior rates — eliminate the gap at the source",
+            sub: "If new hires earn senior rates, there's no compression.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Gap regenerates within two hiring cycles.",
+              text: "New hire rates rise to senior level. Within two years, a new cohort of mid-tenure nurses finds themselves at parity with the next wave of new hires. The compression clock resets. The band structure is still static — it just has a higher floor.",
+              insight: "Raising new hire rates without a dynamic band structure doesn't eliminate compression — it resets the clock. The fix is in the architecture of the band, not the starting number."
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  // ── Scenario 13: Clinical Informatics ──
+  {
+    department: 'Clinical Informatics',
+    name: 'The Alert Fatigue Dilemma',
+    nameHtml: 'The <em>Alert Fatigue</em> Dilemma',
+    blurb: "Your sepsis BPA fires 50 times a day. Nurses override it 95% of the time. The 5% that matter are drowning in noise.",
+    difficulty: 'Hard', decisions: 4,
+    tagline: "Your sepsis Best Practice Advisory fires 50 times a day on the Med-Surg unit. Nurses are overriding it in 95% of cases, calling it noise. The 5% that are clinically real are drowning in the same dismissal reflex.",
+    briefingTitle: 'When every alarm is a false alarm, no alarm gets heard.',
+    briefingBody: "You're the clinical informatics operations manager. The sepsis BPA was implemented two years ago with good intentions — early identification saves lives. But a 95% override rate means the alert has become wallpaper. Nurses dismiss it reflexively, often without clinical review. The 5% of real alerts aren't louder than the other 95% — they look identical. You need to fix the system without compromising the safety net.",
+    stats: [
+      { label: 'Daily Alerts', value: '50 / day', cls: '' },
+      { label: 'Override Rate', value: '95%', cls: 'red' },
+      { label: 'Real Alerts', value: '~5%', cls: 'amber' }
+    ],
+    steps: [
+      {
+        label: "Decision 01 — Diagnose before you redesign",
+        title: "95% override rate. Before you change anything about the alert, what do you investigate first?",
+        desc: "A 95% override rate means the alert is almost always wrong, nurses are almost always wrong, or both. You need to know which.",
+        choices: [
+          {
+            letter: "A",
+            text: "Pull the override reason codes — what are nurses actually clicking when they dismiss it?",
+            sub: "The override data is the diagnosis.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "The override data reveals three distinct problems, not one.",
+              text: "61% of overrides: 'patient not septic per clinical assessment' — alert criteria too broad. 22%: 'criteria met but patient already being treated' — duplicate firing. 12%: blank entries — no clinical review at all. The 12% blank entries are the real safety risk. You now have a specific redesign target instead of a vague alert problem.",
+              insight: "Alert override data is one of the most underused diagnostic tools in clinical informatics. A 95% override rate looks like one problem from the outside — it's usually three. Pull the reasons before you redesign, or you'll fix the wrong thing."
+            }
+          },
+          {
+            letter: "B",
+            text: "Interview charge nurses — ask them how they're actually using the alert in practice",
+            sub: "Go to the source. Front-line staff know what's broken.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Valuable context. No visibility into the 5% that were real and also dismissed.",
+              text: "Charge nurses describe the alert as background noise and confirm they've trained new staff to dismiss it reflexively. The qualitative insight is real — but it has a blind spot. Clinicians who've normalized an alert can't accurately report how often their dismissal was wrong. You have the narrative without the risk profile.",
+              insight: "Qualitative frontline input is essential but incomplete. Clinicians who've normalized an alert can't tell you how often their dismissal was wrong. You need outcome data alongside the workflow narrative."
+            }
+          },
+          {
+            letter: "C",
+            text: "Escalate to the CMO — a 95% override rate on a sepsis alert is a patient safety risk that needs executive attention",
+            sub: "This is above your pay grade. Get leadership involved.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Task force formed. Six weeks pass. Two real sepsis alerts are overridden in the interim.",
+              text: "The CMO is appropriately concerned and forms a task force. Six weeks later, you have the same data you could have pulled in two days. The alert is unchanged during the task force period. Two real sepsis events are overridden during that window — no adverse outcomes, but the risk was real.",
+              insight: "Escalate with a diagnosis, not just a problem. A task force without a data package is slow. Pull the override data first — then bring leadership a map, not just a flag."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 02 — Redesign the alert",
+        title: "The criteria are too broad — 95% false positives — but the 5% that are real are serious. How do you redesign it?",
+        desc: "You can't turn it off. You can't leave it as-is. The design has to be smarter.",
+        choices: [
+          {
+            letter: "A",
+            text: "Implement tiered BPA logic — Level 1 creates a silent task in the pharmacist queue, Level 3 sends a high-priority Secure Text to the RN and charge nurse",
+            sub: "Match alert intensity to clinical severity. Stop treating everything like a Level 3.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Level 3 alert compliance reaches 94%. A real sepsis case is caught in week 3.",
+              text: "Level 1 alerts become pharmacist tasks — reviewed in normal workflow, no interruption, no override decision. Level 3 alerts are no longer lost in noise. Their 94% response rate reflects what happens when high-priority signals aren't competing with low-priority ones. The week-3 catch would have been overridden under the old system.",
+              insight: "Alert fatigue is a design problem, not a training problem. When every alert demands the same urgency, the brain treats them all as low urgency. Tiered routing restores the signal by separating it from the noise."
+            }
+          },
+          {
+            letter: "B",
+            text: "Tighten the alert criteria — raise the threshold so only more severe presentations trigger the BPA",
+            sub: "Reduce false positives at the source. Better criteria, fewer alerts.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Override rate drops to 75%. Two borderline presentations are missed.",
+              text: "False positives drop by 60%. Improvement — but the threshold change narrows the safety net. Two borderline presentations that would have been caught under the old criteria are missed over the next two months. No adverse outcomes — but the margin narrowed in the wrong direction.",
+              insight: "Criteria tightening reduces volume but increases missed cases. For sepsis, where early identification is the clinical win, restricting the trigger carries asymmetric risk. Tiered routing addresses volume without narrowing the net."
+            }
+          },
+          {
+            letter: "C",
+            text: "Make the override a hard-stop — require written clinical justification for every dismissal",
+            sub: "Add friction to the dismissal. Force clinical engagement.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Overrides slow down. Nurses start copy-pasting 'pt not septic.' Burnout scores spike.",
+              text: "Each hard-stop adds 45–90 seconds to a nurse's workflow, 50 times a day. Within 60 days, nurses are entering 'n/a' or generic phrases to bypass it faster. The hard-stop is being gamed. Burnout scores on the unit hit an all-time high. The compliance is documented — the safety is not improved.",
+              insight: "Hard-stops that fire frequently become bypass targets. When the cognitive cost of a workaround is lower than the cognitive cost of the legitimate workflow, clinicians find the workaround. Friction-based solutions only work when alert frequency is low."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 03 — Implementation resistance",
+        title: "The night charge nurse says her team won't use the pharmacist task queue — they don't trust a system they can't see. How do you respond?",
+        desc: "Night staff weren't in the room when the design decision was made. Their resistance is predictable and solvable.",
+        choices: [
+          {
+            letter: "A",
+            text: "Schedule a night-shift walkthrough — demonstrate the system live during a quiet window and let them ask questions",
+            sub: "Show, don't tell. Meet them on their shift.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Night team becomes the most compliant unit in the hospital within 45 days.",
+              text: "Three nurses during the walkthrough suggest refinements — two of which improve handoff visibility in the task queue. You implement the suggestions. The night team helped build the version they're using. Ownership converts resistance into advocacy.",
+              insight: "Change resistance in clinical settings is almost always a trust problem. Night staff who weren't consulted will find reasons it won't work. Night staff who were consulted will find ways to make it work. The walkthrough is an engagement meeting as much as a training meeting."
+            }
+          },
+          {
+            letter: "B",
+            text: "Issue a mandatory in-service and document completion",
+            sub: "Compliance requires documentation. Get it on record.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Training completed. Task queue used inconsistently for the first month.",
+              text: "Most night staff complete the module. Compliance is recorded. But the trust problem is unresolved — they completed training without buying in. The pharmacist task queue is acknowledged but not consistently referenced during the first few weeks.",
+              insight: "Mandatory training produces documented compliance, not behavioral change. Documentation tells you who sat through the module — not who changed how they work."
+            }
+          },
+          {
+            letter: "C",
+            text: "Make it mandatory and enforce consequences for non-compliance",
+            sub: "It's a patient safety system. Compliance isn't optional.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Compliance achieved. Two night nurses transfer to other units within 60 days.",
+              text: "The system is being used — through enforcement. Two nurses cite the mandated change as a contributing factor in their transfers. The task queue works. The resentment on night shift is measurable and lasting. You won the compliance and lost the culture.",
+              insight: "Mandated compliance without engagement in the design phase generates resistance that outlasts the rollout. The cost isn't the initial non-compliance — it's the signal it sends about how clinical staff are included in decisions."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 04 — Post-implementation",
+        title: "30 days in, the system is working. But one night nurse is silencing all pharmacist task assignments during peak hours. What do you do?",
+        desc: "The system is good. One person is defeating it. How you handle this determines whether others follow.",
+        choices: [
+          {
+            letter: "A",
+            text: "Have a direct, private conversation with the nurse — share the data, understand why, then set the expectation",
+            sub: "Get the reason before you escalate.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "She's not gaming the system — she's compensating for a workflow gap you didn't know existed.",
+              text: "The conversation reveals she's silencing tasks during a window when the pharmacist queue isn't being checked — tasks are sitting unactioned. She found a workaround for a design gap, not a shortcut for laziness. You fix the coverage gap. She stops silencing. You avoided a disciplinary action that would have been unjust and damaging.",
+              insight: "When someone defeats a new system, the first question isn't 'what's the consequence?' — it's 'why?' Behavioral workarounds usually indicate a design gap. Go to the source before you escalate."
+            }
+          },
+          {
+            letter: "B",
+            text: "Flag it to the charge nurse and route it through normal supervisory channels",
+            sub: "That's the charge nurse's job. Route it correctly.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Behavior stops. Workflow gap that was driving it is never surfaced.",
+              text: "The charge nurse addresses it. The nurse stops silencing tasks. But the pharmacist coverage gap — the real cause — is never investigated. Two other nurses who hit the same gap during peak hours find their own quiet workarounds.",
+              insight: "Supervisory routing resolves behavior without investigating cause. If the cause is a design gap, it resurfaces with the next person who encounters the same pressure."
+            }
+          },
+          {
+            letter: "C",
+            text: "Issue a written warning — bypassing a patient safety system is not acceptable",
+            sub: "Establish the standard. Document non-compliance.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Warning issued. Three other nurses quietly do the same during peak hours.",
+              text: "The warning addresses the individual without surfacing the systemic cause. Three other nurses hit the same workflow gap and handle it the same way — more quietly. The compliance problem becomes invisible. The safety gap continues.",
+              insight: "Disciplinary action resolves individual non-compliance but doesn't fix systems. When the first response to a workaround is a warning, the next person who hits the same problem won't tell you about it."
+            }
+          }
+        ]
+      }
+    ]
   }
 ];
 
@@ -3577,7 +4114,7 @@ function renderScenarioPicker() {
     simAppBar('3AM SHIFT SIMULATOR', 0, -1, 0, 0) +
     `<div class="sim-picker-body sim-screen">
       <div class="picker-heading">Choose your scenario.</div>
-      <p class="picker-sub">Ten departments. Real decisions. Each scenario is built from actual hospital operations situations.</p>
+      <p class="picker-sub">Twelve departments. Real decisions. Each scenario is built from actual hospital operations situations.</p>
       <div class="scenario-grid">${cards}</div>
       <button class="btn btn-primary" onclick="startSim()">Begin Simulation →</button>
     </div>`;
