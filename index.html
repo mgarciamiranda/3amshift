@@ -1298,9 +1298,103 @@
     .resource-card { padding: 20px 14px; }
     .pillar-card { padding: 18px 14px; }
   }
+
+  /* ── CUSTOM CURSOR ── */
+  .cursor-dot {
+    width: 5px; height: 5px;
+    background: var(--cyan);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    width: 38px; height: 38px;
+    border: 1px solid rgba(232,98,42,0.28);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s cubic-bezier(0.16,1,0.3,1),
+                height 0.3s cubic-bezier(0.16,1,0.3,1),
+                border-color 0.3s;
+  }
+  .cursor-ring.hovering {
+    width: 58px; height: 58px;
+    border-color: rgba(232,98,42,0.5);
+  }
+  @media (hover: none) { .cursor-dot, .cursor-ring { display: none; } }
+
+  /* ── HERO CANVAS (Three.js 3D) ── */
+  #hero-canvas {
+    position: absolute;
+    top: 0; right: -40px;
+    width: 54%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  @media (max-width: 768px) {
+    #hero-canvas { width: 100%; right: 0; opacity: 0.22; }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.1s; }
+  .reveal-d2 { transition-delay: 0.2s; }
+  .reveal-d3 { transition-delay: 0.3s; }
+  .reveal-d4 { transition-delay: 0.4s; }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 44px 0;
+  }
+  .stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    flex-wrap: wrap;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--cyan);
+    line-height: 1;
+    margin-bottom: 8px;
+    letter-spacing: -0.04em;
+  }
+  .stat-lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 600px) {
+    .stats-row { gap: 32px; }
+    .stat-num { font-size: 34px; }
+  }
+
+  /* ── SIMULATOR STATE TRANSITION ── */
+  #sim-body { transition: opacity 0.18s ease; }
+  #sim-body.sim-fade { opacity: 0; }
 </style>
 </head>
 <body>
+
+<div class="cursor-dot" id="cursor-dot"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
 
 <!-- ── NAV ── -->
 <nav>
@@ -1317,6 +1411,7 @@
 
 <!-- ── HERO ── -->
 <section class="hero">
+  <canvas id="hero-canvas"></canvas>
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
@@ -1353,32 +1448,56 @@
   </div>
 </div>
 
+<!-- ── STATS STRIP ── -->
+<div class="stats-strip">
+  <div class="container">
+    <div class="stats-row">
+      <div class="stat-item reveal">
+        <div class="stat-num" data-count="9">0</div>
+        <div class="stat-lbl">Scenarios</div>
+      </div>
+      <div class="stat-item reveal reveal-d1">
+        <div class="stat-num" data-count="36">0</div>
+        <div class="stat-lbl">Decisions</div>
+      </div>
+      <div class="stat-item reveal reveal-d2">
+        <div class="stat-num" data-count="9">0</div>
+        <div class="stat-lbl">Departments</div>
+      </div>
+      <div class="stat-item reveal reveal-d3">
+        <div class="stat-num" data-count="100" data-suffix="%">0</div>
+        <div class="stat-lbl">Free</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ── WHAT IS 3AM SHIFT (primary) ── -->
 <section class="section-primary" id="about">
   <div class="container">
     <div class="what-is-grid">
-      <div class="what-is-left fade-in">
+      <div class="what-is-left reveal">
         <div class="section-label">// what is the 3am shift</div>
         <div class="section-title">The work that holds healthcare together doesn't happen in boardrooms.</div>
         <p class="section-desc">It happens at 3am. When the staffing model fails. When the tech that worked in the demo doesn't work on a short-staffed floor. When the metric that looked green in Tuesday's meeting doesn't match what's actually happening.</p>
         <p class="section-desc" style="margin-top: 16px;">The 3AM Shift is built for the people who fix what others won't own.</p>
       </div>
-      <div class="process-flow fade-in">
-        <div class="flow-step">
+      <div class="process-flow reveal reveal-d2">
+        <div class="flow-step reveal reveal-d1">
           <div class="flow-icon input">01</div>
           <div>
             <div class="flow-label">The Problem</div>
             <div class="flow-text">Broken workflows, stuck decisions, systems that don't communicate. <span>Nobody wants to own it.</span></div>
           </div>
         </div>
-        <div class="flow-step">
+        <div class="flow-step reveal reveal-d2">
           <div class="flow-icon process">02</div>
           <div>
             <div class="flow-label">The Shift</div>
             <div class="flow-text">Frameworks and tools to diagnose the root cause, <span>not just the symptom.</span></div>
           </div>
         </div>
-        <div class="flow-step">
+        <div class="flow-step reveal reveal-d3">
           <div class="flow-icon output">03</div>
           <div>
             <div class="flow-label">The Outcome</div>
@@ -1393,37 +1512,37 @@
 <!-- ── STATEMENT SECTION ── -->
 <section class="statement-section">
   <div class="container">
-    <div class="statement-eyebrow">// the reality</div>
-    <div class="statement-headline">Most healthcare ops problems aren't solved. They're survived.</div>
-    <div class="statement-sub">The 3AM Shift exists to change that.</div>
+    <div class="statement-eyebrow reveal">// the reality</div>
+    <div class="statement-headline reveal reveal-d1">Most healthcare ops problems aren't solved. They're survived.</div>
+    <div class="statement-sub reveal reveal-d2">The 3AM Shift exists to change that.</div>
   </div>
 </section>
 
 <!-- ── CONTENT PILLARS (secondary) ── -->
 <section class="section-secondary">
   <div class="container">
-    <div class="pillars-header fade-in">
+    <div class="pillars-header reveal">
       <div class="section-label">// content pillars</div>
       <div class="section-title">What we write about.</div>
       <p class="section-desc">Four disciplines. One operating system for healthcare leaders who build, not just manage.</p>
     </div>
     <div class="pillars-grid">
-      <div class="pillar-card fade-in">
+      <div class="pillar-card reveal">
         <div class="pillar-number">01</div>
         <h3>Healthcare Operations</h3>
         <p>Capacity, throughput, staffing models, and the workflows that break at 3am when nobody's watching.</p>
       </div>
-      <div class="pillar-card fade-in">
+      <div class="pillar-card reveal reveal-d1">
         <div class="pillar-number">02</div>
         <h3>Management & Leadership</h3>
         <p>Running teams, making hard calls, performance systems that don't rely on heroics.</p>
       </div>
-      <div class="pillar-card fade-in">
+      <div class="pillar-card reveal reveal-d2">
         <div class="pillar-number">03</div>
         <h3>Data & Analytics</h3>
         <p>Dashboards that drive decisions, not decorate slide decks. SQL, Power Query, operational reporting.</p>
       </div>
-      <div class="pillar-card fade-in">
+      <div class="pillar-card reveal reveal-d3">
         <div class="pillar-number">04</div>
         <h3>Business & Systems Thinking</h3>
         <p>How to see the whole board. Process design, decision architecture, and building things that scale.</p>
@@ -1435,13 +1554,13 @@
 <!-- ── DECISION SIMULATOR (primary) ── -->
 <section class="section-primary simulator-section" id="simulator">
   <div class="container">
-    <div class="sim-intro-header fade-in">
+    <div class="sim-intro-header reveal">
       <div class="section-label">// decision simulator</div>
       <div class="section-title">Test your ops instincts.</div>
       <p class="section-desc">Scenario-based challenges built from real hospital operations. Make decisions. See consequences. Learn the system.</p>
     </div>
     <div class="container-narrow" style="padding:0;">
-      <div class="sim-card fade-in">
+      <div class="sim-card reveal reveal-d1">
         <div class="sim-card-body" id="sim-body"></div>
       </div>
     </div>
@@ -1451,13 +1570,13 @@
 <!-- ── RESOURCES (secondary) ── -->
 <section class="section-secondary" id="resources">
   <div class="container">
-    <div class="resources-header fade-in">
+    <div class="resources-header reveal">
       <div class="section-label">// free resources</div>
       <div class="section-title">Ready to use. Today.</div>
       <p class="section-desc">Built by someone who's had to use them on a floor, not just present them in a meeting.</p>
     </div>
     <div class="resources-grid">
-      <div class="resource-card fade-in">
+      <div class="resource-card reveal">
         <div class="resource-tag-row">
           <div class="resource-type">Template</div>
           <div class="resource-format">.docx</div>
@@ -1467,7 +1586,7 @@
         <!-- REPLACE THE HREF BELOW WITH YOUR GOOGLE DRIVE SHARE LINK -->
         <a href="https://drive.google.com/file/d/YOUR_FILE_ID_1/view?usp=sharing" target="_blank" class="btn btn-ghost">Download Template</a>
       </div>
-      <div class="resource-card fade-in">
+      <div class="resource-card reveal reveal-d1">
         <div class="resource-tag-row">
           <div class="resource-type">Field Guide</div>
           <div class="resource-format">.pdf</div>
@@ -1477,7 +1596,7 @@
         <!-- REPLACE THE HREF BELOW WITH YOUR GOOGLE DRIVE SHARE LINK -->
         <a href="https://drive.google.com/file/d/YOUR_FILE_ID_2/view?usp=sharing" target="_blank" class="btn btn-ghost">Download Field Guide</a>
       </div>
-      <div class="resource-card fade-in">
+      <div class="resource-card reveal reveal-d2">
         <div class="resource-tag-row">
           <div class="resource-type">Playbook</div>
           <div class="resource-format">.pdf</div>
@@ -1497,7 +1616,7 @@
     <div class="newsletter-inner">
 
       <!-- Left: pitch -->
-      <div class="newsletter-left fade-in">
+      <div class="newsletter-left reveal">
         <div class="section-label">// the newsletter</div>
         <div class="section-title">The briefing serious ops leaders actually read.</div>
         <p class="section-desc">One email per week. Each issue is a tight read — practical, grounded, written for people who run things.</p>
@@ -1525,7 +1644,7 @@
       </div>
 
       <!-- Right: form card -->
-      <div class="newsletter-form-card fade-in">
+      <div class="newsletter-form-card reveal reveal-d2">
         <div class="form-heading">Join the 3AM Shift</div>
         <div class="form-sub">Healthcare ops leaders, managers, and builders — this is for you.</div>
 
@@ -3245,6 +3364,15 @@ function simSidebar(s, stepIdx, score, maxPts) {
 }
 
 function renderSim() {
+  const body = document.getElementById('sim-body');
+  if (body && body.innerHTML.trim().length > 0) {
+    body.classList.add('sim-fade');
+    setTimeout(() => { _doRender(); body.classList.remove('sim-fade'); }, 190);
+  } else {
+    _doRender();
+  }
+}
+function _doRender() {
   if (simState === 'picker') renderScenarioPicker();
   else if (simState === 'intro') renderSimIntro();
   else if (simState === 'decision') renderSimDecision();
@@ -3517,10 +3645,138 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── Init ──
 renderSim();
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+// ── Scroll Reveal ──
+(function() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
+
+// ── Animated Counters ──
+(function() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseInt(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const dur = 1400;
+      const t0 = performance.now();
+      function tick(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      obs.unobserve(el);
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('[data-count]').forEach(el => obs.observe(el));
+})();
+
+// ── Custom Cursor ──
+(function() {
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  if (!dot || !ring) return;
+  let cx = -200, cy = -200, rx = -200, ry = -200;
+  document.addEventListener('mousemove', e => {
+    cx = e.clientX; cy = e.clientY;
+    dot.style.left = cx + 'px'; dot.style.top = cy + 'px';
+  });
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function loop() {
+    rx = lerp(rx, cx, 0.11); ry = lerp(ry, cy, 0.11);
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(loop);
+  }
+  loop();
+  document.querySelectorAll('a, button, .scenario-option, .choice-card, .pillar-card, .resource-card').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+  });
+})();
+
+// ── Hero Parallax (blob depth on mouse) ──
+(function() {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  const blobs = hero.querySelectorAll('.blob');
+  document.addEventListener('mousemove', e => {
+    const xPct = (e.clientX / window.innerWidth - 0.5);
+    const yPct = (e.clientY / window.innerHeight - 0.5);
+    blobs.forEach((b, i) => {
+      const depth = (i + 1) * 14;
+      b.style.transform = `translate(${xPct * depth}px, ${yPct * depth}px)`;
+    });
+  });
+})();
+
+// ── Three.js Hero 3D Object ──
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js';
+  s.onload = function() {
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+    camera.position.z = 5;
+
+    // Main icosahedron wireframe
+    const geo = new THREE.IcosahedronGeometry(1.7, 2);
+    const edges = new THREE.EdgesGeometry(geo);
+    const mat = new THREE.LineBasicMaterial({ color: 0xe8622a, transparent: true, opacity: 0.22 });
+    const mesh = new THREE.LineSegments(edges, mat);
+    scene.add(mesh);
+
+    // Inner solid (very faint fill)
+    const solidMat = new THREE.MeshBasicMaterial({ color: 0xe8622a, transparent: true, opacity: 0.03 });
+    const solid = new THREE.Mesh(geo, solidMat);
+    scene.add(solid);
+
+    // Outer ambient ring
+    const geo2 = new THREE.IcosahedronGeometry(2.4, 1);
+    const edges2 = new THREE.EdgesGeometry(geo2);
+    const mat2 = new THREE.LineBasicMaterial({ color: 0xf5c842, transparent: true, opacity: 0.06 });
+    const ring2 = new THREE.LineSegments(edges2, mat2);
+    scene.add(ring2);
+
+    let mx = 0, my = 0;
+    document.addEventListener('mousemove', e => {
+      mx = (e.clientX / window.innerWidth - 0.5) * 2;
+      my = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    function resize() {
+      const w = canvas.offsetWidth, h = canvas.offsetHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    let t = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      t += 0.0035;
+      mesh.rotation.x = t * 0.38 + my * 0.12;
+      mesh.rotation.y = t + mx * 0.12;
+      solid.rotation.copy(mesh.rotation);
+      ring2.rotation.x = -t * 0.18 + my * 0.06;
+      ring2.rotation.y = -t * 0.28 + mx * 0.06;
+      renderer.render(scene, camera);
+    }
+    animate();
+  };
+  document.head.appendChild(s);
+})();
 </script>
 </body>
 </html>
