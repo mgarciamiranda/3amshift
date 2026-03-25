@@ -134,7 +134,10 @@
     font-weight: 700;
     line-height: 1.05;
     letter-spacing: -0.03em;
-    color: var(--text);
+    background: linear-gradient(135deg, var(--text) 40%, var(--cyan) 70%, var(--amber) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     max-width: 780px;
     margin: 0 auto 28px;
     opacity: 0;
@@ -142,10 +145,6 @@
   }
   .hero h1 em {
     font-style: normal;
-    background: linear-gradient(135deg, var(--cyan), var(--amber));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
   .hero-sub {
     font-size: 18px;
@@ -897,6 +896,273 @@
   .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
   .footer-links a:hover { color: var(--text2); }
 
+  /* ── BLOBS ── */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(80px);
+    opacity: 0.18;
+  }
+  .blob-1 {
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, #e8622a, #f5c842);
+    top: -80px; left: -120px;
+  }
+  .blob-2 {
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, #f5c842, #e8622a);
+    top: 60px; right: -80px;
+    opacity: 0.12;
+  }
+  .blob-3 {
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, #e8622a, transparent);
+    bottom: -40px; left: 40%;
+    opacity: 0.1;
+  }
+  .hero { position: relative; }
+  .hero .container { position: relative; z-index: 1; }
+
+  /* ── TICKER ── */
+  .ticker {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-track {
+    display: inline-flex;
+    animation: ticker 28s linear infinite;
+  }
+  .ticker-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    padding: 0 32px;
+  }
+  .ticker-sep {
+    color: var(--muted);
+    padding: 0 4px;
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .ticker:hover .ticker-track { animation-play-state: paused; }
+
+  /* ── STATEMENT SECTION ── */
+  .statement-section {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 96px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .statement-section::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px; height: 400px;
+    background: radial-gradient(ellipse, rgba(232,98,42,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .statement-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 24px;
+  }
+  .statement-headline {
+    font-size: clamp(28px, 4.5vw, 60px);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--text) 30%, var(--cyan) 65%, var(--amber) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    max-width: 820px;
+    margin: 0 auto 20px;
+  }
+  .statement-sub {
+    font-size: clamp(15px, 2vw, 18px);
+    color: var(--text2);
+    font-weight: 500;
+  }
+  @media (max-width: 600px) {
+    .statement-section { padding: 64px 0; }
+    .blob-1 { width: 280px; height: 280px; }
+    .blob-2 { width: 200px; height: 200px; }
+    .blob-3 { display: none; }
+  }
+
+  /* ── SIMULATOR WEBAPP CHROME ── */
+  .sim-card-body { padding: 0 !important; }
+  .sim-app-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 20px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  .app-dots { display: flex; gap: 6px; }
+  .app-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .app-dot.red    { background: #ff5f57; }
+  .app-dot.yellow { background: #febc2e; }
+  .app-dot.green  { background: #28c840; }
+  .app-bar-title {
+    flex: 1;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .app-bar-steps { display: flex; gap: 4px; align-items: center; }
+  .app-bar-step {
+    width: 22px; height: 4px;
+    border-radius: 2px;
+    background: var(--surface);
+    transition: background 0.3s;
+  }
+  .app-bar-step.done   { background: rgba(240,162,98,0.45); }
+  .app-bar-step.active { background: var(--cyan); }
+  .app-bar-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 600;
+    color: var(--cyan);
+    background: var(--cyan-dim);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* ── SIMULATOR TWO-COLUMN LAYOUT ── */
+  .sim-layout {
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    min-height: 420px;
+  }
+  .sim-sidebar {
+    border-right: 1px solid var(--border);
+    padding: 20px 16px;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .sb-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .sb-stat { margin-bottom: 8px; }
+  .sb-stat-lbl { font-size: 11px; color: var(--text2); margin-bottom: 2px; }
+  .sb-stat-val { font-size: 18px; font-weight: 700; color: var(--text); }
+  .sb-stat-val.amber { color: var(--amber); }
+  .sb-stat-val.cyan  { color: var(--cyan); }
+  .sb-steps { display: flex; flex-direction: column; gap: 8px; }
+  .sb-step {
+    display: flex; align-items: flex-start; gap: 9px;
+    font-size: 11px; color: var(--muted); line-height: 1.35;
+  }
+  .sb-step.done   { color: var(--text2); }
+  .sb-step.active { color: var(--text); font-weight: 600; }
+  .sb-step-num {
+    width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+    border: 1px solid var(--border); background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    margin-top: 1px;
+  }
+  .sb-step.done .sb-step-num   { background: rgba(240,162,98,0.2); border-color: var(--green); color: var(--green); }
+  .sb-step.active .sb-step-num { background: var(--cyan); border-color: var(--cyan); color: var(--bg); }
+  .sb-score {
+    margin-top: auto; padding: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; text-align: center;
+  }
+  .sb-score-pts { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 700; color: var(--cyan); line-height: 1; }
+  .sb-score-max { font-size: 10px; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.1em; }
+
+  .sim-main { padding: 24px 26px; }
+  .sim-q-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--cyan); margin-bottom: 10px;
+  }
+  .sim-q-title { font-size: 19px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+  .sim-q-desc  { font-size: 13px; color: var(--text2); line-height: 1.65; margin-bottom: 20px; }
+
+  /* ── CHOICE CARDS ── */
+  .choice-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 15px;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: flex; gap: 12px; align-items: flex-start;
+    text-align: left; width: 100%;
+    font-family: inherit; color: var(--text);
+    margin-bottom: 8px;
+    position: relative; overflow: hidden;
+  }
+  .choice-card::before {
+    content: ''; position: absolute;
+    left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--cyan); opacity: 0; transition: opacity 0.18s;
+  }
+  .choice-card:hover { border-color: rgba(232,98,42,0.4); background: var(--surface2); }
+  .choice-card:hover::before { opacity: 1; }
+  .choice-badge {
+    width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0;
+    background: var(--surface2); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    font-weight: 700; color: var(--cyan); margin-top: 1px;
+  }
+  .choice-body  { flex: 1; }
+  .choice-main  { font-size: 14px; font-weight: 600; margin-bottom: 3px; line-height: 1.4; }
+  .choice-hint  { font-size: 12px; color: var(--text2); line-height: 1.5; }
+
+  /* Section body wrappers */
+  .sim-picker-body { padding: 26px 26px 30px; }
+  .sim-intro-body  { padding: 26px 26px 30px; text-align: center; }
+  .sim-results-body { padding: 28px 26px; text-align: center; }
+
+  @media (max-width: 720px) {
+    .sim-layout { grid-template-columns: 1fr; }
+    .sim-sidebar {
+      border-right: none; border-bottom: 1px solid var(--border);
+      flex-direction: row; flex-wrap: wrap; gap: 12px; padding: 12px 14px;
+    }
+    .sb-steps { display: none; }
+    .sb-score  { margin-top: 0; min-width: 80px; }
+    .sim-main  { padding: 16px 14px; }
+    .sim-picker-body { padding: 16px 14px 20px; }
+    .sim-intro-body  { padding: 18px 14px 22px; }
+    .sim-results-body { padding: 18px 14px; }
+    .app-bar-title { display: none; }
+  }
+  @media (max-width: 380px) {
+    .sim-main { padding: 12px 10px; }
+    .sim-picker-body { padding: 12px 10px 16px; }
+  }
+
   /* ── SCENARIO PICKER ── */
   .picker-heading { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
   .picker-sub { font-size: 14px; color: var(--text2); margin-bottom: 24px; line-height: 1.6; }
@@ -1048,6 +1314,9 @@
 
 <!-- ── HERO ── -->
 <section class="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
   <div class="container">
     <div class="hero-tag">// healthcare operations</div>
     <h1>Ops thinking for the people <em>holding it together.</em></h1>
@@ -1058,6 +1327,28 @@
     </div>
   </div>
 </section>
+
+<!-- ── TICKER ── -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Emergency Dept.</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Surgical Services</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Critical Care</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Med-Surg</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Case Management</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Healthcare Operations</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Decision Simulator</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Field Guides</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Emergency Dept.</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Surgical Services</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Critical Care</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Med-Surg</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Case Management</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Healthcare Operations</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Decision Simulator</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Field Guides</span><span class="ticker-sep">·</span>
+  </div>
+</div>
 
 <!-- ── WHAT IS 3AM SHIFT (primary) ── -->
 <section class="section-primary" id="about">
@@ -1093,6 +1384,15 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ── STATEMENT SECTION ── -->
+<section class="statement-section">
+  <div class="container">
+    <div class="statement-eyebrow">// the reality</div>
+    <div class="statement-headline">Most healthcare ops problems aren't solved. They're survived.</div>
+    <div class="statement-sub">The 3AM Shift exists to change that.</div>
   </div>
 </section>
 
@@ -1139,10 +1439,6 @@
     </div>
     <div class="container-narrow" style="padding:0;">
       <div class="sim-card fade-in">
-        <div class="sim-card-header">
-          <div class="sim-card-tag">LIVE SCENARIO</div>
-          <div class="sim-card-meta">4 decisions<em>|</em>~5 min<em>|</em>scored</div>
-        </div>
         <div class="sim-card-body" id="sim-body"></div>
       </div>
     </div>
@@ -2164,6 +2460,185 @@ const SCENARIOS = [
         ]
       }
     ]
+  },
+
+  // ── 6: EHR BLACKOUT ──────────────────────────────────────────────────
+  {
+    department: 'Health IT / Ops',
+    name: 'The EHR Blackout',
+    nameHtml: 'The <em>EHR</em> Blackout',
+    blurb: "10:15am. Epic is down system-wide. 400 patients scheduled. Labs, orders, MARs — all offline.",
+    difficulty: 'Hard', decisions: 4,
+    tagline: "It's 10:15am Monday. Epic just went down system-wide. 400 patients are scheduled today. Labs, medication orders, and patient records are all offline. IT has no ETA.",
+    briefingTitle: 'Your entire clinical system just disappeared.',
+    briefingBody: "You're the operations manager at a 350-bed hospital. The EHR has been down for 4 minutes. Staff are calling. Medications are due on three units. Two OR cases are in progress with anesthesia documenting on paper. You have no resolution timeline from IT and the CNO is about to ask you what's happening.",
+    stats: [
+      { label: 'System Status', value: 'OFFLINE', cls: '' },
+      { label: 'Patients Today', value: '400', cls: 'amber' },
+      { label: 'IT ETA', value: 'Unknown', cls: 'cyan' }
+    ],
+    steps: [
+      {
+        label: "Decision 01 — First response",
+        title: "Epic has been down 4 minutes. What's your first move?",
+        desc: "Staff are already calling. No ETA from IT. The longer you wait to act, the more units improvise their own solutions.",
+        choices: [
+          {
+            letter: "A",
+            text: "Activate downtime procedures immediately — page all charge nurses, distribute downtime packets, open command center",
+            sub: "Don't wait for an ETA. The protocol exists for this moment.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "The floor is managed before the crisis gets worse",
+              text: "Charge nurses receive downtime packets within 12 minutes. The command center opens. A dedicated IT line is established. Within 30 minutes, every unit operates on a standardized downtime protocol — same forms, same verification steps, same escalation path.",
+              insight: "Downtime protocols exist so you don't improvise during the worst moment to improvise. The value isn't in the paper — it's in the activation. Operators who run toward the protocol early stay ahead of the crisis. Those who wait to see how bad it gets spend the whole downtime catching up."
+            }
+          },
+          {
+            letter: "B",
+            text: "Call Epic support first to get a resolution ETA before alerting staff",
+            sub: "Get the facts before you cause alarm. It might be back up in 10 minutes.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "IT gives you 45 minutes. The floor has been improvising for 30.",
+              text: "Epic support estimates 45 minutes. Meanwhile, three units charted on scratch paper without standardized downtime forms. Medication records are being handled four different ways. When you finally alert staff, you spend an hour standardizing what should have been uniform from minute one.",
+              insight: "Waiting for an ETA before activating assumes the ETA will be short and accurate. EHR downtime ETAs are almost never accurate. Activate the protocol now — you can stand it down when the system comes back up."
+            }
+          },
+          {
+            letter: "C",
+            text: "Notify nursing leadership and direct units to the read-only downtime viewer",
+            sub: "Staff can see existing orders and records. That's a start.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "The viewer helps — but it's not a downtime plan",
+              text: "Units access existing orders and patient data through the read-only viewer. But new documentation, medication administration records, and new order entry have no standardized process. By hour two, the gaps create patient safety risk.",
+              insight: "A read-only viewer is a reference tool, not a documentation system. It shows what was — not what's happening now. Downtime procedures address the full clinical workflow, not just information access."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 02 — Pharmacy crisis",
+        title: "The pharmacist calls. She won't dispense without EHR access. What do you tell her?",
+        desc: "Medications are due on four units. The pharmacist says she can't safely verify orders without the system.",
+        choices: [
+          {
+            letter: "A",
+            text: "Implement the manual MAR protocol — handwritten medication records, double-nurse verification, pharmacist verbal confirmation",
+            sub: "The paper MAR process is tested. It's slower, but it's safe.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Medications administered safely throughout the downtime",
+              text: "Manual MARs go into effect across all units. Every administration requires double-nurse verification. The pharmacist works from printed medication lists. It's slower — but no adverse medication events occur during the six-hour downtime.",
+              insight: "Paper MAR protocols are validated for exactly this scenario. The double-verification step replaces the EHR's built-in safety checks. Organizations that train on downtime procedures outperform those that treat it as a 'hope it never happens' scenario."
+            }
+          },
+          {
+            letter: "B",
+            text: "Halt all non-emergency medications until the system is restored",
+            sub: "If you can't verify safely, you don't administer. Patient safety first.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "Two patients miss critical doses. Both are reportable.",
+              text: "Meds are halted. By hour three, a hypertensive patient and a diabetic patient have missed time-sensitive doses. Neither is a critical event — but both are reportable. The CNO is briefed on patient impact before you reach her.",
+              insight: "'Non-emergency' doesn't mean 'not important.' A missed antihypertensive or insulin administration can cascade quickly. Downtime medication protocols exist to keep care moving safely — not to pause it. This is exactly what the paper MAR is designed for."
+            }
+          },
+          {
+            letter: "C",
+            text: "Allow verbal orders with pharmacist verification and paper documentation",
+            sub: "It's imperfect but it keeps medications moving.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Care continues — but reconciliation will be painful",
+              text: "Verbal order protocol is established. Medications move. But documentation is inconsistent across units. By restoration, you have six hours of medication records that require significant reconciliation effort before the records are complete.",
+              insight: "Verbal orders with paper documentation work as a bridge, but they create reconciliation debt. Every inconsistently documented administration is a risk that surfaces at system restoration. The more standardized the downtime process, the less the reconciliation burden at the end."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 03 — Communication breakdown",
+        title: "It's been 3 hours. Your phone hasn't stopped. How do you manage it?",
+        desc: "Clinicians, managers, and the CNO are all calling you directly for status updates. You haven't left your chair.",
+        choices: [
+          {
+            letter: "A",
+            text: "Establish a command center with structured 30-minute broadcast updates to all units",
+            sub: "Push information proactively so people stop pulling it from you.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Everyone is informed. Your phone stops ringing.",
+              text: "The command center issues 30-minute updates by overhead page and secure message. Unit charges stop calling because they already know what you know. The CNO gets a direct briefing at the one-hour mark. You're managing the response — not fielding individual calls.",
+              insight: "During a downtime, information anxiety drives behavior. When people don't know what's happening, they call you. When they have a structured update schedule, they wait. A broadcast communication rhythm is the most effective call-deflection tool you have."
+            }
+          },
+          {
+            letter: "B",
+            text: "Assign a communications liaison to handle calls and relay status updates",
+            sub: "Get the calls off your desk. Someone else manages the flow.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Your burden drops — but updates are still reactive",
+              text: "Your coordinator handles calls effectively. Your phone slows down. But updates are still reactive — some units get more information than others based on how often they escalate. Information equity across the floor is uneven.",
+              insight: "A communications coordinator reduces your burden but doesn't fix the underlying pattern. Reactive communication means some units are better informed than others. Structured broadcast updates treat all units equally and remove the incentive to call."
+            }
+          },
+          {
+            letter: "C",
+            text: "Send a system-wide email every hour and tell people to stop calling",
+            sub: "Push information out. Standardize the channel.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Email helps. Nurses on the floor don't see it.",
+              text: "Hourly emails go out. Some staff read them. Staff away from workstations — which is most of the clinical team during a downtime — don't. The CNO calls you directly at hour two. Unit charges who haven't checked email continue calling.",
+              insight: "Email is the wrong communication channel during an active downtime. The people who most need updates are away from workstations. Use overhead pages, secure messaging apps, or command center briefings during active crises."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 04 — System restoration",
+        title: "IT says the system is restored. Six hours. 400 patients. What's your first call?",
+        desc: "Everything that happened in the last six hours exists on paper. It needs to get into the EHR before anyone acts on it.",
+        choices: [
+          {
+            letter: "A",
+            text: "Activate structured reconciliation — paper records reconciled to EHR unit by unit before resuming normal workflow",
+            sub: "Don't announce restoration until the documentation gap is closed.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Zero documentation gaps at restoration",
+              text: "Unit by unit, charge nurses compare paper records to the EHR and confirm any missing entries. IT flags three chart entries that didn't save before the crash. All three are corrected before clinical staff resume normal workflow. No undocumented events.",
+              insight: "EHR restoration is not the end of the downtime — it's the transition point. The six hours of paper records are a reconciliation liability until they're confirmed in the system. Operators who structure this transition prevent quiet errors that surface weeks later in an audit or adverse event review."
+            }
+          },
+          {
+            letter: "B",
+            text: "Announce restoration and let staff resume normal operations — they'll reconcile as they go",
+            sub: "Staff are exhausted. Get back to normal workflow and trust the team.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Most data reconciles. Three gaps surface two days later.",
+              text: "Staff transition back to the EHR. Over the next two days, three documentation gaps are found in an audit — two medication records and one nursing assessment not entered after the system came back. All three require retrospective documentation and physician co-signature.",
+              insight: "Trusting staff to self-reconcile works for a 30-minute downtime. For a six-hour event with 400 patient touchpoints, documentation gaps are nearly guaranteed. The longer the downtime, the more structured the restoration protocol needs to be."
+            }
+          },
+          {
+            letter: "C",
+            text: "Have IT verify data integrity first, then execute a staged unit-by-unit resumption",
+            sub: "Methodical. Protective. Prevents missed data.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Staged resumption catches two critical care errors — and takes 90 minutes",
+              text: "IT confirms data integrity. Resumption goes unit by unit. The process takes 90 minutes and frustrates staff who want back to normal. But staging catches two critical care records that didn't sync at restoration — both corrected before patient impact.",
+              insight: "Staged resumption is methodical and protective. The frustration is real — 90 minutes of partial operation after six hours of downtime is demoralizing. The tradeoff is worth it when the downtime was long and the patient volume was high."
+            }
+          }
+        ]
+      }
+    ]
   }
 ];
 
@@ -2175,6 +2650,59 @@ let totalPoints = 0;
 const el = () => document.getElementById('sim-body');
 const activeScenario = () => SCENARIOS[selectedScenarioIdx];
 const maxPoints = () => activeScenario().steps.length * 3;
+
+// ── Helper: App Bar ──
+function simAppBar(title, stepsCount, activeIdx, score, maxPts) {
+  const steps = stepsCount > 0
+    ? `<div class="app-bar-steps">${Array.from({length: stepsCount}, (_, i) => {
+        const c = i < activeIdx ? 'done' : i === activeIdx ? 'active' : '';
+        return `<div class="app-bar-step ${c}"></div>`;
+      }).join('')}</div>`
+    : '';
+  const scoreBadge = maxPts > 0
+    ? `<div class="app-bar-score">${score} / ${maxPts} pts</div>`
+    : '';
+  return `<div class="sim-app-bar">
+    <div class="app-dots">
+      <div class="app-dot red"></div>
+      <div class="app-dot yellow"></div>
+      <div class="app-dot green"></div>
+    </div>
+    <div class="app-bar-title">${title}</div>
+    ${steps}${scoreBadge}
+  </div>`;
+}
+
+// ── Helper: Sidebar ──
+function simSidebar(s, stepIdx, score, maxPts) {
+  const stats = s.stats.map(st =>
+    `<div class="sb-stat">
+       <div class="sb-stat-lbl">${st.label}</div>
+       <div class="sb-stat-val ${st.cls}">${st.value}</div>
+     </div>`).join('');
+  const steps = s.steps.map((st, i) => {
+    const cls = i < stepIdx ? 'done' : i === stepIdx ? 'active' : '';
+    const label = st.label.replace(/Decision \d+ — /, '');
+    return `<div class="sb-step ${cls}">
+      <div class="sb-step-num">${i+1}</div>
+      <div>${label}</div>
+    </div>`;
+  }).join('');
+  return `<div class="sim-sidebar">
+    <div>
+      <div class="sb-label">Situation</div>
+      ${stats}
+    </div>
+    <div>
+      <div class="sb-label">Decisions</div>
+      <div class="sb-steps">${steps}</div>
+    </div>
+    <div class="sb-score">
+      <div class="sb-score-pts">${score}</div>
+      <div class="sb-score-max">of ${maxPts} pts</div>
+    </div>
+  </div>`;
+}
 
 function renderSim() {
   if (simState === 'picker') renderScenarioPicker();
@@ -2196,10 +2724,11 @@ function renderScenarioPicker() {
         <span class="s-tag">~5 min</span>
       </div>
     </button>`).join('');
-  el().innerHTML = `
-    <div class="sim-screen">
+  el().innerHTML =
+    simAppBar('3AM SHIFT SIMULATOR', 0, -1, 0, 0) +
+    `<div class="sim-picker-body sim-screen">
       <div class="picker-heading">Choose your scenario.</div>
-      <p class="picker-sub">Each scenario is built from real hospital operations. Pick a department, make your decisions, see the consequences.</p>
+      <p class="picker-sub">Six departments. Real decisions. Each scenario is built from actual hospital operations situations.</p>
       <div class="scenario-grid">${cards}</div>
       <button class="btn btn-primary" onclick="startSim()">Begin Simulation →</button>
     </div>`;
@@ -2207,9 +2736,11 @@ function renderScenarioPicker() {
 
 function renderSimIntro() {
   const s = activeScenario();
+  const mp = maxPoints();
   const statsHtml = s.stats.map(st => `<div class="stat"><div class="stat-label">${st.label}</div><div class="stat-value ${st.cls}">${st.value}</div></div>`).join('');
-  el().innerHTML = `
-    <div class="sim-intro sim-screen">
+  el().innerHTML =
+    simAppBar(s.name.toUpperCase(), s.steps.length, -1, 0, mp) +
+    `<div class="sim-intro-body sim-screen">
       <h2>${s.nameHtml}</h2>
       <p class="sim-intro-desc">${s.tagline}</p>
       <div class="briefing">
@@ -2218,7 +2749,7 @@ function renderSimIntro() {
         <p>${s.briefingBody}</p>
         <div class="stat-row">${statsHtml}</div>
       </div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
         <button class="btn btn-primary" onclick="startSim()">Begin Simulation</button>
         <button class="btn btn-ghost" onclick="simState='picker';renderSim();">← Change Scenario</button>
       </div>
@@ -2231,51 +2762,62 @@ function selectScenario(idx) {
 
 function renderSimDecision() {
   const s = activeScenario();
+  const mp = maxPoints();
   const step = s.steps[currentStep];
-  const pips = s.steps.map((_, i) => i < currentStep ? 'done' : i === currentStep ? 'active' : '');
-  el().innerHTML = `
-    <div class="sim-screen">
-      <div class="progress-bar">${pips.map(p => `<div class="progress-pip ${p}"></div>`).join('')}</div>
-      <div class="situation-label">${step.label}</div>
-      <div class="situation-title">${step.title}</div>
-      <div class="situation-desc">${step.desc}</div>
-      <div class="choices">
-        ${step.choices.map((ch, i) => `
-          <button class="choice-btn" onclick="simChoose(${i})">
-            <div class="choice-letter">${ch.letter}</div>
-            <div class="choice-text">${ch.text}</div>
-            <div class="choice-sub">${ch.sub}</div>
-          </button>
-        `).join('')}
+  el().innerHTML =
+    simAppBar(s.name.toUpperCase(), s.steps.length, currentStep, totalPoints, mp) +
+    `<div class="sim-layout">
+      ${simSidebar(s, currentStep, totalPoints, mp)}
+      <div class="sim-main">
+        <div class="sim-screen">
+          <div class="sim-q-label">${step.label}</div>
+          <div class="sim-q-title">${step.title}</div>
+          <div class="sim-q-desc">${step.desc}</div>
+          <div>
+            ${step.choices.map((ch, i) => `
+              <button class="choice-card" onclick="simChoose(${i})">
+                <div class="choice-badge">${ch.letter}</div>
+                <div class="choice-body">
+                  <div class="choice-main">${ch.text}</div>
+                  <div class="choice-hint">${ch.sub}</div>
+                </div>
+              </button>`).join('')}
+          </div>
+        </div>
       </div>
     </div>`;
 }
 
 function renderSimConsequence() {
   const s = activeScenario();
+  const mp = maxPoints();
   const step = s.steps[currentStep];
   const choice = step.choices[selectedChoices[currentStep]];
   const con = choice.consequence;
   const q = choice.quality;
   const pts = choice.points;
-  const pips = s.steps.map((_, i) => i <= currentStep ? 'done' : '');
   const isLast = currentStep === s.steps.length - 1;
-  el().innerHTML = `
-    <div class="sim-screen">
-      <div class="progress-bar">${pips.map(p => `<div class="progress-pip ${p}"></div>`).join('')}</div>
-      <div class="consequence-box ${q}">
-        <div class="consequence-label">${q === 'good' ? 'Strong move' : q === 'ok' ? 'Partial credit' : 'Missed opportunity'}</div>
-        <h3>${con.headline}</h3>
-        <p>${con.text}</p>
-        <div class="points-badge ${q}">
-          ${pts === 3 ? '+3 pts — Optimal' : pts === 2 ? '+2 pts — Acceptable' : pts === 1 ? '+1 pt — Suboptimal' : '+0 pts — Costly'}
+  el().innerHTML =
+    simAppBar(s.name.toUpperCase(), s.steps.length, currentStep, totalPoints, mp) +
+    `<div class="sim-layout">
+      ${simSidebar(s, currentStep, totalPoints, mp)}
+      <div class="sim-main">
+        <div class="sim-screen">
+          <div class="consequence-box ${q}">
+            <div class="consequence-label">${q === 'good' ? 'Strong move' : q === 'ok' ? 'Partial credit' : 'Missed opportunity'}</div>
+            <h3>${con.headline}</h3>
+            <p>${con.text}</p>
+            <div class="points-badge ${q}">
+              ${pts === 3 ? '+3 pts — Optimal' : pts === 2 ? '+2 pts — Acceptable' : pts === 1 ? '+1 pt — Suboptimal' : '+0 pts — Costly'}
+            </div>
+          </div>
+          <div class="insight-box">
+            <div class="insight-label">The ops lesson</div>
+            <p>${con.insight}</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="simNext()">${isLast ? 'See Your Results →' : 'Next Decision →'}</button>
         </div>
       </div>
-      <div class="insight-box">
-        <div class="insight-label">The ops lesson</div>
-        <p>${con.insight}</p>
-      </div>
-      <button class="btn btn-primary btn-sm" onclick="simNext()">${isLast ? 'See Your Results' : 'Next Decision'}</button>
     </div>`;
 }
 
@@ -2292,8 +2834,9 @@ function renderSimResults() {
   else if (pct >= 50) { grade = "Survivor"; desc = "You got through the night, but the same crisis will happen again. The decisions that matter most aren't made at 3am — they're made the following week."; }
   else { grade = "Learning Opportunity"; desc = "Every operator has had a night like this. The difference is what you do next. The best leaders study their worst nights and build systems so they never repeat them."; }
 
-  el().innerHTML = `
-    <div class="sim-results sim-screen">
+  el().innerHTML =
+    simAppBar(s.name.toUpperCase(), s.steps.length, s.steps.length, totalPoints, mp) +
+    `<div class="sim-results-body sim-screen">
       <div class="score-ring">
         <svg viewBox="0 0 140 140">
           <circle class="score-ring-bg" cx="70" cy="70" r="60"/>
