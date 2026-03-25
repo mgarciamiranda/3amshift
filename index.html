@@ -1166,7 +1166,7 @@
   /* ── SCENARIO PICKER ── */
   .picker-heading { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
   .picker-sub { font-size: 14px; color: var(--text2); margin-bottom: 24px; line-height: 1.6; }
-  .scenario-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; align-items: start; }
+  .scenario-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; align-items: stretch; }
   .scenario-option {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -1178,10 +1178,9 @@
     font-family: inherit;
     color: var(--text);
     width: 100%;
-    aspect-ratio: 1 / 1;
+    min-height: 190px;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
   }
   .scenario-option:hover { border-color: rgba(232,98,42,0.4); background: var(--surface2); transform: translateY(-2px); }
   .scenario-option.selected { border-color: var(--cyan); background: var(--cyan-glow); }
@@ -1236,7 +1235,7 @@
   @media (max-width: 1200px) {
     .scenario-grid { grid-template-columns: repeat(4, 1fr); }
   }
-  @media (max-width: 960px) {
+  @media (max-width: 900px) {
     .scenario-grid { grid-template-columns: repeat(3, 1fr); }
   }
   @media (max-width: 900px) {
@@ -1252,7 +1251,7 @@
   }
 
   @media (max-width: 600px) {
-    .scenario-grid { grid-template-columns: 1fr 1fr; }
+    .scenario-grid { grid-template-columns: repeat(2, 1fr); }
     .container { padding: 0 16px; }
     nav { padding: 14px 0; }
     .nav-links a:not(.nav-cta) { display: none; }
@@ -1305,6 +1304,7 @@
   }
 
   @media (max-width: 380px) {
+    .scenario-grid { grid-template-columns: 1fr; }
     .container { padding: 0 12px; }
     .hero h1 { font-size: 28px; }
     .hero { padding: 110px 0 48px; }
