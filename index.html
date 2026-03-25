@@ -321,22 +321,22 @@
     transition: all 0.3s;
     position: relative;
     overflow: hidden;
-    opacity: 0.85;
+    opacity: 1;
   }
   .pillar-card::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 2px;
-    background: linear-gradient(90deg, var(--muted), transparent);
+    background: linear-gradient(90deg, var(--cyan), transparent);
     opacity: 0;
     transition: opacity 0.3s;
   }
   .pillar-card:hover {
     border-color: var(--cyan-dim);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     background: var(--surface);
-    opacity: 1;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
   }
   .pillar-card:hover::before { opacity: 1; }
   .pillar-number {
@@ -347,7 +347,7 @@
     letter-spacing: 0.1em;
     margin-bottom: 14px;
   }
-  .pillar-card h3 { font-size: 15px; font-weight: 600; color: var(--text2); margin-bottom: 8px; line-height: 1.3; }
+  .pillar-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.3; }
   .pillar-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
   .pillar-card:hover h3 { color: var(--text); }
   .pillar-card:hover p { color: var(--text2); }
@@ -524,12 +524,16 @@
   .choice-text { font-size: 14px; font-weight: 500; line-height: 1.4; }
   .choice-sub { font-size: 13px; color: var(--text2); margin-top: 4px; line-height: 1.5; }
 
-  .consequence-box {
-    background: var(--surface);
+  .feedback-panel {
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 28px;
+    overflow: hidden;
     margin-bottom: 20px;
+  }
+  .consequence-box {
+    background: var(--surface);
+    border-radius: 0;
+    padding: 28px;
     position: relative;
     overflow: hidden;
   }
@@ -571,10 +575,10 @@
 
   .insight-box {
     background: var(--bg);
-    border-left: 2px solid var(--cyan);
-    border-radius: 0 8px 8px 0;
-    padding: 14px 18px;
-    margin-bottom: 24px;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    padding: 18px 28px;
+    margin-bottom: 0;
   }
   .insight-label {
     font-family: 'JetBrains Mono', monospace;
@@ -583,20 +587,31 @@
     text-transform: uppercase;
     color: var(--cyan);
     margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .insight-label::before {
+    content: '';
+    display: inline-block;
+    width: 3px; height: 14px;
+    background: var(--cyan);
+    border-radius: 2px;
+    flex-shrink: 0;
   }
   .insight-box p { font-size: 13px; color: var(--text2); line-height: 1.6; }
 
   .sim-results { text-align: center; }
-  .score-ring { width: 140px; height: 140px; margin: 0 auto 24px; position: relative; }
+  .score-ring { width: 180px; height: 180px; margin: 0 auto 28px; position: relative; }
   .score-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-  .score-ring-bg { fill: none; stroke: var(--surface2); stroke-width: 6; }
-  .score-ring-fill { fill: none; stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 1.2s ease-out; }
+  .score-ring-bg { fill: none; stroke: var(--surface2); stroke-width: 7; }
+  .score-ring-fill { fill: none; stroke-width: 7; stroke-linecap: round; transition: stroke-dashoffset 1.2s ease-out; }
   .score-number {
     position: absolute; inset: 0;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
   }
-  .score-number .big { font-size: 36px; font-weight: 700; line-height: 1; }
+  .score-number .big { font-size: 44px; font-weight: 700; line-height: 1; }
   .score-number .label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
@@ -631,10 +646,13 @@
     width: 22px;
   }
   .breakdown-text { flex: 1; font-size: 13px; line-height: 1.4; }
+  .breakdown-row.good { border-left: 3px solid var(--green); }
+  .breakdown-row.ok   { border-left: 3px solid var(--amber); }
+  .breakdown-row.bad  { border-left: 3px solid var(--red); }
   .breakdown-pts {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 13px;
+    font-weight: 700;
     flex-shrink: 0;
   }
   .breakdown-pts.good { color: var(--green); }
@@ -661,9 +679,9 @@
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    opacity: 0.85;
+    opacity: 1;
   }
-  .resource-card:hover { border-color: var(--cyan-dim); transform: translateY(-2px); opacity: 1; }
+  .resource-card:hover { border-color: var(--cyan-dim); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.35); }
   .resource-tag-row {
     display: flex;
     align-items: center;
@@ -684,7 +702,7 @@
     color: var(--muted);
     letter-spacing: 0.05em;
   }
-  .resource-card h3 { font-size: 16px; font-weight: 600; color: var(--text2); margin-bottom: 10px; line-height: 1.35; }
+  .resource-card h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 10px; line-height: 1.35; }
   .resource-card:hover h3 { color: var(--text); }
   .resource-card p { font-size: 13px; color: var(--muted); line-height: 1.6; flex: 1; margin-bottom: 20px; }
   .resource-card:hover p { color: var(--text2); }
@@ -940,15 +958,16 @@
   }
   .ticker-item {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--cyan);
     padding: 0 32px;
   }
   .ticker-sep {
-    color: var(--muted);
+    color: var(--cyan);
+    opacity: 0.4;
     padding: 0 4px;
   }
   @keyframes ticker {
@@ -1052,12 +1071,12 @@
   /* ── SIMULATOR TWO-COLUMN LAYOUT ── */
   .sim-layout {
     display: grid;
-    grid-template-columns: 210px 1fr;
-    min-height: 420px;
+    grid-template-columns: 260px 1fr;
+    min-height: 560px;
   }
   .sim-sidebar {
     border-right: 1px solid var(--border);
-    padding: 20px 16px;
+    padding: 24px 20px;
     background: var(--bg);
     display: flex;
     flex-direction: column;
@@ -1065,19 +1084,19 @@
   }
   .sb-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9px; letter-spacing: 0.15em;
+    font-size: 11px; letter-spacing: 0.12em;
     text-transform: uppercase; color: var(--muted);
     margin-bottom: 10px;
   }
   .sb-stat { margin-bottom: 8px; }
-  .sb-stat-lbl { font-size: 11px; color: var(--text2); margin-bottom: 2px; }
-  .sb-stat-val { font-size: 18px; font-weight: 700; color: var(--text); }
+  .sb-stat-lbl { font-size: 12px; color: var(--text2); margin-bottom: 2px; }
+  .sb-stat-val { font-size: 20px; font-weight: 700; color: var(--text); }
   .sb-stat-val.amber { color: var(--amber); }
   .sb-stat-val.cyan  { color: var(--cyan); }
   .sb-steps { display: flex; flex-direction: column; gap: 8px; }
   .sb-step {
     display: flex; align-items: flex-start; gap: 9px;
-    font-size: 11px; color: var(--muted); line-height: 1.35;
+    font-size: 12px; color: var(--muted); line-height: 1.35;
   }
   .sb-step.done   { color: var(--text2); }
   .sb-step.active { color: var(--text); font-weight: 600; }
@@ -1095,10 +1114,10 @@
     background: var(--surface); border: 1px solid var(--border);
     border-radius: 8px; text-align: center;
   }
-  .sb-score-pts { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 700; color: var(--cyan); line-height: 1; }
+  .sb-score-pts { font-family: 'JetBrains Mono', monospace; font-size: 30px; font-weight: 700; color: var(--cyan); line-height: 1; }
   .sb-score-max { font-size: 10px; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.1em; }
 
-  .sim-main { padding: 24px 26px; }
+  .sim-main { padding: 28px 32px; }
   .sim-q-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px; letter-spacing: 0.15em;
@@ -1128,6 +1147,12 @@
   }
   .choice-card:hover { border-color: rgba(232,98,42,0.4); background: var(--surface2); }
   .choice-card:hover::before { opacity: 1; }
+  .choice-card.locked {
+    border-color: var(--cyan);
+    background: var(--cyan-glow);
+    pointer-events: none;
+  }
+  .choice-card.locked::before { opacity: 1; }
   .choice-badge {
     width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0;
     background: var(--surface2); border: 1px solid var(--border);
@@ -1140,7 +1165,7 @@
   .choice-hint  { font-size: 12px; color: var(--text2); line-height: 1.5; }
 
   /* Section body wrappers */
-  .sim-picker-body { padding: 26px 26px 30px; }
+  .sim-picker-body { padding: 28px 32px 36px; }
   .sim-intro-body  { padding: 26px 26px 30px; text-align: center; }
   .sim-results-body { padding: 28px 26px; text-align: center; }
 
@@ -1232,10 +1257,10 @@
   .fade-in.visible { opacity: 1; transform: translateY(0); }
 
   /* ── RESPONSIVE ── */
-  @media (max-width: 1200px) {
+  @media (max-width: 900px) {
     .scenario-grid { grid-template-columns: repeat(4, 1fr); }
   }
-  @media (max-width: 900px) {
+  @media (max-width: 700px) {
     .scenario-grid { grid-template-columns: repeat(3, 1fr); }
   }
   @media (max-width: 900px) {
@@ -1377,16 +1402,24 @@
   /* ── STATS STRIP ── */
   .stats-strip {
     background: var(--bg);
+    border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    padding: 44px 0;
+    padding: 48px 0;
   }
   .stats-row {
     display: flex;
     justify-content: center;
-    gap: 80px;
+    gap: 20px;
     flex-wrap: wrap;
   }
-  .stat-item { text-align: center; }
+  .stat-item {
+    text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 36px;
+    min-width: 160px;
+  }
   .stat-num {
     font-family: 'JetBrains Mono', monospace;
     font-size: 44px;
@@ -1404,7 +1437,8 @@
     text-transform: uppercase;
   }
   @media (max-width: 600px) {
-    .stats-row { gap: 32px; }
+    .stats-row { gap: 12px; }
+    .stat-item { padding: 18px 24px; min-width: 130px; }
     .stat-num { font-size: 34px; }
   }
 
@@ -1581,7 +1615,7 @@
       <div class="section-title">Test your ops instincts.</div>
       <p class="section-desc">Scenario-based challenges built from real hospital operations. Make decisions. See consequences. Learn the system.</p>
     </div>
-    <div class="container-narrow" style="padding:0;">
+    <div class="container" style="padding:0;">
       <div class="sim-card reveal reveal-d1">
         <div class="sim-card-body" id="sim-body"></div>
       </div>
@@ -4209,17 +4243,19 @@ function renderSimConsequence() {
       ${simSidebar(s, currentStep, totalPoints, mp)}
       <div class="sim-main">
         <div class="sim-screen">
-          <div class="consequence-box ${q}">
-            <div class="consequence-label">${q === 'good' ? 'Strong move' : q === 'ok' ? 'Partial credit' : 'Missed opportunity'}</div>
-            <h3>${con.headline}</h3>
-            <p>${con.text}</p>
-            <div class="points-badge ${q}">
-              ${pts === 3 ? '+3 pts — Optimal' : pts === 2 ? '+2 pts — Acceptable' : pts === 1 ? '+1 pt — Suboptimal' : '+0 pts — Costly'}
+          <div class="feedback-panel">
+            <div class="consequence-box ${q}">
+              <div class="consequence-label">${q === 'good' ? 'Strong move' : q === 'ok' ? 'Partial credit' : 'Missed opportunity'}</div>
+              <h3>${con.headline}</h3>
+              <p>${con.text}</p>
+              <div class="points-badge ${q}">
+                ${pts === 3 ? '+3 pts — Optimal' : pts === 2 ? '+2 pts — Acceptable' : pts === 1 ? '+1 pt — Suboptimal' : '+0 pts — Costly'}
+              </div>
             </div>
-          </div>
-          <div class="insight-box">
-            <div class="insight-label">The ops lesson</div>
-            <p>${con.insight}</p>
+            <div class="insight-box">
+              <div class="insight-label">The ops lesson</div>
+              <p>${con.insight}</p>
+            </div>
           </div>
           <button class="btn btn-primary btn-sm" onclick="simNext()">${isLast ? 'See Your Results →' : 'Next Decision →'}</button>
         </div>
@@ -4231,7 +4267,7 @@ function renderSimResults() {
   const s = activeScenario();
   const mp = maxPoints();
   const pct = Math.round((totalPoints / mp) * 100);
-  const circ = 2 * Math.PI * 60;
+  const circ = 2 * Math.PI * 72;
   const offset = circ - (pct / 100) * circ;
   const color = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
   let grade, desc;
@@ -4244,9 +4280,9 @@ function renderSimResults() {
     simAppBar(s.name.toUpperCase(), s.steps.length, s.steps.length, totalPoints, mp) +
     `<div class="sim-results-body sim-screen">
       <div class="score-ring">
-        <svg viewBox="0 0 140 140">
-          <circle class="score-ring-bg" cx="70" cy="70" r="60"/>
-          <circle class="score-ring-fill" cx="70" cy="70" r="60" stroke="${color}"
+        <svg viewBox="0 0 180 180">
+          <circle class="score-ring-bg" cx="90" cy="90" r="72"/>
+          <circle class="score-ring-fill" cx="90" cy="90" r="72" stroke="${color}"
             stroke-dasharray="${circ}" stroke-dashoffset="${circ}" id="score-arc"/>
         </svg>
         <div class="score-number">
@@ -4259,7 +4295,7 @@ function renderSimResults() {
       <div class="results-breakdown">
         ${s.steps.map((step, i) => {
           const ch = step.choices[selectedChoices[i]];
-          return `<div class="breakdown-row">
+          return `<div class="breakdown-row ${ch.quality}">
             <div class="breakdown-num">0${i+1}</div>
             <div class="breakdown-text">${ch.text}</div>
             <div class="breakdown-pts ${ch.quality}">${ch.points === 3 ? '+3' : ch.points === 2 ? '+2' : ch.points === 1 ? '+1' : '+0'}</div>
@@ -4282,9 +4318,14 @@ function startSim() {
   simState = 'decision'; renderSim(); scrollToSim();
 }
 function simChoose(i) {
+  document.querySelectorAll('.choice-card').forEach((c, idx) => {
+    c.style.pointerEvents = 'none';
+    if (idx === i) c.classList.add('locked');
+  });
   selectedChoices.push(i);
   totalPoints += activeScenario().steps[currentStep].choices[i].points;
-  simState = 'consequence'; renderSim(); scrollToSim();
+  simState = 'consequence';
+  setTimeout(() => { renderSim(); scrollToSim(); }, 300);
 }
 function simNext() {
   currentStep++;
