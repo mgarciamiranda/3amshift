@@ -1170,8 +1170,8 @@
   .scenario-option {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px 20px;
+    border-radius: 10px;
+    padding: 13px 13px;
     cursor: pointer;
     transition: all 0.2s;
     text-align: left;
@@ -1186,25 +1186,38 @@
   .scenario-option.selected { border-color: var(--cyan); background: var(--cyan-glow); }
   .scenario-dept {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
+    font-size: 9px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--cyan);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    line-height: 1.4;
   }
-  .scenario-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; line-height: 1.3; }
-  .scenario-blurb { font-size: 12px; color: var(--text2); line-height: 1.5; margin-bottom: 12px; }
-  .scenario-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .scenario-name { font-size: 13px; font-weight: 600; margin-bottom: 5px; line-height: 1.3; }
+  .scenario-blurb {
+    font-size: 11px;
+    color: var(--text2);
+    line-height: 1.5;
+    margin-bottom: 10px;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .scenario-meta { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; margin-top: auto; }
   .s-tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    padding: 3px 8px;
+    font-size: 9px;
+    padding: 2px 6px;
     border-radius: 4px;
     background: var(--surface2);
     color: var(--text2);
+    white-space: nowrap;
   }
   .s-tag.hard { background: rgba(232,64,64,0.12); color: var(--red); }
   .s-tag.medium { background: rgba(245,200,66,0.12); color: var(--amber); }
+  .s-tag.easy { background: rgba(240,162,98,0.12); color: var(--green); }
 
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
@@ -1219,6 +1232,12 @@
   .fade-in.visible { opacity: 1; transform: translateY(0); }
 
   /* ── RESPONSIVE ── */
+  @media (max-width: 1200px) {
+    .scenario-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (max-width: 960px) {
+    .scenario-grid { grid-template-columns: repeat(3, 1fr); }
+  }
   @media (max-width: 900px) {
     .container { padding: 0 20px; }
     .what-is-grid { grid-template-columns: 1fr; gap: 40px; }
