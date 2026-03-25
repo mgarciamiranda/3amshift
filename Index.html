@@ -1,0 +1,2443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 3AM Shift — Healthcare Operations Resources</title>
+<meta property="og:title" content="The 3AM Shift — Ops thinking for the people holding it together.">
+<meta property="og:description" content="Frameworks, field guides, decision simulators, and insights for healthcare operations leaders. No fluff. No consulting jargon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #111318;
+    --bg2:      #16191f;
+    --surface:  #1c2029;
+    --surface2: #222733;
+    --cyan:     #e8622a;
+    --cyan-dim: rgba(232,98,42,0.14);
+    --cyan-glow:rgba(232,98,42,0.06);
+    --green:    #f0a262;
+    --red:      #e84040;
+    --amber:    #f5c842;
+    --text:     #ede8e1;
+    --text2:    #9a9488;
+    --muted:    #575250;
+    --border:   rgba(255,255,255,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Instrument Sans', -apple-system, sans-serif;
+    font-weight: 400;
+    line-height: 1.65;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9000;
+  }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .container-narrow {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    background: rgba(17,19,24,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo span { color: var(--cyan); }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--cyan) !important;
+    color: var(--bg) !important;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 180px 0 120px;
+    text-align: center;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 60px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,98,42,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease-out 0.2s forwards;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    max-width: 780px;
+    margin: 0 auto 28px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease-out 0.35s forwards;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--cyan), var(--amber));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 18px;
+    color: var(--text2);
+    max-width: 540px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.6s ease-out 0.5s forwards;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease-out 0.65s forwards;
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--cyan);
+    color: var(--bg);
+    box-shadow: 0 0 24px rgba(232,98,42,0.25);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 40px rgba(232,98,42,0.4);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover {
+    border-color: var(--cyan-dim);
+    color: var(--text);
+    background: var(--cyan-glow);
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .section-desc {
+    font-size: 16px;
+    color: var(--text2);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-top: 16px;
+  }
+
+  /* ── SECTION WEIGHT DIFFERENTIATION ──
+     Primary sections (hero, simulator): full brightness, cyan accents
+     Secondary sections (pillars, resources): slightly dimmed, tighter padding
+  ── */
+  .section-primary {
+    padding: 100px 0;
+    border-top: 1px solid var(--border);
+  }
+  .section-secondary {
+    padding: 80px 0;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    background: linear-gradient(180deg, rgba(8,14,28,0.6) 0%, transparent 100%);
+  }
+  .section-secondary .section-label {
+    color: var(--muted);
+  }
+  .section-secondary .section-title {
+    font-size: clamp(22px, 3vw, 34px);
+    color: var(--text2);
+  }
+  .section-secondary .section-desc {
+    font-size: 15px;
+  }
+
+  /* ── WHAT IS SECTION ── */
+  .what-is-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 60px;
+  }
+  .what-is-left .section-desc { margin-top: 20px; }
+
+  /* ── PROCESS FLOW ── */
+  .process-flow {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .process-flow::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan-dim), transparent);
+  }
+  .flow-step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 16px 0;
+  }
+  .flow-step + .flow-step { border-top: 1px solid var(--border); }
+  .flow-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+  .flow-icon.input { background: rgba(232,98,42,0.12); color: var(--cyan); }
+  .flow-icon.process { background: rgba(245,200,66,0.1); color: var(--amber); }
+  .flow-icon.output { background: rgba(240,162,98,0.12); color: var(--green); }
+  .flow-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .flow-text { font-size: 14px; color: var(--text); line-height: 1.5; }
+  .flow-text span { color: var(--text2); }
+
+  /* ── PILLARS (secondary) ── */
+  .pillars-header { text-align: center; margin-bottom: 48px; }
+  .pillars-header .section-desc { margin: 16px auto 0; }
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .pillar-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 20px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    opacity: 0.85;
+  }
+  .pillar-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--muted), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .pillar-card:hover {
+    border-color: var(--cyan-dim);
+    transform: translateY(-2px);
+    background: var(--surface);
+    opacity: 1;
+  }
+  .pillar-card:hover::before { opacity: 1; }
+  .pillar-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+  }
+  .pillar-card h3 { font-size: 15px; font-weight: 600; color: var(--text2); margin-bottom: 8px; line-height: 1.3; }
+  .pillar-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .pillar-card:hover h3 { color: var(--text); }
+  .pillar-card:hover p { color: var(--text2); }
+
+  /* ── SIMULATOR SECTION (primary) ── */
+  .simulator-section {
+    position: relative;
+  }
+  .simulator-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 800px; height: 400px;
+    background: radial-gradient(ellipse, rgba(232,98,42,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .sim-intro-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .sim-intro-header .section-desc { margin: 16px auto 0; }
+
+  .sim-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+  .sim-card-header {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sim-card-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--red);
+    font-weight: 500;
+  }
+  .sim-card-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .sim-card-meta em { font-style: normal; color: var(--border); margin: 0 6px; }
+  .sim-card-body {
+    padding: 40px 32px;
+  }
+
+  .sim-intro { text-align: center; }
+  .sim-intro h2 {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .sim-intro h2 em { font-style: normal; color: var(--red); }
+  .sim-intro-desc {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 500px;
+    margin: 0 auto 28px;
+    line-height: 1.7;
+  }
+
+  .briefing {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    text-align: left;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .briefing::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--red), var(--amber), transparent);
+  }
+  .briefing-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 10px;
+  }
+  .briefing h3 { font-size: 17px; font-weight: 600; margin-bottom: 10px; line-height: 1.3; }
+  .briefing p { font-size: 14px; color: var(--text2); line-height: 1.7; }
+  .stat-row { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+  .stat {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    flex: 1;
+    min-width: 100px;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .stat-value { font-size: 20px; font-weight: 700; color: var(--red); }
+  .stat-value.amber { color: var(--amber); }
+  .stat-value.cyan { color: var(--cyan); }
+
+  .sim-screen { animation: simFade 0.35s ease-out; }
+  @keyframes simFade {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 32px; }
+  .progress-pip { height: 3px; flex: 1; background: var(--surface2); border-radius: 2px; transition: background 0.3s; }
+  .progress-pip.active { background: var(--cyan); }
+  .progress-pip.done { background: rgba(0,212,255,0.35); }
+
+  .situation-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 10px;
+  }
+  .situation-title { font-size: 20px; font-weight: 600; line-height: 1.3; margin-bottom: 10px; }
+  .situation-desc { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 28px; }
+
+  .choices { display: flex; flex-direction: column; gap: 10px; }
+  .choice-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+    font-family: inherit;
+    color: var(--text);
+  }
+  .choice-btn::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--cyan);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .choice-btn:hover { border-color: var(--cyan-dim); background: var(--surface2); transform: translateX(4px); }
+  .choice-btn:hover::before { opacity: 1; }
+  .choice-letter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--cyan);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .choice-text { font-size: 14px; font-weight: 500; line-height: 1.4; }
+  .choice-sub { font-size: 13px; color: var(--text2); margin-top: 4px; line-height: 1.5; }
+
+  .consequence-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .consequence-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .consequence-box.good::before { background: linear-gradient(90deg, var(--green), transparent); }
+  .consequence-box.ok::before { background: linear-gradient(90deg, var(--amber), transparent); }
+  .consequence-box.bad::before { background: linear-gradient(90deg, var(--red), transparent); }
+  .consequence-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .consequence-box.good .consequence-label { color: var(--green); }
+  .consequence-box.ok .consequence-label { color: var(--amber); }
+  .consequence-box.bad .consequence-label { color: var(--red); }
+  .consequence-box h3 { font-size: 17px; font-weight: 600; margin-bottom: 10px; line-height: 1.3; }
+  .consequence-box p { font-size: 14px; color: var(--text2); line-height: 1.7; }
+  .points-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 6px;
+    margin-top: 14px;
+  }
+  .points-badge.good { background: rgba(0,232,157,0.1); color: var(--green); }
+  .points-badge.ok { background: rgba(240,160,48,0.1); color: var(--amber); }
+  .points-badge.bad { background: rgba(255,77,106,0.1); color: var(--red); }
+
+  .insight-box {
+    background: var(--bg);
+    border-left: 2px solid var(--cyan);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+  }
+  .insight-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 6px;
+  }
+  .insight-box p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  .sim-results { text-align: center; }
+  .score-ring { width: 140px; height: 140px; margin: 0 auto 24px; position: relative; }
+  .score-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+  .score-ring-bg { fill: none; stroke: var(--surface2); stroke-width: 6; }
+  .score-ring-fill { fill: none; stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 1.2s ease-out; }
+  .score-number {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .score-number .big { font-size: 36px; font-weight: 700; line-height: 1; }
+  .score-number .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .grade-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .grade-desc {
+    font-size: 14px;
+    color: var(--text2);
+    max-width: 480px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+  }
+  .results-breakdown { display: flex; flex-direction: column; gap: 10px; text-align: left; margin-bottom: 32px; }
+  .breakdown-row {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .breakdown-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+    width: 22px;
+  }
+  .breakdown-text { flex: 1; font-size: 13px; line-height: 1.4; }
+  .breakdown-pts {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .breakdown-pts.good { color: var(--green); }
+  .breakdown-pts.ok { color: var(--amber); }
+  .breakdown-pts.bad { color: var(--red); }
+  .results-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-sm { padding: 12px 24px; font-size: 13px; }
+
+  /* ── RESOURCES (secondary) ── */
+  .resources-header { text-align: center; margin-bottom: 48px; }
+  .resources-header .section-desc { margin: 16px auto 0; }
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .resource-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    opacity: 0.85;
+  }
+  .resource-card:hover { border-color: var(--cyan-dim); transform: translateY(-2px); opacity: 1; }
+  .resource-tag-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .resource-type {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .resource-format {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .resource-card h3 { font-size: 16px; font-weight: 600; color: var(--text2); margin-bottom: 10px; line-height: 1.35; }
+  .resource-card:hover h3 { color: var(--text); }
+  .resource-card p { font-size: 13px; color: var(--muted); line-height: 1.6; flex: 1; margin-bottom: 20px; }
+  .resource-card:hover p { color: var(--text2); }
+  .resource-card .btn { align-self: flex-start; font-size: 13px; padding: 10px 20px; }
+
+  /* ── NEWSLETTER (primary — revised) ── */
+  .newsletter {
+    padding: 100px 0;
+    border-top: 1px solid var(--border);
+    position: relative;
+  }
+  .newsletter::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 700px; height: 500px;
+    background: radial-gradient(ellipse, rgba(232,98,42,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .newsletter-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .newsletter-left {}
+  .newsletter-left .section-title { font-size: clamp(26px, 3.5vw, 40px); }
+  .newsletter-left .section-desc { margin-top: 14px; margin-bottom: 32px; }
+
+  /* What you get bullets */
+  .newsletter-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .benefit-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .benefit-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+  .benefit-text {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+  .benefit-text strong { color: var(--text); font-weight: 600; }
+
+  /* Cadence line */
+  .cadence-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cadence-line::before {
+    content: '';
+    display: inline-block;
+    width: 20px; height: 1px;
+    background: var(--muted);
+  }
+
+  /* Right side: form card */
+  .newsletter-form-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .newsletter-form-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan-dim), transparent);
+  }
+  .form-heading {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .form-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .email-field {
+    width: 100%;
+    padding: 13px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 10px;
+  }
+  .email-field::placeholder { color: var(--muted); }
+  .email-field:focus { border-color: var(--cyan-dim); }
+  .subscribe-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--cyan);
+    color: var(--bg);
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .subscribe-btn:hover {
+    box-shadow: 0 0 32px rgba(232,98,42,0.3);
+    transform: translateY(-1px);
+  }
+  .subscribe-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  .form-status {
+    margin-top: 14px;
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 20px;
+    text-align: center;
+  }
+  .form-status.success { color: var(--green); }
+  .form-status.error { color: var(--red); }
+
+  /* Social proof strip */
+  .social-proof {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .proof-avatars {
+    display: flex;
+  }
+  .proof-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--bg2);
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text2);
+    margin-left: -8px;
+    flex-shrink: 0;
+  }
+  .proof-avatar:first-child { margin-left: 0; }
+  .proof-avatar.a1 { background: rgba(232,98,42,0.15); color: var(--cyan); }
+  .proof-avatar.a2 { background: rgba(245,200,66,0.12); color: var(--amber); }
+  .proof-avatar.a3 { background: rgba(240,162,98,0.15); color: var(--green); }
+  .proof-avatar.a4 { background: rgba(232,64,64,0.12); color: var(--red); }
+  .proof-text {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .proof-text strong { color: var(--text2); font-weight: 500; }
+  .privacy-note {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 12px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+  }
+  footer .container { display: flex; justify-content: space-between; align-items: center; }
+  .footer-left { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--text2); }
+
+  /* ── SCENARIO PICKER ── */
+  .picker-heading { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .picker-sub { font-size: 14px; color: var(--text2); margin-bottom: 24px; line-height: 1.6; }
+  .scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+  .scenario-option {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    font-family: inherit;
+    color: var(--text);
+    width: 100%;
+  }
+  .scenario-option:hover { border-color: rgba(232,98,42,0.4); background: var(--surface2); transform: translateY(-2px); }
+  .scenario-option.selected { border-color: var(--cyan); background: var(--cyan-glow); }
+  .scenario-dept {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 8px;
+  }
+  .scenario-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; line-height: 1.3; }
+  .scenario-blurb { font-size: 12px; color: var(--text2); line-height: 1.5; margin-bottom: 12px; }
+  .scenario-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .s-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--surface2);
+    color: var(--text2);
+  }
+  .s-tag.hard { background: rgba(232,64,64,0.12); color: var(--red); }
+  .s-tag.medium { background: rgba(245,200,66,0.12); color: var(--amber); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .container { padding: 0 20px; }
+    .what-is-grid { grid-template-columns: 1fr; gap: 40px; }
+    .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+    .resources-grid { grid-template-columns: 1fr; }
+    .newsletter-inner { grid-template-columns: 1fr; gap: 48px; }
+    .newsletter-form-card { padding: 28px 24px; }
+    .process-flow { padding: 28px; }
+    .section-primary, .section-secondary { padding: 72px 0; }
+    .newsletter { padding: 72px 0; }
+  }
+
+  @media (max-width: 600px) {
+    .scenario-grid { grid-template-columns: 1fr; }
+    .container { padding: 0 16px; }
+    nav { padding: 14px 0; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .nav-links { gap: 0; }
+    .logo { font-size: 14px; }
+    .hero { padding: 120px 0 60px; }
+    .hero-tag { font-size: 11px; margin-bottom: 20px; }
+    .hero h1 { font-size: 32px; margin-bottom: 20px; }
+    .hero-sub { font-size: 16px; margin-bottom: 32px; }
+    .hero-actions { flex-direction: column; align-items: center; gap: 12px; }
+    .hero-actions .btn { width: 100%; justify-content: center; }
+    .section-primary, .section-secondary { padding: 56px 0; }
+    .newsletter { padding: 56px 0; }
+    .section-title { font-size: 26px; }
+    .section-desc { font-size: 15px; }
+    .what-is-grid { gap: 28px; }
+    .process-flow { padding: 20px; }
+    .flow-step { padding: 12px 0; }
+    .flow-icon { width: 32px; height: 32px; font-size: 12px; }
+    .flow-text { font-size: 13px; }
+    .pillars-grid { grid-template-columns: 1fr; gap: 10px; }
+    .pillars-header { margin-bottom: 32px; }
+    .pillar-card { padding: 20px 16px; }
+    .sim-intro-header { margin-bottom: 32px; }
+    .sim-card { border-radius: 14px; }
+    .sim-card-header { padding: 14px 16px; flex-wrap: wrap; gap: 8px; }
+    .sim-card-body { padding: 20px 16px; }
+    .sim-intro h2 { font-size: 24px; }
+    .sim-intro-desc { font-size: 14px; margin-bottom: 20px; }
+    .briefing { padding: 20px; margin-bottom: 24px; }
+    .stat-row { flex-direction: column; gap: 8px; }
+    .stat-value { font-size: 18px; }
+    .situation-title { font-size: 18px; margin-bottom: 8px; }
+    .situation-desc { font-size: 13px; margin-bottom: 20px; }
+    .choice-btn { padding: 16px 18px; }
+    .consequence-box { padding: 20px; }
+    .score-ring { width: 120px; height: 120px; }
+    .score-number .big { font-size: 30px; }
+    .grade-title { font-size: 20px; }
+    .grade-desc { font-size: 13px; margin-bottom: 24px; }
+    .results-actions { flex-direction: column; align-items: stretch; }
+    .results-actions .btn { width: 100%; justify-content: center; }
+    .resources-grid { gap: 14px; }
+    .resource-card { padding: 22px 18px; }
+    .newsletter-inner { gap: 36px; }
+    .newsletter-form-card { padding: 24px 18px; }
+    .btn { min-height: 48px; }
+    .choice-btn { min-height: 60px; }
+    .nav-cta { min-height: 40px; padding: 10px 18px !important; }
+  }
+
+  @media (max-width: 380px) {
+    .container { padding: 0 12px; }
+    .hero h1 { font-size: 28px; }
+    .hero { padding: 110px 0 48px; }
+    .section-title { font-size: 22px; }
+    .sim-intro h2 { font-size: 21px; }
+    .sim-card-body { padding: 16px 12px; }
+    .briefing { padding: 16px; }
+    .choice-btn { padding: 14px; }
+    .consequence-box { padding: 16px; }
+    .newsletter-form-card { padding: 20px 14px; }
+    .resource-card { padding: 20px 14px; }
+    .pillar-card { padding: 18px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="container">
+    <a href="#" class="logo">THE 3AM <span>SHIFT</span></a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#simulator">Simulator</a>
+      <a href="#resources">Resources</a>
+      <a href="#newsletter" class="nav-cta">Subscribe</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-tag">// healthcare operations</div>
+    <h1>Ops thinking for the people <em>holding it together.</em></h1>
+    <p class="hero-sub">Frameworks, field guides, and insights for healthcare operations leaders. No fluff. No consulting jargon.</p>
+    <div class="hero-actions">
+      <a href="#simulator" class="btn btn-primary">Try the Simulator</a>
+      <a href="#resources" class="btn btn-ghost">Download Templates</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHAT IS 3AM SHIFT (primary) ── -->
+<section class="section-primary" id="about">
+  <div class="container">
+    <div class="what-is-grid">
+      <div class="what-is-left fade-in">
+        <div class="section-label">// what is the 3am shift</div>
+        <div class="section-title">The work that holds healthcare together doesn't happen in boardrooms.</div>
+        <p class="section-desc">It happens at 3am. When the staffing model fails. When the tech that worked in the demo doesn't work on a short-staffed floor. When the metric that looked green in Tuesday's meeting doesn't match what's actually happening.</p>
+        <p class="section-desc" style="margin-top: 16px;">The 3AM Shift is built for the people who fix what others won't own.</p>
+      </div>
+      <div class="process-flow fade-in">
+        <div class="flow-step">
+          <div class="flow-icon input">01</div>
+          <div>
+            <div class="flow-label">The Problem</div>
+            <div class="flow-text">Broken workflows, stuck decisions, systems that don't communicate. <span>Nobody wants to own it.</span></div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-icon process">02</div>
+          <div>
+            <div class="flow-label">The Shift</div>
+            <div class="flow-text">Frameworks and tools to diagnose the root cause, <span>not just the symptom.</span></div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-icon output">03</div>
+          <div>
+            <div class="flow-label">The Outcome</div>
+            <div class="flow-text">Repeatable systems. Measurable results. <span>Problems that stay fixed.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTENT PILLARS (secondary) ── -->
+<section class="section-secondary">
+  <div class="container">
+    <div class="pillars-header fade-in">
+      <div class="section-label">// content pillars</div>
+      <div class="section-title">What we write about.</div>
+      <p class="section-desc">Four disciplines. One operating system for healthcare leaders who build, not just manage.</p>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar-card fade-in">
+        <div class="pillar-number">01</div>
+        <h3>Healthcare Operations</h3>
+        <p>Capacity, throughput, staffing models, and the workflows that break at 3am when nobody's watching.</p>
+      </div>
+      <div class="pillar-card fade-in">
+        <div class="pillar-number">02</div>
+        <h3>Management & Leadership</h3>
+        <p>Running teams, making hard calls, performance systems that don't rely on heroics.</p>
+      </div>
+      <div class="pillar-card fade-in">
+        <div class="pillar-number">03</div>
+        <h3>Data & Analytics</h3>
+        <p>Dashboards that drive decisions, not decorate slide decks. SQL, Power Query, operational reporting.</p>
+      </div>
+      <div class="pillar-card fade-in">
+        <div class="pillar-number">04</div>
+        <h3>Business & Systems Thinking</h3>
+        <p>How to see the whole board. Process design, decision architecture, and building things that scale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DECISION SIMULATOR (primary) ── -->
+<section class="section-primary simulator-section" id="simulator">
+  <div class="container">
+    <div class="sim-intro-header fade-in">
+      <div class="section-label">// decision simulator</div>
+      <div class="section-title">Test your ops instincts.</div>
+      <p class="section-desc">Scenario-based challenges built from real hospital operations. Make decisions. See consequences. Learn the system.</p>
+    </div>
+    <div class="container-narrow" style="padding:0;">
+      <div class="sim-card fade-in">
+        <div class="sim-card-header">
+          <div class="sim-card-tag">LIVE SCENARIO</div>
+          <div class="sim-card-meta">4 decisions<em>|</em>~5 min<em>|</em>scored</div>
+        </div>
+        <div class="sim-card-body" id="sim-body"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RESOURCES (secondary) ── -->
+<section class="section-secondary" id="resources">
+  <div class="container">
+    <div class="resources-header fade-in">
+      <div class="section-label">// free resources</div>
+      <div class="section-title">Ready to use. Today.</div>
+      <p class="section-desc">Built by someone who's had to use them on a floor, not just present them in a meeting.</p>
+    </div>
+    <div class="resources-grid">
+      <div class="resource-card fade-in">
+        <div class="resource-tag-row">
+          <div class="resource-type">Template</div>
+          <div class="resource-format">.docx</div>
+        </div>
+        <h3>Departmental Needs Assessment</h3>
+        <p>A structured intake framework to surface what your department actually needs — before you make the ask to leadership.</p>
+        <!-- REPLACE THE HREF BELOW WITH YOUR GOOGLE DRIVE SHARE LINK -->
+        <a href="https://drive.google.com/file/d/YOUR_FILE_ID_1/view?usp=sharing" target="_blank" class="btn btn-ghost">Download Template</a>
+      </div>
+      <div class="resource-card fade-in">
+        <div class="resource-tag-row">
+          <div class="resource-type">Field Guide</div>
+          <div class="resource-format">.pdf</div>
+        </div>
+        <h3>Process Audit Checklist</h3>
+        <p>A step-by-step audit guide for identifying where workflows are leaking time, money, and staff trust.</p>
+        <!-- REPLACE THE HREF BELOW WITH YOUR GOOGLE DRIVE SHARE LINK -->
+        <a href="https://drive.google.com/file/d/YOUR_FILE_ID_2/view?usp=sharing" target="_blank" class="btn btn-ghost">Download Field Guide</a>
+      </div>
+      <div class="resource-card fade-in">
+        <div class="resource-tag-row">
+          <div class="resource-type">Playbook</div>
+          <div class="resource-format">.pdf</div>
+        </div>
+        <h3>The First 90 Days in Ops</h3>
+        <p>A decision-making framework for taking ownership of a broken operation — what to assess, what to fix, and what to leave alone.</p>
+        <!-- REPLACE THE HREF BELOW WITH YOUR GOOGLE DRIVE SHARE LINK -->
+        <a href="https://drive.google.com/file/d/YOUR_FILE_ID_3/view?usp=sharing" target="_blank" class="btn btn-ghost">Download Playbook</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEWSLETTER (primary — revised) ── -->
+<section class="newsletter" id="newsletter">
+  <div class="container">
+    <div class="newsletter-inner">
+
+      <!-- Left: pitch -->
+      <div class="newsletter-left fade-in">
+        <div class="section-label">// the newsletter</div>
+        <div class="section-title">The briefing serious ops leaders actually read.</div>
+        <p class="section-desc">One email per week. Each issue is a tight read — practical, grounded, written for people who run things.</p>
+
+        <div class="newsletter-benefits">
+          <div class="benefit-row">
+            <div class="benefit-dot"></div>
+            <div class="benefit-text"><strong>Ops frameworks that work in the real world</strong> — not sanitized consulting decks</div>
+          </div>
+          <div class="benefit-row">
+            <div class="benefit-dot"></div>
+            <div class="benefit-text"><strong>Templates and field guides</strong> you can download and use the same day</div>
+          </div>
+          <div class="benefit-row">
+            <div class="benefit-dot"></div>
+            <div class="benefit-text"><strong>Decision breakdowns</strong> from real hospital operations scenarios</div>
+          </div>
+          <div class="benefit-row">
+            <div class="benefit-dot"></div>
+            <div class="benefit-text"><strong>No upsells, no sponsorships</strong> — just signal from someone still doing the work</div>
+          </div>
+        </div>
+
+        <div class="cadence-line">Weekly · Free · Unsubscribe anytime</div>
+      </div>
+
+      <!-- Right: form card -->
+      <div class="newsletter-form-card fade-in">
+        <div class="form-heading">Join the 3AM Shift</div>
+        <div class="form-sub">Healthcare ops leaders, managers, and builders — this is for you.</div>
+
+        <input type="email" id="email-input" class="email-field" placeholder="your@email.com" />
+        <button class="subscribe-btn" id="subscribe-btn" onclick="handleSubscribe()">
+          <span id="btn-text">Subscribe — It's Free</span>
+        </button>
+        <div class="form-status" id="form-status"></div>
+
+        <div class="social-proof">
+          <div class="proof-avatars">
+            <div class="proof-avatar a1">MR</div>
+            <div class="proof-avatar a2">JT</div>
+            <div class="proof-avatar a3">KL</div>
+            <div class="proof-avatar a4">DS</div>
+          </div>
+          <div class="proof-text">
+            <strong>Healthcare ops leaders</strong> read this every week
+          </div>
+        </div>
+        <div class="privacy-note">No spam. No selling your email. Ever.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="footer-left">&copy; 2026 The 3AM Shift</div>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/company/the3amshift" target="_blank">LinkedIn</a>
+      <a href="https://michelgarcia.co" target="_blank">About the Founder</a>
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════ -->
+<!-- ── SIMULATOR ENGINE ──                -->
+<!-- ══════════════════════════════════════ -->
+<script>
+const SCENARIOS = [
+  // ── 1: ED CRISIS ──────────────────────────────────────────────────────
+  {
+    department: 'Emergency Dept.',
+    name: 'The Night Shift Crisis',
+    nameHtml: 'The <em>Night Shift</em> Crisis',
+    blurb: "3am. ED at 142% capacity. Charge nurse called out. Clock is running.",
+    difficulty: 'Hard', decisions: 4,
+    tagline: "It's 3:07am. Your ED is at 142% capacity. A charge nurse just called out. The house supervisor is waiting for your call.",
+    briefingTitle: 'Your ED is breaking.',
+    briefingBody: "You're the on-call operations manager for a 280-bed community hospital. The ED charge nurse reports 142% capacity with 6 patients boarding, two ambulances inbound, and the night shift charge nurse for Med-Surg just called out sick. The clock is running.",
+    stats: [
+      { label: 'ED Capacity', value: '142%', cls: '' },
+      { label: 'Boarding', value: '6 pts', cls: 'amber' },
+      { label: 'Staff Gap', value: '1 RN', cls: 'cyan' }
+    ],
+    steps: [
+    {
+      label: "Decision 01 — Immediate response",
+      title: "The house supervisor is on the line. What's your first move?",
+      desc: "You have 30 seconds to give direction. The ED is backing up in real time.",
+      choices: [
+        {
+          letter: "A",
+          text: "Activate the hospital's surge protocol",
+          sub: "Triggers automatic staffing escalation, opens overflow beds, notifies admin chain.",
+          points: 3, quality: "good",
+          consequence: {
+            headline: "Surge protocol activated",
+            text: "The protocol triggers a cascade: staffing office starts calling in nurses, housekeeping gets paged to turn over overflow rooms, and the admin on-call gets a heads-up. Beds won't open for 45 minutes — but the system is now working the problem instead of just you.",
+            insight: "Strong operators don't try to solve capacity crises personally. They activate the system that was designed for exactly this moment. The 45-minute lag is real, but every minute you delay activation adds to the backlog."
+          }
+        },
+        {
+          letter: "B",
+          text: "Start calling nurses yourself to fill the Med-Surg gap",
+          sub: "Direct outreach. You know who's reliable. Skip the bureaucracy.",
+          points: 1, quality: "ok",
+          consequence: {
+            headline: "You're on the phone for 20 minutes",
+            text: "You reach three nurses. Two decline. One agrees but can't arrive for 90 minutes. Meanwhile, the ED has added another boarded patient and the house supervisor is managing both the ED and Med-Surg without guidance.",
+            insight: "This is the hero trap. It feels productive because you're doing something, but you've become a bottleneck. The system has protocols for a reason — your job is to activate them and manage the whole picture, not plug one hole."
+          }
+        },
+        {
+          letter: "C",
+          text: "Redistribute existing Med-Surg staff and hold",
+          sub: "No callouts. Work with what you have. Reassign ratios.",
+          points: 2, quality: "ok",
+          consequence: {
+            headline: "Ratios stretch but hold — for now",
+            text: "The supervisor pulls one float nurse and increases patient ratios from 1:5 to 1:7. It buys time, but the nurses are already stretched. You've contained the crisis but created a fatigue risk that compounds every hour.",
+            insight: "Redistribution is a valid short-term tactic but it's not a strategy. Without also activating surge or calling in staff, you're betting nothing else goes wrong tonight. At 3am, that's a bad bet."
+          }
+        }
+      ]
+    },
+    {
+      label: "Decision 02 — The boarding problem",
+      title: "Six patients are boarding in the ED. Where do they go?",
+      desc: "Boarding patients are taking up ED beds, blocking new admits. The floors say they're full. Someone has to break the logjam.",
+      choices: [
+        {
+          letter: "A",
+          text: "Run a real-time bed audit with the house supervisor",
+          sub: "Walk the actual census. Find discharge-ready patients, blocked beds, and ghost holds.",
+          points: 3, quality: "good",
+          consequence: {
+            headline: "You find three beds hiding in the system",
+            text: "One patient was discharge-ready since 6pm but the order was never signed. One bed was blocked by a pending clean that housekeeping missed. One patient was transferred to ICU two hours ago but the bed wasn't released. Three beds, invisible until someone looked.",
+            insight: "Bed boards lie. They show what was entered, not what's true. A 15-minute physical audit almost always finds capacity the dashboard says doesn't exist. This is the ops discipline that separates managers from operators."
+          }
+        },
+        {
+          letter: "B",
+          text: "Open the overflow unit and start moving patients",
+          sub: "Bypass the floors entirely. Use the surge space.",
+          points: 2, quality: "ok",
+          consequence: {
+            headline: "Overflow absorbs three patients, but staffing is thin",
+            text: "Three boarders move to overflow. But the unit needs staff you don't have, so you're pulling from an already-stretched Med-Surg. You've moved the bottleneck, not removed it.",
+            insight: "Overflow is a tool, not a solution. Opening beds without matching them to staff creates a new problem in a different location. Always pair capacity decisions with staffing decisions."
+          }
+        },
+        {
+          letter: "C",
+          text: "Escalate to the medical director to push discharges",
+          sub: "Get physician authority involved. Force the issue from the top.",
+          points: 1, quality: "ok",
+          consequence: {
+            headline: "The medical director is not happy at 3am",
+            text: "The medical director agrees to call hospitalists about pending discharges. But at 3am, transport, pharmacy, and case management aren't staffed. The call creates awareness but no immediate movement.",
+            insight: "Escalation has a time and place. At 3am, the levers that move discharges are on skeleton crews. Better to find hidden capacity now and escalate for the 7am handoff."
+          }
+        }
+      ]
+    },
+    {
+      label: "Decision 03 — Communication",
+      title: "It's 4:15am. Things are stabilizing. What do you document?",
+      desc: "In four hours, the day shift arrives and leadership opens their email. What they find matters.",
+      choices: [
+        {
+          letter: "A",
+          text: "Write a structured incident brief with root causes",
+          sub: "Timeline, decisions made, what worked, what didn't, and what needs to change.",
+          points: 3, quality: "good",
+          consequence: {
+            headline: "Leadership gets a clear picture before they ask",
+            text: "Your brief lands at 6:30am with a timeline, the staffing gap, bed audit findings, and two recommendations. The CNO forwards it to the VP of Operations with the note: 'This is exactly what we need.'",
+            insight: "The crisis is the content. A structured brief turns a bad night into a system improvement. It also builds your credibility as someone who thinks in systems, not just reactions."
+          }
+        },
+        {
+          letter: "B",
+          text: "Send a quick summary email to your manager",
+          sub: "Hit the highlights. Keep it short. Let the day shift ask questions.",
+          points: 2, quality: "ok",
+          consequence: {
+            headline: "Your manager appreciates the heads-up",
+            text: "The email covers what happened but not why. The bed audit finding doesn't get escalated. The discharge workflow problem persists. Next month, the same thing happens again.",
+            insight: "A summary protects you. A brief protects the system. The difference is whether you include root causes and recommendations."
+          }
+        },
+        {
+          letter: "C",
+          text: "Skip the write-up. Handle it in the morning huddle.",
+          sub: "You're exhausted. The day team will figure it out.",
+          points: 0, quality: "bad",
+          consequence: {
+            headline: "The night disappears",
+            text: "Your verbal summary gets 90 seconds of attention. The hidden beds, the staffing gap, the protocol delay — none of it gets captured. No one follows up.",
+            insight: "Verbal handoffs have a half-life of about 4 hours. If it's not written down, it didn't happen."
+          }
+        }
+      ]
+    },
+    {
+      label: "Decision 04 — The bigger picture",
+      title: "A week later, the CNO wants recommendations. What's your focus?",
+      desc: "You have 15 minutes and one slide. What goes on it?",
+      choices: [
+        {
+          letter: "A",
+          text: "Systems fix: real-time bed visibility + staffing triggers",
+          sub: "Address the root causes. Automated discharge flags. Tiered staffing escalation.",
+          points: 3, quality: "good",
+          consequence: {
+            headline: "You're speaking their language",
+            text: "You tie the 3am crisis to two systemic gaps: bed status accuracy and staffing escalation speed. You propose an automated discharge-ready flag and a tiered on-call system. The CNO approves a pilot. You're asked to lead it.",
+            insight: "Executives don't want to hear about one bad night. They want to know it won't happen again. Tying your recommendation to a measurable system change is how operators earn trust and scope."
+          }
+        },
+        {
+          letter: "B",
+          text: "Recommend more night shift staffing",
+          sub: "The simplest fix. More people, fewer crises.",
+          points: 1, quality: "ok",
+          consequence: {
+            headline: "You get a polite 'we'll look into it'",
+            text: "The CNO nods but you can see the math running. More FTEs means more budget. Without data showing the cost of the current model, the ask doesn't stick.",
+            insight: "Asking for more staff without quantifying the cost of not having them is a request, not a business case."
+          }
+        },
+        {
+          letter: "C",
+          text: "Focus on individual accountability — who dropped the ball",
+          sub: "The charge nurse who called out. The unsigned discharge order. Name names.",
+          points: 0, quality: "bad",
+          consequence: {
+            headline: "The room goes cold",
+            text: "Blaming individuals for a systems failure is the fastest way to lose a room. A single callout shouldn't break an entire floor. The unsigned discharge is a workflow problem, not a physician problem.",
+            insight: "If one person calling out breaks your operation, the problem isn't the person — it's the system."
+          }
+        }
+      ]
+    }
+  ]
+  },
+
+  // ── 2: OR DOMINO ──────────────────────────────────────────────────────
+  {
+    department: 'Surgical Services',
+    name: 'The OR Domino',
+    nameHtml: 'The <em>OR</em> Domino',
+    blurb: "6:45am. Failed sterilization indicator. 12 cases on the board. First incision in 45 minutes.",
+    difficulty: 'Hard', decisions: 4,
+    tagline: "It's 6:45am. Sterile processing just flagged a failed biological indicator from last night's run. 12 cases are on the OR schedule. First incision is in 45 minutes.",
+    briefingTitle: 'Your OR schedule just became a liability.',
+    briefingBody: "You're the OR operations manager at a 320-bed regional hospital. The sterile processing supervisor calls: a biological indicator failed on an overnight tray load. Trays are already distributed to 4 ORs. 12 elective cases are booked — including 3 orthopedic implant cases. Surgeons are arriving. Patients are in pre-op.",
+    stats: [
+      { label: 'Cases at Risk', value: '12', cls: '' },
+      { label: 'First Cut', value: '45 min', cls: 'amber' },
+      { label: 'Implant Cases', value: '3', cls: 'cyan' }
+    ],
+    steps: [
+      {
+        label: "Decision 01 — Immediate action",
+        title: "The trays are already in the ORs. What do you do right now?",
+        desc: "Surgeons are scrubbing in. Pre-op patients have been consented. A failed biological indicator means instruments may not be sterile.",
+        choices: [
+          {
+            letter: "A",
+            text: "Halt all 12 cases. Pull all trays from ORs immediately.",
+            sub: "Zero tolerance on sterility. No case proceeds until the tray issue is fully traced.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Painful — and the right call",
+              text: "Cases are halted. Sterile processing begins tracing which specific trays came from the failed load. Within two hours you confirm 4 trays are compromised; the rest are clean. You reschedule with precision instead of across-the-board cancellation.",
+              insight: "A failed biological indicator is a patient safety line you don't cross. Post-op infection from a compromised implant instrument is not recoverable. Operators who protect patients earn institutional trust. Those who delay don't."
+            }
+          },
+          {
+            letter: "B",
+            text: "Triage by risk — cancel implant cases, proceed with low-risk soft tissue",
+            sub: "Not all cases carry equal infection risk. Prioritize accordingly.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Partial hold — but your assumption may be wrong",
+              text: "You cancel the 3 orthopedic cases and proceed with 9 others. By 9am, sterile processing confirms failed-load trays reached all 4 ORs — including two soft tissue cases already in progress. You now have an intraoperative containment problem.",
+              insight: "Triage by case type is logical but assumes you know which trays are compromised before tracing them. Without tray-level confirmation, proceeding on any case is a risk that may not hold."
+            }
+          },
+          {
+            letter: "C",
+            text: "Proceed while sterile processing re-runs the indicator",
+            sub: "One failed indicator isn't conclusive. Get a second reading first.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "You've created a serious liability",
+              text: "Three cases proceed. The re-run fails again. The CNO gets a call from infection control. Two cases are suspended mid-procedure. An RCA is initiated. Your name is at the top of the timeline.",
+              insight: "A failed biological indicator means the sterilization cycle did not reach required kill parameters. There is no 'proceed and recheck' option. This is one of the clearest patient safety rules in perioperative care."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 02 — Surgeon communication",
+        title: "Four surgeons are in the building and don't know yet. How do you tell them?",
+        desc: "They have patients prepped. Some drove in at 5am. Your message sets the tone for the next six hours.",
+        choices: [
+          {
+            letter: "A",
+            text: "Gather them in person. Brief as a group with facts, timeline, and next steps.",
+            sub: "Pre-op lounge. Everyone hears the same story. Take questions together.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "You walk out with a coalition, not a complaint",
+              text: "Surgeons are frustrated but respect the directness. You give a facts-only briefing: failed indicator, trays quarantined, traceability underway, estimated OR return by noon for unaffected cases. Two surgeons reschedule afternoon cases. You have a plan by 7:30am.",
+              insight: "Surgeons respond to facts, clarity, and respect for their time. A group briefing prevents misinformation from spreading. Everyone hears the same story — which matters when the CNO asks what people were told."
+            }
+          },
+          {
+            letter: "B",
+            text: "Send word through the charge nurse to each surgeon individually",
+            sub: "They're scattered. Fastest way to reach them.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Three versions of the story are circulating by 7:15am",
+              text: "The charge nurse interprets the message differently each time. One surgeon hears 'all cases cancelled.' One hears 'possible delay.' One doesn't hear anything until he's scrubbing in. The OR director gets four separate calls.",
+              insight: "Indirect communication in a crisis multiplies misunderstanding. Charge nurses are critical ops partners — but delivering physician-level bad news through them is not their role. Own the message."
+            }
+          },
+          {
+            letter: "C",
+            text: "Wait until traceability is confirmed before telling anyone",
+            sub: "No need to alarm surgeons before you have the full picture.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "A surgeon walks into a halted OR at 7:05am with no warning",
+              text: "He's scrubbed and gowned. The circulator stops him. He finds out from the scrub tech. He walks directly to the CNO's office. The OR director calls you 8 minutes later.",
+              insight: "Withholding information to avoid alarm almost always makes it worse. People respond better to incomplete information delivered honestly than to being blindsided."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 03 — Incident documentation",
+        title: "The CNO wants an incident brief by noon. What does it contain?",
+        desc: "This brief will go to Risk Management. It may become a regulatory document.",
+        choices: [
+          {
+            letter: "A",
+            text: "Full RCA: detection timeline, root cause, tray traceability, corrective actions",
+            sub: "Document when the failure was found, how trays were distributed, what cases were affected, and what systemic fix prevents recurrence.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Risk Management calls it a model incident report",
+              text: "Your brief maps the exact timeline from sterilization run to detection to case halt. It identifies root cause: overnight tray distribution without a morning indicator verification protocol. Three corrective actions with owners and deadlines. Risk Management uses it as a template.",
+              insight: "In perioperative incidents, documentation quality is often the difference between an internal corrective action and a regulatory citation. A clear RCA shows your system can self-identify and fix problems."
+            }
+          },
+          {
+            letter: "B",
+            text: "Summary of cancelled cases, patient notifications, and rebooking timeline",
+            sub: "Focus on patient impact and resolution. The RCA can follow separately.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Adequate — but the root cause goes unanswered",
+              text: "Your brief is clean and patient-focused. The CNO's first follow-up: 'How did trays get distributed before someone checked the indicator?' That answer isn't in the document. A second brief is requested.",
+              insight: "Patient impact summaries are necessary but not sufficient for a sterilization event. The 'how did this happen' is not optional."
+            }
+          },
+          {
+            letter: "C",
+            text: "Summary stating the issue was identified and resolved without patient harm",
+            sub: "Keep it positive. Cases were cancelled proactively. No injuries.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "Risk Management flags the report as incomplete",
+              text: "A 'no harm occurred' framing on a sterilization failure reads as minimization. The medical staff quality committee requests a full RCA. You're now writing the report you should have written first — under more scrutiny.",
+              insight: "Near-miss documentation in perioperative care is held to the same standard as harm events. 'Nothing happened' is not a root cause analysis."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 04 — Systemic fix",
+        title: "Sterile processing asks what changes. What do you recommend?",
+        desc: "The failure happened because trays were distributed before morning shift confirmed overnight indicator results.",
+        choices: [
+          {
+            letter: "A",
+            text: "Mandatory morning verification checkpoint — no tray leaves sterile processing until day-shift lead confirms all overnight indicators",
+            sub: "Simple. Auditable. Closes the gap at the right moment in the workflow.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Simple. Specific. Auditable.",
+              text: "The checkpoint adds 12 minutes to tray release. Zero sterilization-related case delays over the next 8 months. The protocol becomes a Joint Commission best practice reference during your next survey.",
+              insight: "The best systemic fixes are simple enough to execute and specific enough to audit. One checkpoint at the right moment closes the gap without adding complexity to an already-pressured morning."
+            }
+          },
+          {
+            letter: "B",
+            text: "Install automated biological indicator monitoring with real-time alerts",
+            sub: "Technology fix. Alerts go to charge nurse and OR manager the moment a cycle completes.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Right direction — but 6 months out",
+              text: "The capital request gets approved next budget cycle. You operate without a fix for 22 weeks. A second anomaly is caught manually in that window. Technology helps, but it's not a substitute for a near-term process control.",
+              insight: "Technology multiplies good processes — it doesn't replace them. Always pair a short-term process control with a longer-term technology solution."
+            }
+          },
+          {
+            letter: "C",
+            text: "Retrain the overnight sterile processing team",
+            sub: "The failure was human error. Training addresses human error.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Training happens. The gap doesn't close.",
+              text: "The team is retrained. Three months later, a new tech joins overnight. The same gap exists — because there's still no required verification step before tray release.",
+              insight: "Training is a response to knowledge deficits. Process controls respond to system gaps. This was a process gap — no checkpoint before tray distribution. Training alone doesn't create checkpoints."
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  // ── 3: ICU PRESSURE COOKER ────────────────────────────────────────────
+  {
+    department: 'Critical Care',
+    name: 'The ICU Pressure Cooker',
+    nameHtml: 'The <em>ICU</em> Pressure Cooker',
+    blurb: "11am. ICU at 100%. Two critical patients in ED need beds. One family is refusing step-down.",
+    difficulty: 'Medium', decisions: 4,
+    tagline: "It's 11:15am. Your ICU is at full capacity — 12 patients, 12 beds. Two critical patients are holding in the ED. The attending wants to step two patients down to PCU, but one family is refusing.",
+    briefingTitle: "No beds. No slack. Two patients who can't wait.",
+    briefingBody: "You're the critical care operations manager at a 300-bed teaching hospital. The ICU charge reports zero available beds. The ED has two critical holds — one post-STEMI transfer, one septic shock — who need ICU-level care now. One ICU patient is clinically ready for PCU step-down; the family is refusing. PCU has one open bed.",
+    stats: [
+      { label: 'ICU Occupancy', value: '100%', cls: '' },
+      { label: 'ED Critical Holds', value: '2 pts', cls: 'amber' },
+      { label: 'Step-Down Ready', value: '1 pt', cls: 'cyan' }
+    ],
+    steps: [
+      {
+        label: "Decision 01 — Family conversation",
+        title: "The patient's family is refusing ICU step-down. How do you handle it?",
+        desc: "The patient is clinically stable and meets PCU criteria. The family believes moving him means he's not important enough to stay in ICU.",
+        choices: [
+          {
+            letter: "A",
+            text: "Ask the attending to lead a bedside family conference with you present",
+            sub: "Clinical authority plus operational awareness. Frame step-down as a milestone, not a demotion.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "The family says yes in 18 minutes",
+              text: "The attending explains PCU step-down is a clinical milestone — the patient improved. You address logistics: same nursing handoff, direct escalation protocol back to ICU if needed. The family's fear was abandonment. Bed clears by 12:30pm.",
+              insight: "Family resistance to step-down is almost always about fear, not clinical judgment. The intervention is information and presence — not pressure. Attending-led conversation with ops present addresses both the medical and logistical concerns at once."
+            }
+          },
+          {
+            letter: "B",
+            text: "Override the family and proceed with the step-down order",
+            sub: "The patient meets criteria. The attending ordered it. Families don't drive clinical decisions.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "The patient advocate is called. The move stops.",
+              text: "The family contacts the patient advocate within minutes. A temporary hold is placed. The step-down is paused for formal review. You've spent two hours creating a process that takes longer than the 18-minute conversation would have.",
+              insight: "Patients and families have rights in care transitions, even when the clinical call is clear. Forced moves over documented family objection trigger an escalation chain that almost always costs more time than the conversation you were avoiding."
+            }
+          },
+          {
+            letter: "C",
+            text: "Leave it to the attending and focus on finding another bed elsewhere",
+            sub: "Not your lane. Let the clinical team handle the family.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "You're working two problems with half the information",
+              text: "You audit other units while the attending handles the family alone. The conversation stalls — the family asks operational questions the attending can't answer. Thirty minutes pass. You could have closed this in half the time.",
+              insight: "Step-down conversations are clinical and operational. When you split the two, you create gaps the family fills with anxiety. Ops presence here is not overreach — it's what closes the deal."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 02 — Creating capacity",
+        title: "PCU says they have no beds. You know better. What's your move?",
+        desc: "The census shows 18/18. But the board shows what was entered — not what's true.",
+        choices: [
+          {
+            letter: "A",
+            text: "Run a real-time PCU census audit — find discharge-ready patients and unreleased beds",
+            sub: "Look for unsigned discharge orders, patients ready to step to Med-Surg, and held beds for transfers that didn't come.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Two beds appear that didn't exist 20 minutes ago",
+              text: "One PCU patient discharge-ready since 9am — hospitalist order wasn't signed because he was in clinic. One bed held for an outside transfer that cancelled two hours ago but wasn't released in the system. Two beds. Fifteen minutes of audit work.",
+              insight: "PCU and floor charges who say 'we're full' are reporting what the system shows. Hidden capacity almost always exists. Finding it requires someone willing to look past the dashboard."
+            }
+          },
+          {
+            letter: "B",
+            text: "Request a flex bed from Med-Surg to absorb one of the ED critical patients",
+            sub: "Stretch Med-Surg to PCU capacity temporarily with increased monitoring.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "You get the bed — and a safety gap",
+              text: "Med-Surg agrees to a flex hold with continuous cardiac monitoring. But the ratio is 1:5, not the 1:3 standard for post-STEMI care. You've created a bed with mismatched monitoring capacity.",
+              insight: "Flex capacity works when backed by the right staffing model. Moving a critical patient to a lower-acuity unit without a monitoring plan is a capacity decision that creates a clinical risk."
+            }
+          },
+          {
+            letter: "C",
+            text: "Tell the ED to manage the critical patients in place until a bed legitimately opens",
+            sub: "The census is the census. You can't create space that doesn't exist.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "The septic shock patient deteriorates in the ED hallway",
+              text: "Ninety minutes later the septic patient's BP drops. The ED team initiates aggressive resuscitation in a hallway bay. The outcome is the same — but the care environment was wrong from the start.",
+              insight: "Telling a critical patient to wait because 'the census is the census' is an abdication of operations. Census reflects what was entered. Your job is to find what's actually available."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 03 — Staying ahead",
+        title: "Both ED patients are placed. But the ICU is still at 100% and two more critical cases are flagged in the next 4 hours. What do you do now?",
+        desc: "The acute problem is solved. The structural problem isn't. You have a window.",
+        choices: [
+          {
+            letter: "A",
+            text: "Call a rapid capacity huddle with ICU, PCU, and case management",
+            sub: "Get everyone in the same room with the same data. Identify the next step-downs before the evening surge.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "You're ahead of the next crisis by three hours",
+              text: "The huddle surfaces two more ICU patients meeting step-down criteria and two PCU patients discharge-ready by 5pm. You build a tiered movement plan. The evening charge inherits a structured handoff instead of a crisis.",
+              insight: "The best time to solve the next capacity crisis is in the window between the last one and the next one. A proactive afternoon huddle buys you hours. A reactive 9pm call costs you twice that."
+            }
+          },
+          {
+            letter: "B",
+            text: "Flag the issue to the CNO and let leadership decide next steps",
+            sub: "This is systemic. It needs executive attention.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "The CNO is aware — but nothing moves faster",
+              text: "The CNO acknowledges the pressure and asks for an end-of-day summary. That summary takes 45 minutes to write. No immediate action. The evening surge hits with the same structural gap.",
+              insight: "Escalation without a recommendation is just information transfer. When you bring a capacity problem to a CNO, bring a solution. 'We have a problem' starts a conversation. 'Here's what I need from you' gets things done."
+            }
+          },
+          {
+            letter: "C",
+            text: "Monitor and respond if another critical patient presents",
+            sub: "You cleared today's backlog. Don't borrow tomorrow's problems.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "7pm: same problem, different names",
+              text: "A post-surgical complication arrives at 6:45pm. ICU is at 100% again. The evening charge runs the same audit you ran at 11am. No new capacity was created in the five-hour window you had.",
+              insight: "Capacity management is not reactive triage. The window between crises is the most valuable time you have. Use it."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 04 — Structural fix",
+        title: "The ICU has hit 100% occupancy 11 times in the last 30 days. The CNO wants a proposal.",
+        desc: "This isn't a bad-day problem. It's a structural one.",
+        choices: [
+          {
+            letter: "A",
+            text: "Propose a daily 9am capacity huddle with automatic step-down review for every ICU patient meeting criteria",
+            sub: "Every eligible patient flagged and reviewed before the day shift surge — not after.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "ICU full-capacity events drop 60% in 60 days",
+              text: "The huddle starts identifying step-down candidates before capacity pressure forces the conversation. Discharges happen earlier. ED boarding time for critical holds drops from 4.2 hours to 1.8. The CNO presents the numbers at the board meeting.",
+              insight: "Most ICU capacity crises are preceded by 6–12 hours of visible signals nobody acted on. A structured morning review converts those signals into actions before they become emergencies."
+            }
+          },
+          {
+            letter: "B",
+            text: "Request board approval to add 4 ICU beds",
+            sub: "The unit is structurally undersized for the volume. More beds is the right answer.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Approved — for fiscal year 2027",
+              text: "The capital request moves through committee. Construction begins in 14 months. The capacity crisis continues on the same 30-day cycle in the meantime. The beds were the right long-term answer — but they left a 14-month gap.",
+              insight: "Capital solutions and process solutions are not mutually exclusive. Propose both. The beds fix the ceiling; the huddle fixes the floor."
+            }
+          },
+          {
+            letter: "C",
+            text: "Recommend a flex staffing model — pull float pool when ICU hits 90%",
+            sub: "Pre-position staff before the crisis instead of reacting after.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "You have more staff. You still don't have beds.",
+              text: "The flex model is approved. Staff availability improves. But without a structured step-down review, patients stay in ICU longer than necessary — occupying beds that additional staff can't create.",
+              insight: "Staffing and capacity are related but distinct levers. You can have fully staffed beds that are occupied by patients who don't need them. Staffing solves a different problem than throughput."
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  // ── 4: MONDAY COLLAPSE ────────────────────────────────────────────────
+  {
+    department: 'Med-Surg / Nursing',
+    name: 'The Monday Collapse',
+    nameHtml: 'The <em>Monday</em> Collapse',
+    blurb: "5:30am. Three callouts. Float pool dry. 42 patients heading into day shift with no coverage.",
+    difficulty: 'Hard', decisions: 4,
+    tagline: "It's 5:30am Monday. Three night shift nurses just called out. The float pool is exhausted from weekend surge. Agency can't place anyone until 11am. 42 patients across two units are heading into day shift.",
+    briefingTitle: '42 patients. Not enough nurses.',
+    briefingBody: "You're the nursing operations manager for a 280-bed community hospital. By 5:30am, three Med-Surg night shift nurses have called out sick. Float pool: zero available. Staffing coordinator confirms agency placement won't happen before 11am. Day shift starts in 90 minutes. Two unit charges are calling you.",
+    stats: [
+      { label: 'Callouts', value: '3 RNs', cls: '' },
+      { label: 'Float Available', value: '0', cls: 'amber' },
+      { label: 'Agency ETA', value: '11am', cls: 'cyan' }
+    ],
+    steps: [
+      {
+        label: "Decision 01 — Immediate gap coverage",
+        title: "You have 90 minutes before day shift. How do you cover the gap?",
+        desc: "Three nurses short across two units. No float. Agency 5+ hours away.",
+        choices: [
+          {
+            letter: "A",
+            text: "Consolidate patients, pair charge nurses to cover critical assignments, call the house supervisor to co-manage the floor",
+            sub: "Compress two units temporarily. Use existing charge capacity. Get another set of hands in the building.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Tight but structured",
+              text: "You consolidate into a single operational cohort for four hours. The house supervisor takes on four patients directly. Two day-shift nurses from the least-acute wing backfill the gap. It's not comfortable — but it's structured, documented, and everyone knows their role.",
+              insight: "Crisis coverage isn't about finding the perfect solution — it's about building a structured temporary state that can be handed off cleanly. Consolidation with clear role assignments beats informal scrambling every time."
+            }
+          },
+          {
+            letter: "B",
+            text: "Call off-duty nurses and offer double-time to come in early",
+            sub: "Money solves most staffing problems. Someone will come in.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "One nurse agrees. She arrives at 7:45am.",
+              text: "You reach six nurses. Four don't answer. One declines. One arrives at 7:45am. You've burned 40 minutes on calls and have partial coverage for the second half of the gap. The first 90 minutes are still uncovered.",
+              insight: "Overtime calls are a valid tool but have a lead-time problem. They work best as a parallel action — call while also running consolidation — not as your primary strategy."
+            }
+          },
+          {
+            letter: "C",
+            text: "Tell night shift nurses they need to stay until coverage arrives",
+            sub: "Patient continuity. They know these patients. They stay.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Two stay reluctantly. One walks.",
+              text: "Two night shift nurses agree with visible resentment after 12 hours. One refuses, citing fatigue. You now have two exhausted nurses and a formal complaint in motion for coercive scheduling. Agency still doesn't arrive until 11am.",
+              insight: "Mandatory holdover creates fatigue risk, legal exposure, and morale debt. It's not a staffing strategy — it's a stopgap that damages the trust you'll need the next time this happens."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 02 — Admission diversion",
+        title: "The charge nurses want to close to new admissions. What's your call?",
+        desc: "The ED has 8 patients waiting for Med-Surg beds. The charges say taking more is unsafe. They're not wrong.",
+        choices: [
+          {
+            letter: "A",
+            text: "Agree to a 2-hour temporary diversion with a documented reopen trigger",
+            sub: "No new admissions for 2 hours. Reopen when agency nurse arrives and charge completes a safety review.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "The ED holds. The floor stabilizes.",
+              text: "You document the diversion with a specific reopen condition: agency nurse on floor + charge safety review. The ED is frustrated but informed. By 9:30am, conditions improve and admissions resume. No adverse events on either end.",
+              insight: "Temporary diversion with a documented trigger is a legitimate safety decision. The key words are 'temporary' and 'with a reopen condition.' Time-boxed diversion with a handoff plan is good ops."
+            }
+          },
+          {
+            letter: "B",
+            text: "Deny diversion — the ED needs those beds and ratios are still within policy",
+            sub: "Ratios are stretched but technically legal. Diversion creates ED problems.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Floor accepts admissions. Two near-misses by 10am.",
+              text: "Three admissions come up by 8:30am. 1:7 ratios with overtired nurses. By 10am, two medication near-misses are caught and reported. No patient harm — but the incident reports are in the system.",
+              insight: "Being within policy is not the same as being safe. Policy defines the minimum floor; clinical judgment defines actual risk. When charge nurses raise safety concerns in unison, that's a signal worth acting on."
+            }
+          },
+          {
+            letter: "C",
+            text: "Escalate to the CNO and wait for direction before deciding",
+            sub: "This is a system-level call. Don't make it alone.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "The CNO calls back at 7:20am. The window has passed.",
+              text: "By the time you receive direction, two admissions have already arrived because the ED couldn't hold them. The CNO's guidance: 'Use judgment.' You waited 45 minutes for permission to do what the charges already told you needed to happen.",
+              insight: "Escalating when you already know the right answer delays the right answer. Escalate to inform — not to transfer the decision."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 03 — Staff confrontation",
+        title: "A nurse tells you she's leaving mid-shift. 'The ratios are unsafe and I won't be responsible for what happens.'",
+        desc: "She's not wrong. She has 6 patients. It's 8am. Agency arrives at 11am.",
+        choices: [
+          {
+            letter: "A",
+            text: "Meet with her directly. Acknowledge the conditions. Show her the 11am relief. Ask for 3 hours.",
+            sub: "Don't argue the ratios. Give her a concrete timeline and visible management presence.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "She stays. She's still unhappy. That's okay.",
+              text: "You sit with her for 8 minutes: 'You're right. These ratios are not okay. I'm not asking you to pretend they are. Agency arrives at 11 and I'm on this floor until then. Can you give me until 11?' She agrees. Documents her concern. You document the conversation. Agency arrives at 10:48am.",
+              insight: "Nurses who raise safety concerns mid-crisis are doing their job. Don't defend the system — give them information, a timeline, and visible management presence. That turns a walkout into a documented handoff."
+            }
+          },
+          {
+            letter: "B",
+            text: "Tell her that leaving mid-shift constitutes patient abandonment and she'll face disciplinary action",
+            sub: "Firm. Legal. Clear.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "She calls her union rep. You're now managing a grievance during a staffing crisis.",
+              text: "The union rep arrives at 9:15am. The nurse is formally relieved pending investigation. You now have one fewer nurse and an active grievance to document while the floor is still understaffed.",
+              insight: "The patient abandonment argument is legally imprecise and operationally destructive. Threatening legal consequences during a staffing crisis escalates a human problem into a structural one."
+            }
+          },
+          {
+            letter: "C",
+            text: "Let her leave and redistribute her patients to the remaining staff",
+            sub: "You can't force someone to stay. Adapt.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Remaining nurses hit 1:8 ratios. Two more are close to walking.",
+              text: "Redistribution pushes already-stretched nurses to the edge. By 9:30am, two more nurses have told the charge they're 'documenting unsafe conditions.' You're managing a cascade instead of a crisis.",
+              insight: "Letting one person leave without addressing the underlying concern signals to the rest of the floor that conditions have no floor. Even an imperfect intervention is better than passive acceptance."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 04 — Systemic change",
+        title: "This has happened three Mondays in a row. The CNO wants a plan. What do you bring?",
+        desc: "Monday callouts are predictable. Your system isn't built for them.",
+        choices: [
+          {
+            letter: "A",
+            text: "Build a Monday surge model: pre-committed weekend float, 48-hour callout tracker, on-call pool with guaranteed response times",
+            sub: "Treat Monday like the predictable surge day it is. Build the staffing system around the actual pattern.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Monday staffing crises drop 80% over the following quarter",
+              text: "Three-part model: dedicated Monday float pool (pre-scheduled, not reactive), 48-hour callout dashboard that flags risk before the day arrives, tiered on-call guarantee with a 2-hour response SLA. CNO approves a 90-day pilot. The pattern breaks.",
+              insight: "If the same crisis happens on the same day of the week, it's not a crisis — it's a pattern. Patterns belong in your staffing model, not your incident reports."
+            }
+          },
+          {
+            letter: "B",
+            text: "Require mandatory weekend on-call commitments from all Med-Surg staff",
+            sub: "Mandatory availability solves the availability problem.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Four nurses submit resignations within 30 days",
+              text: "Attendance improves short-term. But mandatory on-call without pay differential pushes your most experienced nurses toward the door. You've solved the staffing math by shrinking the denominator.",
+              insight: "Mandatory systems without incentive structures drive away the people you can least afford to lose. Staffing solutions that damage retention are negative-ROI interventions."
+            }
+          },
+          {
+            letter: "C",
+            text: "Expand agency contracts to guarantee same-day placement for callout scenarios",
+            sub: "If agency can place within 2 hours reliably, the callout problem is solved.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Agency fills gaps — at a cost that raises CFO eyebrows",
+              text: "Placement guarantees improve Monday coverage. But agency spend triples on high-callout weeks. The CFO flags the variance at quarterly ops review. Agency is a valid bridge — not a staffing strategy.",
+              insight: "Agency dependency is a symptom of a broken internal staffing model. The conversation to have with the CFO is about investing in internal float capacity vs. perpetual agency spend."
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  // ── 5: DISCHARGE BOTTLENECK ───────────────────────────────────────────
+  {
+    department: 'Case Management',
+    name: 'The Discharge Bottleneck',
+    nameHtml: 'The <em>Discharge</em> Bottleneck',
+    blurb: "2:15pm. 28 patients flagged ready. Only 9 left. The ED has 11 waiting. Something is broken.",
+    difficulty: 'Medium', decisions: 4,
+    tagline: "It's 2:15pm. 28 patients are flagged as discharge-ready. Only 9 have actually left. The ED has 11 waiting for admission. The bed board shows capacity that doesn't exist.",
+    briefingTitle: "The board says you have beds. The patients say you don't.",
+    briefingBody: "You're the operations manager on afternoon rounds at a 350-bed hospital. Case management flags that 28 patients are in 'discharge-ready' status but 19 are still physically in their beds at 2pm. The ED has 11 patients waiting for inpatient admission. Housekeeping has 8 rooms to turn with only 3 staff. Four hours before evening shift and a new admission wave.",
+    stats: [
+      { label: 'Discharge Lag', value: '19 pts', cls: '' },
+      { label: 'ED Waiting', value: '11 pts', cls: 'amber' },
+      { label: 'Housekeeping', value: '3 staff', cls: 'cyan' }
+    ],
+    steps: [
+      {
+        label: "Decision 01 — Diagnose the bottleneck",
+        title: "19 discharge-ready patients are still in their beds. Where do you start?",
+        desc: "Pharmacy, transport, physician orders, family wait, housekeeping — any could be the main constraint. You don't have time to work all of them equally.",
+        choices: [
+          {
+            letter: "A",
+            text: "Run a rapid discharge audit: tally every blocked discharge by reason. Hit the biggest constraint first.",
+            sub: "30 minutes with case management. Data before action.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "The audit takes 25 minutes. The data changes everything.",
+              text: "Results: 8 patients waiting on pharmacy, 5 on physician signature, 4 on family transport, 2 on housekeeping. You had assumed physician orders. Pharmacy is the real constraint. You redirect — and close 7 discharges in 90 minutes.",
+              insight: "Throughput problems feel urgent, which makes people want to act before diagnosing. But acting on the wrong constraint wastes time and leaves the real one untouched. A 25-minute audit on 19 patients is almost always worth it."
+            }
+          },
+          {
+            letter: "B",
+            text: "Call attending physicians to push discharge orders",
+            sub: "Physician signatures are usually the bottleneck. Start there.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "You reach 3 physicians. 4 discharges move. 15 remain stuck.",
+              text: "Physician orders weren't the main constraint — only 5 of the 19 were waiting on signatures. The other 14 were stuck on pharmacy, transport, and family. You've spent 45 minutes on a partial fix.",
+              insight: "Assuming physician orders are the bottleneck is the default call in most hospitals — and it's wrong about half the time. Diagnose before you act."
+            }
+          },
+          {
+            letter: "C",
+            text: "Call housekeeping to prioritize room turns for the highest-acuity ED admits",
+            sub: "You can't control discharge speed. Control how fast beds open once patients leave.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Housekeeping is ready — but patients aren't leaving yet",
+              text: "You've optimized the last 20% of the throughput process while the first 80% is still blocked. Housekeeping has prepped 6 rooms for patients who haven't left. ED admits still wait.",
+              insight: "Sequencing matters. Housekeeping turn time is the last step — not the constraint. Cleaning empty rooms faster doesn't help if rooms aren't emptying."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 02 — Housekeeping crunch",
+        title: "8 rooms need turning. 3 housekeeping staff. Which rooms first?",
+        desc: "You can't turn all 8 before the evening wave. You have to choose.",
+        choices: [
+          {
+            letter: "A",
+            text: "Triage room turns by the acuity of the incoming ED patient — highest acuity first. Call EVS supervisor to pull staff from lower-priority areas.",
+            sub: "Match available beds to the patients who need them most.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "6 rooms turned by 4pm. The right admits move first.",
+              text: "The septic patient and chest pain rule-out get rooms turned first. The EVS supervisor pulls one staff member from a lower-priority area. 6 rooms ready by 4pm. Highest-acuity ED patients move within the hour.",
+              insight: "Turning rooms in census order ignores clinical acuity. Matching the first available bed to the sickest waiting patient is a small decision with large downstream effects on ED throughput."
+            }
+          },
+          {
+            letter: "B",
+            text: "Ask nursing staff to help turn rooms to accelerate the process",
+            sub: "More hands. Faster turns.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Two nurses help. Three call lights go unanswered for 22 minutes.",
+              text: "The gesture is well-intentioned but the trade-off is real. Two nurses are unavailable for patient care for 25 minutes. One near-miss event occurs during that window. EVS turns 8 rooms. Patient care degrades temporarily.",
+              insight: "Pulling clinical staff into EVS work creates a safety gap on both ends. It's a staffing problem being solved with the wrong resource."
+            }
+          },
+          {
+            letter: "C",
+            text: "Turn rooms in bed board order — first in, first out",
+            sub: "Keep it simple. No subjective triage.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "First three rooms go to low-acuity patients. The septic patient waits 90 more minutes.",
+              text: "FIFO feels fair but ignores urgency. First rooms turned go to a knee replacement and a GI workup. The septic patient waits an additional 90 minutes in a hallway bay.",
+              insight: "FIFO is an inventory principle. Clinical operations require acuity-weighting. Not all waits are equal."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 03 — The physician blocker",
+        title: "One physician has 3 discharge orders pending 'one more test.' Non-urgent. Patients ready since 10am. How do you handle it?",
+        desc: "He's in clinic two floors up. The test results won't change the care plan.",
+        choices: [
+          {
+            letter: "A",
+            text: "Have case management call with a specific clinical question: 'Can this test be completed outpatient?'",
+            sub: "Frame it as care coordination, not pressure. Give the physician a path to say yes.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Two of three orders signed within 20 minutes",
+              text: "Case manager reaches the physician during a clinic break. 'Dr. Chen, these three patients are ready — can the follow-up labs be drawn at an outpatient lab in the next 48 hours?' Two orders signed immediately. One requires a brief discussion. All three discharged by 5pm.",
+              insight: "Physicians don't respond well to pressure. They respond well to clinical questions. Framing a throughput problem as care coordination gives them a path to say yes — which is what you both want."
+            }
+          },
+          {
+            letter: "B",
+            text: "Escalate to the CMO to call the physician directly",
+            sub: "This is a systemic issue. Use the authority structure.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "The discharges move. The relationship takes a hit.",
+              text: "Discharges happen. But the physician now knows ops goes over his head for routine delays. He becomes more defensive in future interactions with case management.",
+              insight: "CMO escalation is a valid lever for persistent patterns — not first-time interventions. Using senior authority as a first response burns a relationship tool you'll need again."
+            }
+          },
+          {
+            letter: "C",
+            text: "Wait for the test results before engaging the physician",
+            sub: "Don't start a conversation you'll have to repeat once results arrive.",
+            points: 0, quality: "bad",
+            consequence: {
+              headline: "Results at 5:30pm. Discharges at 6:45pm.",
+              text: "Tests normal, as expected. Orders signed without hesitation. Three patients discharged during evening shift change — when housekeeping and transport are at minimum staffing. Three hours longer than necessary.",
+              insight: "Waiting for certainty before a difficult conversation is avoidance. If the test was non-urgent and the care plan wouldn't change, 'can this be done outpatient?' was always valid — you just delayed asking it."
+            }
+          }
+        ]
+      },
+      {
+        label: "Decision 04 — Systemic fix",
+        title: "This afternoon happens every Tuesday and Wednesday. The VP of Ops wants a process change. What do you propose?",
+        desc: "The pattern: discharge-ready patients pile up from 10am–2pm with no active throughput management until the ED backs up.",
+        choices: [
+          {
+            letter: "A",
+            text: "Daily 11am discharge checkpoint: case management + charge nurses + a departure target time for every discharge-ready patient",
+            sub: "By 11am, every same-day discharge has a target. Blockers are identified by noon. No surprises at 2pm.",
+            points: 3, quality: "good",
+            consequence: {
+              headline: "Average discharge time moves from 3:40pm to 1:55pm in 6 weeks",
+              text: "The 11am checkpoint creates shared accountability that didn't exist before. Pharmacy looped in by 11:30am. Transport pre-staged. Physicians notified of same-day discharge expectations at morning rounds. The 2pm backup stops because the work starts 4 hours earlier.",
+              insight: "Discharge is a multi-team workflow that defaults to chaos without a shared checkpoint. The 11am call doesn't do the work — it coordinates people who were already doing pieces of it in isolation."
+            }
+          },
+          {
+            letter: "B",
+            text: "Create a discharge lounge where stable patients wait while final steps complete",
+            sub: "Free up inpatient beds faster. Patients wait in a comfortable setting while pharmacy and transport catch up.",
+            points: 2, quality: "ok",
+            consequence: {
+              headline: "Throughput improves 20%. The bottlenecks remain.",
+              text: "The lounge reduces bed-to-departure time. Beds open faster. But pharmacy delays, physician order lags, and family transport waits still exist — now in a different room.",
+              insight: "A discharge lounge solves a space problem. It doesn't solve a coordination problem. Best implementations pair the physical space with a process that ensures patients who enter actually leave within a defined window."
+            }
+          },
+          {
+            letter: "C",
+            text: "Hire two additional case managers to handle afternoon coordination",
+            sub: "Workload is too high. More case managers means better coverage.",
+            points: 1, quality: "ok",
+            consequence: {
+              headline: "Hired. Backfills in 8 weeks. Pattern unchanged in 12 weeks.",
+              text: "Individual coordination improves. But without a structured checkpoint, coordination still happens reactively — just with more people doing it. The 2pm backup persists on high-census days.",
+              insight: "Adding people to a broken process makes it more expensive, not better. Process first, then headcount to support it."
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
+
+let simState = 'picker';
+let selectedScenarioIdx = 0;
+let currentStep = 0;
+let selectedChoices = [];
+let totalPoints = 0;
+const el = () => document.getElementById('sim-body');
+const activeScenario = () => SCENARIOS[selectedScenarioIdx];
+const maxPoints = () => activeScenario().steps.length * 3;
+
+function renderSim() {
+  if (simState === 'picker') renderScenarioPicker();
+  else if (simState === 'intro') renderSimIntro();
+  else if (simState === 'decision') renderSimDecision();
+  else if (simState === 'consequence') renderSimConsequence();
+  else if (simState === 'results') renderSimResults();
+}
+
+function renderScenarioPicker() {
+  const cards = SCENARIOS.map((s, i) => `
+    <button class="scenario-option${i === selectedScenarioIdx ? ' selected' : ''}" onclick="selectScenario(${i})">
+      <div class="scenario-dept">${s.department}</div>
+      <div class="scenario-name">${s.name}</div>
+      <div class="scenario-blurb">${s.blurb}</div>
+      <div class="scenario-meta">
+        <span class="s-tag ${s.difficulty.toLowerCase()}">${s.difficulty}</span>
+        <span class="s-tag">${s.decisions} decisions</span>
+        <span class="s-tag">~5 min</span>
+      </div>
+    </button>`).join('');
+  el().innerHTML = `
+    <div class="sim-screen">
+      <div class="picker-heading">Choose your scenario.</div>
+      <p class="picker-sub">Each scenario is built from real hospital operations. Pick a department, make your decisions, see the consequences.</p>
+      <div class="scenario-grid">${cards}</div>
+      <button class="btn btn-primary" onclick="startSim()">Begin Simulation →</button>
+    </div>`;
+}
+
+function renderSimIntro() {
+  const s = activeScenario();
+  const statsHtml = s.stats.map(st => `<div class="stat"><div class="stat-label">${st.label}</div><div class="stat-value ${st.cls}">${st.value}</div></div>`).join('');
+  el().innerHTML = `
+    <div class="sim-intro sim-screen">
+      <h2>${s.nameHtml}</h2>
+      <p class="sim-intro-desc">${s.tagline}</p>
+      <div class="briefing">
+        <div class="briefing-label">Situation briefing</div>
+        <h3>${s.briefingTitle}</h3>
+        <p>${s.briefingBody}</p>
+        <div class="stat-row">${statsHtml}</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="startSim()">Begin Simulation</button>
+        <button class="btn btn-ghost" onclick="simState='picker';renderSim();">← Change Scenario</button>
+      </div>
+    </div>`;
+}
+
+function selectScenario(idx) {
+  selectedScenarioIdx = idx; simState = 'intro'; renderSim(); scrollToSim();
+}
+
+function renderSimDecision() {
+  const s = activeScenario();
+  const step = s.steps[currentStep];
+  const pips = s.steps.map((_, i) => i < currentStep ? 'done' : i === currentStep ? 'active' : '');
+  el().innerHTML = `
+    <div class="sim-screen">
+      <div class="progress-bar">${pips.map(p => `<div class="progress-pip ${p}"></div>`).join('')}</div>
+      <div class="situation-label">${step.label}</div>
+      <div class="situation-title">${step.title}</div>
+      <div class="situation-desc">${step.desc}</div>
+      <div class="choices">
+        ${step.choices.map((ch, i) => `
+          <button class="choice-btn" onclick="simChoose(${i})">
+            <div class="choice-letter">${ch.letter}</div>
+            <div class="choice-text">${ch.text}</div>
+            <div class="choice-sub">${ch.sub}</div>
+          </button>
+        `).join('')}
+      </div>
+    </div>`;
+}
+
+function renderSimConsequence() {
+  const s = activeScenario();
+  const step = s.steps[currentStep];
+  const choice = step.choices[selectedChoices[currentStep]];
+  const con = choice.consequence;
+  const q = choice.quality;
+  const pts = choice.points;
+  const pips = s.steps.map((_, i) => i <= currentStep ? 'done' : '');
+  const isLast = currentStep === s.steps.length - 1;
+  el().innerHTML = `
+    <div class="sim-screen">
+      <div class="progress-bar">${pips.map(p => `<div class="progress-pip ${p}"></div>`).join('')}</div>
+      <div class="consequence-box ${q}">
+        <div class="consequence-label">${q === 'good' ? 'Strong move' : q === 'ok' ? 'Partial credit' : 'Missed opportunity'}</div>
+        <h3>${con.headline}</h3>
+        <p>${con.text}</p>
+        <div class="points-badge ${q}">
+          ${pts === 3 ? '+3 pts — Optimal' : pts === 2 ? '+2 pts — Acceptable' : pts === 1 ? '+1 pt — Suboptimal' : '+0 pts — Costly'}
+        </div>
+      </div>
+      <div class="insight-box">
+        <div class="insight-label">The ops lesson</div>
+        <p>${con.insight}</p>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="simNext()">${isLast ? 'See Your Results' : 'Next Decision'}</button>
+    </div>`;
+}
+
+function renderSimResults() {
+  const s = activeScenario();
+  const mp = maxPoints();
+  const pct = Math.round((totalPoints / mp) * 100);
+  const circ = 2 * Math.PI * 60;
+  const offset = circ - (pct / 100) * circ;
+  const color = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
+  let grade, desc;
+  if (pct >= 90) { grade = "Systems Operator"; desc = "You think in systems, not reactions. You activated protocols, found hidden capacity, documented the learning, and presented solutions that address root causes."; }
+  else if (pct >= 70) { grade = "Solid Under Pressure"; desc = "You made smart calls in the moment but left some systemic opportunities on the table. The gap is what happens after the crisis ends."; }
+  else if (pct >= 50) { grade = "Survivor"; desc = "You got through the night, but the same crisis will happen again. The decisions that matter most aren't made at 3am — they're made the following week."; }
+  else { grade = "Learning Opportunity"; desc = "Every operator has had a night like this. The difference is what you do next. The best leaders study their worst nights and build systems so they never repeat them."; }
+
+  el().innerHTML = `
+    <div class="sim-results sim-screen">
+      <div class="score-ring">
+        <svg viewBox="0 0 140 140">
+          <circle class="score-ring-bg" cx="70" cy="70" r="60"/>
+          <circle class="score-ring-fill" cx="70" cy="70" r="60" stroke="${color}"
+            stroke-dasharray="${circ}" stroke-dashoffset="${circ}" id="score-arc"/>
+        </svg>
+        <div class="score-number">
+          <div class="big" style="color:${color}">${totalPoints}</div>
+          <div class="label">of ${mp} pts</div>
+        </div>
+      </div>
+      <div class="grade-title">${grade}</div>
+      <p class="grade-desc">${desc}</p>
+      <div class="results-breakdown">
+        ${s.steps.map((step, i) => {
+          const ch = step.choices[selectedChoices[i]];
+          return `<div class="breakdown-row">
+            <div class="breakdown-num">0${i+1}</div>
+            <div class="breakdown-text">${ch.text}</div>
+            <div class="breakdown-pts ${ch.quality}">${ch.points === 3 ? '+3' : ch.points === 2 ? '+2' : ch.points === 1 ? '+1' : '+0'}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="results-actions">
+        <button class="btn btn-primary btn-sm" onclick="simRestart()">Try Another Scenario</button>
+        <button class="btn btn-ghost btn-sm" onclick="simShare()">Share on LinkedIn</button>
+      </div>
+    </div>`;
+  setTimeout(() => {
+    const arc = document.getElementById('score-arc');
+    if (arc) arc.style.strokeDashoffset = offset;
+  }, 100);
+}
+
+function startSim() {
+  currentStep = 0; selectedChoices = []; totalPoints = 0;
+  simState = 'decision'; renderSim(); scrollToSim();
+}
+function simChoose(i) {
+  selectedChoices.push(i);
+  totalPoints += activeScenario().steps[currentStep].choices[i].points;
+  simState = 'consequence'; renderSim(); scrollToSim();
+}
+function simNext() {
+  currentStep++;
+  simState = currentStep >= activeScenario().steps.length ? 'results' : 'decision';
+  renderSim(); scrollToSim();
+}
+function simRestart() {
+  simState = 'picker'; currentStep = 0; selectedChoices = []; totalPoints = 0;
+  renderSim(); scrollToSim();
+}
+function simShare() {
+  const s = activeScenario();
+  const mp = maxPoints();
+  const text = `I scored ${totalPoints}/${mp} on The 3AM Shift Decision Simulator — "${s.name}" scenario for healthcare operations leaders.\n\nThink you can do better?\n\n#HealthcareOps #Leadership #The3AMShift`;
+  window.open(`https://www.linkedin.com/sharing/share-offsite/?text=${encodeURIComponent(text)}`, '_blank');
+}
+function scrollToSim() {
+  const card = document.querySelector('.sim-card');
+  if (card) {
+    const y = card.getBoundingClientRect().top + window.pageYOffset - 100;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+}
+
+// ── Newsletter form handler ──
+async function handleSubscribe() {
+  const emailInput = document.getElementById('email-input');
+  const btn = document.getElementById('subscribe-btn');
+  const btnText = document.getElementById('btn-text');
+  const status = document.getElementById('form-status');
+  const email = emailInput.value.trim();
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    status.textContent = 'Please enter a valid email address.';
+    status.className = 'form-status error';
+    return;
+  }
+
+  btn.disabled = true;
+  btnText.textContent = 'Subscribing...';
+  status.textContent = '';
+  status.className = 'form-status';
+
+  try {
+    const BEEHIIV_PUB_ID = 'pub_2c371470-9827-4c06-adc7-cb4caf957379';
+    const BEEHIIV_API_KEY = 'gO18QEWudHRLdZys5tZ22ujMBpPe0ptsFZkTCTZ02GvIeEuZX72kS5zIItBIPew9';
+
+    const response = await fetch(`https://api.beehiiv.com/v2/publications/${BEEHIIV_PUB_ID}/subscriptions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${BEEHIIV_API_KEY}`
+      },
+      body: JSON.stringify({
+        email: email,
+        reactivate_existing: false,
+        send_welcome_email: true,
+        utm_source: '3amshift-site',
+        utm_medium: 'organic',
+        utm_campaign: 'newsletter-form'
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok && (data.data?.status === 'active' || data.data?.status === 'validating')) {
+      status.textContent = "You're in. First issue hits your inbox soon.";
+      status.className = 'form-status success';
+      emailInput.value = '';
+      btnText.textContent = 'Subscribed ✓';
+      btn.style.background = 'var(--green)';
+      btn.style.color = 'var(--bg)';
+    } else if (data.data?.status === 'pending') {
+      status.textContent = "Check your inbox — confirm your subscription to get started.";
+      status.className = 'form-status success';
+      emailInput.value = '';
+      btnText.textContent = 'Check Your Email';
+      btn.style.background = 'var(--amber)';
+    } else {
+      throw new Error(data.message || 'Subscription failed');
+    }
+  } catch (err) {
+    status.textContent = 'Something went wrong. Try again in a moment.';
+    status.className = 'form-status error';
+    btn.disabled = false;
+    btnText.textContent = "Subscribe — It's Free";
+  }
+}
+
+// allow Enter key to submit
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('email-input');
+  if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') handleSubscribe(); });
+});
+
+// ── Init ──
+renderSim();
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
